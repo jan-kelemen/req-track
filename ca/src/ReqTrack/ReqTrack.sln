@@ -3,13 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27004.2005
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain.Core", "Domain.Core\Domain.Core.csproj", "{7878CCBC-131D-4C9F-B8DD-CD54ADDBF124}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain.Core", "Domain.Core\Domain.Core.csproj", "{7878CCBC-131D-4C9F-B8DD-CD54ADDBF124}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain.UseCases.Core", "Domain.UseCases.Core\Domain.UseCases.Core.csproj", "{E8CC9B76-82F6-41F5-A0F9-9AF8B62E48FE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain.UseCases.Core", "Domain.UseCases.Core\Domain.UseCases.Core.csproj", "{E8CC9B76-82F6-41F5-A0F9-9AF8B62E48FE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Runtime.Core", "Runtime.Core\Runtime.Core.csproj", "{5E4129E0-F503-4DB1-9635-5AC2C4AA51AD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Runtime.Core", "Runtime.Core\Runtime.Core.csproj", "{5E4129E0-F503-4DB1-9635-5AC2C4AA51AD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application.Web.MVC", "Application.Web.MVC\Application.Web.MVC.csproj", "{0197F295-6CC4-4D86-8F8B-D9758E99B71F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Application.Web.MVC", "Application.Web.MVC\Application.Web.MVC.csproj", "{0197F295-6CC4-4D86-8F8B-D9758E99B71F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Persistence.Concrete.MongoDB", "Persistence.Concrete.MongoDB\Persistence.Concrete.MongoDB.csproj", "{34FED307-E493-41AF-963D-F593F3F42283}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{0197F295-6CC4-4D86-8F8B-D9758E99B71F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0197F295-6CC4-4D86-8F8B-D9758E99B71F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0197F295-6CC4-4D86-8F8B-D9758E99B71F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{34FED307-E493-41AF-963D-F593F3F42283}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{34FED307-E493-41AF-963D-F593F3F42283}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{34FED307-E493-41AF-963D-F593F3F42283}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{34FED307-E493-41AF-963D-F593F3F42283}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

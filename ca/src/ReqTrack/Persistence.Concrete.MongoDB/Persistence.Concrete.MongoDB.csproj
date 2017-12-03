@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <AssemblyName>ReqTrack.Persistence.Concrete.MongoDB</AssemblyName>
+    <RootNamespace>ReqTrack.Persistence.Concrete.MongoDB</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Domain.Core\Domain.Core.csproj" />
+  </ItemGroup>
+
+</Project>
