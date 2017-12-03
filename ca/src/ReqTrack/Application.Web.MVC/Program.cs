@@ -7,6 +7,7 @@ using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using ReqTrack.Runtime.Core.Configuration;
 
 namespace ReqTrack.Application.Web.MVC
 {
@@ -14,6 +15,8 @@ namespace ReqTrack.Application.Web.MVC
     {
         public static void Main(string[] args)
         {
+            var configurationInitializer = new Initializer();
+            configurationInitializer.Initialize();
             BuildWebHost(args).Run();
         }
 
