@@ -1,33 +1,24 @@
 ﻿using ReqTrack.Domain.Core.Entities;
 using ReqTrack.Domain.Core.Repositories;
-using ReqTrack.Domain.UseCases.Core.Interfaces;
+using ReqTrack.Domain.UseCases.Core.Boundary.Interfaces;
+using ReqTrack.Domain.UseCases.Core.Boundary.Objects.Project;
 
 namespace ReqTrack.Domain.UseCases.Core.Project
 {
     public class UpdateProjectRequest
     {
         /// <summary>
-        /// <see cref="Entity{T}.Id"/>
+        /// Project to be updated.
         /// </summary>
-        public string Id { get; set; }
-
-        /// <summary>
-        /// <see cref="ProjectInfo.Name"/>
-        /// </summary>
-        public string Name { get; set; }
+        public ProjectInfo ProjectInfo { get; set; }
     }
 
     public class UpdateProjectResponse
     {
         /// <summary>
-        /// <see cref="Entity{T}.Id"/>
+        /// Updated project.
         /// </summary>
-        public string Id { get; set; }
-
-        /// <summary>
-        /// <see cref="ProjectInfo.Name"/>
-        /// </summary>
-        public string Name { get; set; }
+        public ProjectInfo ProjectInfo { get; set; }
     }
 
     internal class UpdateProjectUseCase : IUseCaseInputBoundary<UpdateProjectRequest, UpdateProjectResponse>
@@ -41,29 +32,17 @@ namespace ReqTrack.Domain.UseCases.Core.Project
 
         public void Execute(IUseCaseOutputBoundary<UpdateProjectResponse> outputBoundary, UpdateProjectRequest requestModel)
         {
-            var readResult = _projectRepository.ReadProject(Identity.FromString(requestModel.Id));
-            
-            if(!readResult)
-            {
-                //TODO: handle read error
-            }
+            var projectToUpdate = requestModel.ProjectInfo.ConvertToDomainEntity();
+            var result = _projectRepository.UpdateProject(projectToUpdate);
 
-            var readProject = readResult.Read;
-            readProject.Name = requestModel.Name;
-
-            var updateResult = _projectRepository.UpdateProject(readProject);
-
-            if(!updateResult)
+            if(!result)
             {
                 //TODO: handle update error
             }
 
-            var updatedProject = updateResult.Updated;
-
             outputBoundary.ResponseModel = new UpdateProjectResponse
             {
-                Id = updatedProject.Id.ToString(),
-                Name = updatedProject.Name,
+                ProjectInfo = result.Updated.ConvertToBoundaryEntity(),
             };
         }
     }

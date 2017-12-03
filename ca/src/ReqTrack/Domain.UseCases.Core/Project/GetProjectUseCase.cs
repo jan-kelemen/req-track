@@ -1,8 +1,7 @@
 ﻿using ReqTrack.Domain.Core.Entities;
-using ReqTrack.Domain.Core.Entities.Project;
 using ReqTrack.Domain.Core.Repositories;
-using ReqTrack.Domain.UseCases.Core.Interfaces;
-
+using ReqTrack.Domain.UseCases.Core.Boundary.Interfaces;
+using ReqTrack.Domain.UseCases.Core.Boundary.Objects.Project;
 
 namespace ReqTrack.Domain.UseCases.Core.Project
 {
@@ -17,14 +16,9 @@ namespace ReqTrack.Domain.UseCases.Core.Project
     public class GetProjectResponse
     {
         /// <summary>
-        /// <see cref="Entity{T}.Id"/>
+        /// Read project.
         /// </summary>
-        public string Id { get; set; }
-
-        /// <summary>
-        /// <see cref="ProjectInfo.Name"/>
-        /// </summary>
-        public string Name { get; set; }
+        public ProjectInfo ProjectInfo { get; set; }
     }
 
     internal class GetProjectUseCase : IUseCaseInputBoundary<GetProjectRequest, GetProjectResponse>
@@ -45,12 +39,9 @@ namespace ReqTrack.Domain.UseCases.Core.Project
                 //TODO: handle error
             }
 
-            var project = result.Read;
-
             outputBoundary.ResponseModel = new GetProjectResponse
             {
-                Id = project.Id.ToString(),
-                Name = project.Name,
+                ProjectInfo = result.Read.ConvertToBoundaryEntity(),
             };
         }
     }

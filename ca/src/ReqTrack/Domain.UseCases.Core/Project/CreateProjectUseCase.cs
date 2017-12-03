@@ -1,29 +1,23 @@
-﻿using ReqTrack.Domain.Core.Entities;
-using ReqTrack.Domain.Core.Entities.Project;
-using ReqTrack.Domain.Core.Repositories;
-using ReqTrack.Domain.UseCases.Core.Interfaces;
+﻿using ReqTrack.Domain.Core.Repositories;
+using ReqTrack.Domain.UseCases.Core.Boundary.Interfaces;
+using ReqTrack.Domain.UseCases.Core.Boundary.Objects.Project;
 
 namespace ReqTrack.Domain.UseCases.Core.Project
 {
     public class CreateProjectRequest
     {
         /// <summary>
-        /// <see cref="ProjectInfo.Name"/>.
+        /// Project to be created. Identifier field is ignored.
         /// </summary>
-        public string Name { get; set; }
+        public ProjectInfo ProjectInfo { get; set; }
     }
 
     public class CreateProjectResponse
     {
         /// <summary>
-        /// <see cref="Entity{T}.Id"/>.
+        /// Created project.
         /// </summary>
-        public string Id { get; set; }
-
-        /// <summary>
-        /// <see cref="ProjectInfo.Name"/>.
-        /// </summary>
-        public string Name { get; set; }
+        public ProjectInfo ProjectInfo { get; set; }
     }
 
     internal class CreateProjectUseCase : IUseCaseInputBoundary<CreateProjectRequest, CreateProjectResponse>
@@ -37,7 +31,7 @@ namespace ReqTrack.Domain.UseCases.Core.Project
 
         public void Execute(IUseCaseOutputBoundary<CreateProjectResponse> outputBoundary, CreateProjectRequest requestModel)
         {
-            var project = new ProjectInfo(Identity.BlankIdentity, requestModel.Name);
+            var project = requestModel.ProjectInfo.ConvertToDomainEntity();
 
             var result = _projectRepository.CreateProject(project);
 
@@ -50,8 +44,7 @@ namespace ReqTrack.Domain.UseCases.Core.Project
 
             outputBoundary.ResponseModel = new CreateProjectResponse
             {
-                Id = createdProject.Id.ToString(),
-                Name = createdProject.Name,
+                ProjectInfo = result.Created.ConvertToBoundaryEntity(),
             };
         }
     }

@@ -1,7 +1,6 @@
-﻿using ReqTrack.Domain.Core.Entities;
-using ReqTrack.Domain.Core.Entities.Project;
-using ReqTrack.Domain.Core.Repositories;
-using ReqTrack.Domain.UseCases.Core.Interfaces;
+﻿using ReqTrack.Domain.Core.Repositories;
+using ReqTrack.Domain.UseCases.Core.Boundary.Interfaces;
+using ReqTrack.Domain.UseCases.Core.Boundary.Objects.Project;
 using System.Collections.Generic;
 
 namespace ReqTrack.Domain.UseCases.Core.Project
@@ -13,19 +12,6 @@ namespace ReqTrack.Domain.UseCases.Core.Project
 
     public class GetAllProjectsResponse
     {
-        public class ProjectInfo
-        {
-            /// <summary>
-            /// <see cref="Entity{T}.Id"/>
-            /// </summary>
-            public string Id { get; set; }
-
-            /// <summary>
-            /// <see cref="Domain.Core.Entities.Project.ProjectInfo.Name"/>.
-            /// </summary>
-            public string Name { get; set; }
-        }
-
         /// <summary>
         /// List of all projects.
         /// </summary>
@@ -56,16 +42,12 @@ namespace ReqTrack.Domain.UseCases.Core.Project
             };
         }
 
-        private IEnumerable<GetAllProjectsResponse.ProjectInfo> convertEntityToResponseModel(IEnumerable<ProjectInfo> entities)
+        private IEnumerable<ProjectInfo> convertEntityToResponseModel(IEnumerable<Domain.Core.Entities.Project.ProjectInfo> entities)
         {
-            var rv = new List<GetAllProjectsResponse.ProjectInfo>();
+            var rv = new List<ProjectInfo>();
             foreach(var e in entities)
             {
-                rv.Add(new GetAllProjectsResponse.ProjectInfo
-                {
-                    Id = e.Id.ToString(),
-                    Name = e.Name,
-                });
+                rv.Add(e.ConvertToBoundaryEntity());
             }
             return rv;
         }

@@ -1,4 +1,4 @@
-﻿namespace ReqTrack.Domain.UseCases.Core.Interfaces
+﻿namespace ReqTrack.Domain.UseCases.Core.Boundary.Interfaces
 {
     /// <summary>
     /// Input boundary for use cases, channel through which others communicate.

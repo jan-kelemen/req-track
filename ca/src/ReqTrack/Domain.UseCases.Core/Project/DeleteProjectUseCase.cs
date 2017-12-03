@@ -1,13 +1,13 @@
 ﻿using ReqTrack.Domain.Core.Entities;
 using ReqTrack.Domain.Core.Repositories;
-using ReqTrack.Domain.UseCases.Core.Interfaces;
+using ReqTrack.Domain.UseCases.Core.Boundary.Interfaces;
 
 namespace ReqTrack.Domain.UseCases.Core.Project
 {
     public class DeleteProjectRequest
     {
         /// <summary>
-        /// <see cref="Entity{T}.Id"/>.
+        /// Identifier of the project to be deleted, <see cref="Entity{T}.Id"/>.
         /// </summary>
         public string Id { get; set; }
     }
@@ -15,14 +15,9 @@ namespace ReqTrack.Domain.UseCases.Core.Project
     public class DeleteProjectResponse
     {
         /// <summary>
-        /// <see cref="Entity{T}.Id"/>.
+        /// Identifier of the deleted project, <see cref="Entity{T}.Id"/>.
         /// </summary>
         public string Id { get; set; }
-
-        /// <summary>
-        /// Indicates if the deletion was successfull.
-        /// </summary>
-        public bool Success { get; set; }
     }
 
     internal class DeleteProjectUseCase : IUseCaseInputBoundary<DeleteProjectRequest, DeleteProjectResponse>
@@ -41,7 +36,6 @@ namespace ReqTrack.Domain.UseCases.Core.Project
             outputBoundary.ResponseModel = new DeleteProjectResponse
             {
                 Id = result.Deleted.ToString(),
-                Success = result.IsSuccessfull,
             };
         }
     }
