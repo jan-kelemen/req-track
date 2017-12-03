@@ -9,6 +9,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Domain.Core\Domain.Core.csproj" />
     <ProjectReference Include="..\Domain.UseCases.Core\Domain.UseCases.Core.csproj" />
+    <ProjectReference Include="..\Persistence.Concrete.MongoDB\Persistence.Concrete.MongoDB.csproj" />
   </ItemGroup>
 
 </Project>

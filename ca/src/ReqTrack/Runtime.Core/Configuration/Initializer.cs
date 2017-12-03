@@ -10,7 +10,7 @@ namespace ReqTrack.Runtime.Core.Configuration
         {
             RegistryProxy.Get = new RegistryData();
 
-            IRepositoryFactory repositoryFactory = null;
+            IRepositoryFactory repositoryFactory = new Persistence.Concrete.MongoDB.Configuration.Initializer().Initialize();
             RegistryProxy.Get.RegisterFactory(repositoryFactory);
 
             IProjectUseCaseFactory projectUseCaseFactory = new DefaultUseCaseFactory(repositoryFactory);
