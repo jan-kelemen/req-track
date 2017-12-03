@@ -4,7 +4,7 @@ using ReqTrack.Domain.Core.Repositories.Factories;
 
 namespace ReqTrack.Domain.UseCases.Core.Factories
 {
-    internal class DefaultUseCaseFactory : IProjectUseCaseFactory
+    public class DefaultUseCaseFactory : IProjectUseCaseFactory
     {
         private IRepositoryFactory _repositoryFactory;
 
