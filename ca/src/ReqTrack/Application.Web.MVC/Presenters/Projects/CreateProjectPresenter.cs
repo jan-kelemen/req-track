@@ -1,19 +1,14 @@
-﻿using ReqTrack.Application.Web.MVC.ViewModels.Projects;
+﻿using ReqTrack.Application.Web.MVC.ViewModels.Extensions.Projects;
+using ReqTrack.Application.Web.MVC.ViewModels.Projects;
 using ReqTrack.Domain.UseCases.Core.Projects;
 
 namespace ReqTrack.Application.Web.MVC.Presenters.Projects
 {
-    public class CreateProjectPresenter : Presenter<CreateProjectResponse, CreateProjectViewModel>
+    public class CreateProjectPresenter : Presenter<CreateProjectResponse, ProjectInfoViewModel>
     {
-        protected override CreateProjectViewModel CreateViewModel(CreateProjectResponse response)
+        protected override ProjectInfoViewModel CreateViewModel(CreateProjectResponse response)
         {
-            var vm = new CreateProjectViewModel
-            {
-                Id = response.ProjectInfo.Id,
-                Name = response.ProjectInfo.Name,
-            };
-
-            return vm;
+            return response.ProjectInfo.ToViewModel();
         }
     }
 }

@@ -2,7 +2,7 @@
 
 namespace ReqTrack.Application.Web.MVC.ViewModels.Projects
 {
-    public class GetProjectViewModel
+    public class ProjectInfoViewModel
     {
         public string Id { get; set; }
 

@@ -2,11 +2,11 @@
 using ReqTrack.Domain.UseCases.Core.Boundary.Objects.Projects;
 using ReqTrack.Domain.UseCases.Core.Projects;
 
-namespace ReqTrack.Application.Web.MVC.ViewModels.Extensions
+namespace ReqTrack.Application.Web.MVC.ViewModels.Extensions.Projects
 {
     public static class RequestModelConversions
     {
-        public static CreateProjectRequest ToRequestModel(this CreateProjectViewModel vm)
+        public static CreateProjectRequest ToCreateRequestModel(this ProjectInfoViewModel vm)
         {
             return new CreateProjectRequest
             {
@@ -18,7 +18,7 @@ namespace ReqTrack.Application.Web.MVC.ViewModels.Extensions
             };
         }
 
-        public static UpdateProjectRequest ToRequestModel(this UpdateProjectViewModel vm)
+        public static UpdateProjectRequest ToUpdateRequestModel(this ProjectInfoViewModel vm)
         {
             return new UpdateProjectRequest
             {

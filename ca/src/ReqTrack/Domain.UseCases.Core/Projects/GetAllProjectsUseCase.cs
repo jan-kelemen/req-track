@@ -40,13 +40,8 @@ namespace ReqTrack.Domain.UseCases.Core.Projects
 
             outputBoundary.ResponseModel = new GetAllProjectsResponse
             {
-                Projects = convertEntityToResponseModel(result.Read),
+                Projects = result.Read.Select(e => e.ToBoundaryObject()),
             };
-        }
-
-        private IEnumerable<ProjectInfo> convertEntityToResponseModel(IEnumerable<Domain.Core.Entities.Projects.ProjectInfo> entities)
-        {
-            return entities.Select(e => e.ToBoundaryObject());
         }
     }
 }

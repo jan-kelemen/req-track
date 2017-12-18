@@ -1,29 +1,18 @@
 ﻿using ReqTrack.Application.Web.MVC.ViewModels.Projects;
 using ReqTrack.Domain.UseCases.Core.Projects;
-using System.Collections.Generic;
+using ReqTrack.Application.Web.MVC.ViewModels.Extensions.Projects;
+using System.Linq;
 
 namespace ReqTrack.Application.Web.MVC.Presenters.Projects
 {
-    public class GetAllProjectsPresenter : Presenter<GetAllProjectsResponse, GetAllProjectsViewModel>
+    public class GetAllProjectsPresenter : Presenter<GetAllProjectsResponse, ProjectInfosViewModel>
     {
-        protected override GetAllProjectsViewModel CreateViewModel(GetAllProjectsResponse response)
+        protected override ProjectInfosViewModel CreateViewModel(GetAllProjectsResponse response)
         {
-            var projects = new List<GetAllProjectsViewModel.Project>();
-            foreach(var p in response.Projects)
+            return new ProjectInfosViewModel
             {
-                projects.Add(new GetAllProjectsViewModel.Project
-                {
-                    Id = p.Id,
-                    Name = p.Name,
-                });
-            }
-
-            var vm = new GetAllProjectsViewModel
-            {
-                Projects = projects,
+                Projects = response.Projects.Select(p => p.ToViewModel()),
             };
-
-            return vm;
         }
     }
 }

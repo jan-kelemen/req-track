@@ -3,13 +3,14 @@ using ReqTrack.Domain.UseCases.Core.Projects;
 
 namespace ReqTrack.Application.Web.MVC.Presenters.Projects
 {
-    public class DeleteProjectPresenter : Presenter<DeleteProjectResponse, DeleteProjectViewModel>
+    public class DeleteProjectPresenter : Presenter<DeleteProjectResponse, ProjectInfoViewModel>
     {
-        protected override DeleteProjectViewModel CreateViewModel(DeleteProjectResponse response)
+        protected override ProjectInfoViewModel CreateViewModel(DeleteProjectResponse response)
         {
-            return new DeleteProjectViewModel
+            return new ProjectInfoViewModel
             {
                 Id = response.Id,
+                Name = "TODO",
             };
         }
     }

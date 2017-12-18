@@ -6,32 +6,32 @@ namespace ReqTrack.Application.Web.MVC.Presenters.Factories
 {
     public class DefaultPresenterFactory : IProjectPresenterFactory
     {
-        public IPresenter<CreateProjectResponse, CreateProjectViewModel> CreateProject()
+        public IPresenter<CreateProjectResponse, ProjectInfoViewModel> CreateProject()
         {
             return new CreateProjectPresenter();
         }
 
-        public IPresenter<DeleteProjectResponse, DeleteProjectViewModel> DeleteProject()
+        public IPresenter<DeleteProjectResponse, ProjectInfoViewModel> DeleteProject()
         {
             return new DeleteProjectPresenter();
         }
 
-        public IPresenter<GetAllProjectsResponse, GetAllProjectsViewModel> GetAllProjects()
+        public IPresenter<GetAllProjectsResponse, ProjectInfosViewModel> GetAllProjects()
         {
             return new GetAllProjectsPresenter();
         }
 
-        public IPresenter<GetProjectResponse, GetProjectViewModel> GetProject()
+        public IPresenter<GetProjectResponse, ProjectInfoViewModel> GetProject()
         {
             return new GetProjectPresenter();
         }
 
-        public IPresenter<UpdateProjectResponse, UpdateProjectViewModel> UpdateProject()
+        public IPresenter<UpdateProjectResponse, ProjectInfoViewModel> UpdateProject()
         {
             return new UpdateProjectPresenter();
         }
 
-        public IPresenter<GetProjectResponse, UpdateProjectViewModel> UpdateProjectInitial()
+        public IPresenter<GetProjectResponse, ProjectInfoViewModel> UpdateProjectInitial()
         {
             return new UpdateProjectPresenter();
         }
