@@ -15,8 +15,8 @@ namespace ReqTrack.Persistence.Concrete.MongoDB.Database
             _database = _client.GetDatabase("ReqTrack");
         }
 
-        public IMongoCollection<Project> ProjectCollection => _database.GetCollection<Project>(Project.CollectionName);
+        public IMongoCollection<MongoProject> ProjectCollection => _database.GetCollection<MongoProject>(MongoProject.CollectionName);
 
-        public IMongoCollection<Requirement> RequirementCollection => _database.GetCollection<Requirement>(Requirement.CollectionName);
+        public IMongoCollection<MongoRequirement> RequirementCollection => _database.GetCollection<MongoRequirement>(MongoRequirement.CollectionName);
     }
 }

@@ -13,12 +13,11 @@ namespace ReqTrack.Domain.Core.Entities.Projects
         /// </summary>
         public class Requirement
         {
-            public Requirement(Identity id, RequirementType type, string title, int orderMarker)
+            public Requirement(Identity id, RequirementType type, string title)
             {
                 Id = id;
                 Type = type;
                 Title = title;
-                OrderMarker = orderMarker;
             }
 
             /// <summary>
@@ -36,11 +35,6 @@ namespace ReqTrack.Domain.Core.Entities.Projects
             /// </summary>
             /// <remarks>This field is of a informative character and it's ignored for other purposes.</remarks>
             public string Title { get; private set; }
-
-            /// <summary>
-            /// Marker of the position where the requirement appears in the project list.
-            /// </summary>
-            public int OrderMarker { get; private set; }
         }
 
         private Dictionary<RequirementType, IList<Requirement>> _requirements 

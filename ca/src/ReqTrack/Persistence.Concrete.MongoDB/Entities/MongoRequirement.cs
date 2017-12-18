@@ -6,7 +6,7 @@ using System.Text;
 
 namespace ReqTrack.Persistence.Concrete.MongoDB.Entities
 {
-    internal class Requirement
+    internal class MongoRequirement
     {
         public static readonly string CollectionName = "Requirements";
 

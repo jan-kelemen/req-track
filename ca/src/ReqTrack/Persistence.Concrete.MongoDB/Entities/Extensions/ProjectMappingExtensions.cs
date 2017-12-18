@@ -11,43 +11,37 @@ namespace ReqTrack.Persistence.Concrete.MongoDB.Entities.Extensions
 {
     internal static class ProjectMappingExtensions
     {
-        public static Project ToMongoEntity(this ProjectInfo projectInfo)
+        public static MongoProject ToMongoEntity(this ProjectInfo projectInfo)
         {
-            return new Project
+            return new MongoProject
             {
-                Id = projectInfo.Id.IsBlankIdentity() ? ObjectId.GenerateNewId() : ObjectId.Parse(projectInfo.Id.ToString()),
+                Id = projectInfo.Id.ToMongoIdentity(),
                 Name = projectInfo.Name,
             };
         }
 
-        public static ProjectInfo ToDomainEntity(this Project project)
+        public static ProjectInfo ToDomainEntity(this MongoProject project)
         {
-            return new ProjectInfo(Identity.FromString(project.Id.ToString()), project.Name);
+            return new ProjectInfo(project.Id.ToDomainIdentity(), project.Name);
         }
 
-        public static Project ToMongoEntity(this ProjectWithRequirements projectWithRequirements)
+        public static MongoProject ToMongoEntity(this ProjectWithRequirements projectWithRequirements)
         {
             var project = ToMongoEntity(projectWithRequirements as ProjectInfo);
-            project.Requirements = projectWithRequirements.Requirements.Select(r => new Project.Requirement
-            {
-                Id = ObjectId.Parse(r.Id.ToString()),
-                Type = r.Type.ToString(),
-                OrderMarker = r.OrderMarker,
-            });
+            project.RequirementIds = projectWithRequirements.Requirements.Select(r => r.Id.ToMongoIdentity());
             return project;
         }
 
-        public static ProjectWithRequirements ToDomainEntity(this Project project, Dictionary<ObjectId, Entities.Requirement> requirements)
+        public static ProjectWithRequirements ToDomainEntity(this MongoProject project, Dictionary<ObjectId, MongoRequirement> requirements)
         {
             return new ProjectWithRequirements(
-                Identity.FromString(project.Id.ToString()),
+                project.Id.ToDomainIdentity(),
                 project.Name,
-                project.Requirements.Select(
-                    r => new ProjectWithRequirements.Requirement(
-                        Identity.FromString(r.Id.ToString()),
-                        Enum.Parse<RequirementType>(r.Type),
-                        requirements[r.Id].Title,
-                        r.OrderMarker)
+                project.RequirementIds.Select(
+                    id => new ProjectWithRequirements.Requirement(
+                        id.ToDomainIdentity(),
+                        Enum.Parse<RequirementType>(requirements[id].Type),
+                        requirements[id].Title)
                         )
                     );
         }

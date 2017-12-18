@@ -15,5 +15,7 @@ namespace ReqTrack.Persistence.Concrete.MongoDB.Factories
         }
 
         public IProjectRepository ProjectRepository => new MongoProjectRepository(_database);
+
+        public IRequirementRepository RequirementRepository => new MongoRequirementRepository(_database);
     }
 }
