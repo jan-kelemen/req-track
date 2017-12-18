@@ -2,10 +2,8 @@
 using ReqTrack.Application.Web.MVC.ViewModels.Projects;
 using ReqTrack.Runtime.Core.Registry;
 using ReqTrack.Domain.UseCases.Core.Factories;
-using ReqTrack.Application.Web.MVC.Presenters.Projects;
 using ReqTrack.Application.Web.MVC.ViewModels.Extensions;
 using ReqTrack.Domain.UseCases.Core.Projects;
-using ReqTrack.Application.Web.MVC.Presenters;
 using ReqTrack.Application.Web.MVC.Presenters.Factories;
 
 namespace Application.Web.MVC.Controllers

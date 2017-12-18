@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace ReqTrack.Domain.Core.Entities.Projects
+﻿namespace ReqTrack.Domain.Core.Entities.Projects
 {
     /// <summary>
     /// Represents basic project information.

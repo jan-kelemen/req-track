@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace ReqTrack.Runtime.Core.Registry
+﻿namespace ReqTrack.Runtime.Core.Registry
 {
     public static class RegistryProxy
     {

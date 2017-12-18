@@ -1,9 +1,5 @@
 ﻿using ReqTrack.Application.Web.MVC.ViewModels.Projects;
 using ReqTrack.Domain.UseCases.Core.Projects;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace ReqTrack.Application.Web.MVC.Presenters.Factories
 {

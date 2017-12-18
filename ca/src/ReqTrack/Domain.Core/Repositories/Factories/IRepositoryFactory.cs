@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace ReqTrack.Domain.Core.Repositories.Factories
+﻿namespace ReqTrack.Domain.Core.Repositories.Factories
 {
     /// <summary>
     /// Factory for all repositories.
@@ -13,5 +9,10 @@ namespace ReqTrack.Domain.Core.Repositories.Factories
         /// Provides the project repository.
         /// </summary>
         IProjectRepository ProjectRepository { get; }
+
+        /// <summary>
+        /// Provides th requirement repository.
+        /// </summary>
+        IRequirementRepository RequirementRepository { get; }
     }
 }

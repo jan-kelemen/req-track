@@ -1,5 +1,3 @@
-using System;
-
 namespace ReqTrack.Application.Web.MVC.Models
 {
     public class ErrorViewModel

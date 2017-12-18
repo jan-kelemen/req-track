@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using ReqTrack.Domain.UseCases.Core.Factories;
-
-namespace ReqTrack.Runtime.Core.Registry
+﻿namespace ReqTrack.Runtime.Core.Registry
 {
     public interface IRegistry
     {

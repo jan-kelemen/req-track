@@ -1,8 +1,5 @@
-﻿using MongoDB.Bson;
-using ReqTrack.Domain.Core.Entities.Requirements;
+﻿using ReqTrack.Domain.Core.Entities.Requirements;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace ReqTrack.Persistence.Concrete.MongoDB.Entities.Extensions
 {

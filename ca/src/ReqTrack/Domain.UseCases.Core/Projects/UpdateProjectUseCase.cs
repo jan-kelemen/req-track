@@ -1,5 +1,4 @@
-﻿using ReqTrack.Domain.Core.Entities;
-using ReqTrack.Domain.Core.Repositories;
+﻿using ReqTrack.Domain.Core.Repositories;
 using ReqTrack.Domain.UseCases.Core.Boundary.Interfaces;
 using ReqTrack.Domain.UseCases.Core.Boundary.Objects.Projects;
 

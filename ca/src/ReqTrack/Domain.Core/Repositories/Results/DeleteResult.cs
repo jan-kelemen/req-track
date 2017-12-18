@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace ReqTrack.Domain.Core.Repositories.Results
+﻿namespace ReqTrack.Domain.Core.Repositories.Results
 {
     /// <summary>
     /// Result for actions which delete entities.
