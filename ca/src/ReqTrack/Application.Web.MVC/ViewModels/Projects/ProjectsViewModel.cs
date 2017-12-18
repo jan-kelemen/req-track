@@ -3,8 +3,8 @@ using System.ComponentModel.DataAnnotations;
 
 namespace ReqTrack.Application.Web.MVC.ViewModels.Projects
 {
-    public class GetAllProjectsViewModel
+    public class ProjectsViewModel
     {
-        public IEnumerable<ProjectInfoViewModel> Projects { get; set; }
+        public IEnumerable<ProjectViewModel> Projects { get; set; }
     }
 }

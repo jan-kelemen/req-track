@@ -1,26 +1,11 @@
 ﻿using ReqTrack.Domain.Core.Repositories;
 using ReqTrack.Domain.UseCases.Core.Boundary.Interfaces;
 using ReqTrack.Domain.UseCases.Core.Boundary.Objects.Extensions;
-using ReqTrack.Domain.UseCases.Core.Boundary.Objects.Requirements;
+using ReqTrack.Domain.UseCases.Core.Requirements.RequestModels;
+using ReqTrack.Domain.UseCases.Core.Requirements.ResponseModels;
 
 namespace ReqTrack.Domain.UseCases.Core.Requirements
 {
-    public class CreateRequirementRequest
-    {
-        /// <summary>
-        /// Requirement to create. Identifier field is ignored.
-        /// </summary>
-        public Requirement Requirement { get; set; }
-    }
-
-    public class CreateRequirementResponse
-    {
-        /// <summary>
-        /// Created requierment.
-        /// </summary>
-        public Requirement Requirement { get; set; }
-    }
-
     public class CreateRequirementUseCase : IUseCaseInputBoundary<CreateRequirementRequest, CreateRequirementResponse>
     {
         private IRequirementRepository _requirementRepository;

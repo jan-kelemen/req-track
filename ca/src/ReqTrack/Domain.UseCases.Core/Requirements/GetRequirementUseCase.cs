@@ -1,26 +1,11 @@
 ﻿using ReqTrack.Domain.Core.Repositories;
 using ReqTrack.Domain.UseCases.Core.Boundary.Interfaces;
 using ReqTrack.Domain.UseCases.Core.Boundary.Objects.Extensions;
-using ReqTrack.Domain.UseCases.Core.Boundary.Objects.Requirements;
+using ReqTrack.Domain.UseCases.Core.Requirements.RequestModels;
+using ReqTrack.Domain.UseCases.Core.Requirements.ResponseModels;
 
 namespace ReqTrack.Domain.UseCases.Core.Requirements
 {
-    public class GetRequirementRequest
-    {
-        /// <summary>
-        /// <see cref="Entity{T}.Id"/>
-        /// </summary>
-        public string Id { get; set; }
-    }
-
-    public class GetRequirementResponse
-    {
-        /// <summary>
-        /// Read requirement.
-        /// </summary>
-        public Requirement Requirement { get; set; }
-    }
-
     public class GetRequirementUseCase : IUseCaseInputBoundary<GetRequirementRequest, GetRequirementResponse>
     {
         private IRequirementRepository _requirementRepository;

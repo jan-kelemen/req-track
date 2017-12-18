@@ -1,25 +1,12 @@
 ﻿using ReqTrack.Domain.Core.Repositories;
 using ReqTrack.Domain.UseCases.Core.Boundary.Interfaces;
 using ReqTrack.Domain.UseCases.Core.Boundary.Objects.Extensions;
-using ReqTrack.Domain.UseCases.Core.Boundary.Objects.Projects;
-using System.Collections.Generic;
+using ReqTrack.Domain.UseCases.Core.Projects.RequestModels;
+using ReqTrack.Domain.UseCases.Core.Projects.ResponseModels;
 using System.Linq;
 
 namespace ReqTrack.Domain.UseCases.Core.Projects
 {
-    public class GetAllProjectsRequest
-    {
-
-    }
-
-    public class GetAllProjectsResponse
-    {
-        /// <summary>
-        /// List of all projects.
-        /// </summary>
-        public IEnumerable<ProjectInfo> Projects { get; set; }
-    }
-
     public class GetAllProjectsUseCase : IUseCaseInputBoundary<GetAllProjectsRequest, GetAllProjectsResponse>
     {
         private IProjectRepository _projectRepository;

@@ -1,20 +1,21 @@
 ﻿using ReqTrack.Application.Web.MVC.ViewModels.Projects;
 using ReqTrack.Domain.UseCases.Core.Projects;
+using ReqTrack.Domain.UseCases.Core.Projects.ResponseModels;
 
 namespace ReqTrack.Application.Web.MVC.Presenters.Factories
 {
     public interface IProjectPresenterFactory
     {
-        IPresenter<CreateProjectResponse, ProjectInfoViewModel> CreateProject();
+        IPresenter<CreateProjectResponse, ProjectViewModel> CreateProject();
 
-        IPresenter<DeleteProjectResponse, ProjectInfoViewModel> DeleteProject();
+        IPresenter<DeleteProjectResponse, ProjectViewModel> DeleteProject();
 
-        IPresenter<GetAllProjectsResponse, ProjectInfosViewModel> GetAllProjects();
+        IPresenter<GetAllProjectsResponse, ProjectsViewModel> GetAllProjects();
 
-        IPresenter<GetProjectResponse, ProjectInfoViewModel> GetProject();
+        IPresenter<GetProjectResponse, ProjectViewModel> GetProject();
 
-        IPresenter<GetProjectResponse, ProjectInfoViewModel> UpdateProjectInitial();
+        IPresenter<GetProjectResponse, ProjectViewModel> UpdateProjectInitial();
 
-        IPresenter<UpdateProjectResponse, ProjectInfoViewModel> UpdateProject();
+        IPresenter<UpdateProjectResponse, ProjectViewModel> UpdateProject();
     }
 }

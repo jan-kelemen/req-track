@@ -1,25 +1,11 @@
 ﻿using ReqTrack.Domain.Core.Entities;
 using ReqTrack.Domain.Core.Repositories;
 using ReqTrack.Domain.UseCases.Core.Boundary.Interfaces;
+using ReqTrack.Domain.UseCases.Core.Projects.RequestModels;
+using ReqTrack.Domain.UseCases.Core.Projects.ResponseModels;
 
 namespace ReqTrack.Domain.UseCases.Core.Projects
 {
-    public class DeleteProjectRequest
-    {
-        /// <summary>
-        /// Identifier of the project to be deleted, <see cref="Entity{T}.Id"/>.
-        /// </summary>
-        public string Id { get; set; }
-    }
-
-    public class DeleteProjectResponse
-    {
-        /// <summary>
-        /// Identifier of the deleted project, <see cref="Entity{T}.Id"/>.
-        /// </summary>
-        public string Id { get; set; }
-    }
-
     public class DeleteProjectUseCase : IUseCaseInputBoundary<DeleteProjectRequest, DeleteProjectResponse>
     {
         private IProjectRepository _projectRepository;

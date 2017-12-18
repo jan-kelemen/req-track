@@ -1,26 +1,11 @@
 ﻿using ReqTrack.Domain.Core.Repositories;
 using ReqTrack.Domain.UseCases.Core.Boundary.Interfaces;
 using ReqTrack.Domain.UseCases.Core.Boundary.Objects.Extensions;
-using ReqTrack.Domain.UseCases.Core.Boundary.Objects.Projects;
+using ReqTrack.Domain.UseCases.Core.Projects.RequestModels;
+using ReqTrack.Domain.UseCases.Core.Projects.ResponseModels;
 
 namespace ReqTrack.Domain.UseCases.Core.Projects
 {
-    public class UpdateProjectRequest
-    {
-        /// <summary>
-        /// Project to be updated.
-        /// </summary>
-        public ProjectInfo ProjectInfo { get; set; }
-    }
-
-    public class UpdateProjectResponse
-    {
-        /// <summary>
-        /// Updated project.
-        /// </summary>
-        public ProjectInfo ProjectInfo { get; set; }
-    }
-
     public class UpdateProjectUseCase : IUseCaseInputBoundary<UpdateProjectRequest, UpdateProjectResponse>
     {
         private IProjectRepository _projectRepository;

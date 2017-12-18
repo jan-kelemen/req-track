@@ -1,26 +1,11 @@
 ﻿using ReqTrack.Domain.Core.Repositories;
 using ReqTrack.Domain.UseCases.Core.Boundary.Interfaces;
 using ReqTrack.Domain.UseCases.Core.Boundary.Objects.Extensions;
-using ReqTrack.Domain.UseCases.Core.Boundary.Objects.Projects;
+using ReqTrack.Domain.UseCases.Core.Projects.RequestModels;
+using ReqTrack.Domain.UseCases.Core.Projects.ResponseModels;
 
 namespace ReqTrack.Domain.UseCases.Core.Projects
 {
-    public class CreateProjectRequest
-    {
-        /// <summary>
-        /// Project to be created. Identifier field is ignored.
-        /// </summary>
-        public ProjectInfo ProjectInfo { get; set; }
-    }
-
-    public class CreateProjectResponse
-    {
-        /// <summary>
-        /// Created project.
-        /// </summary>
-        public ProjectInfo ProjectInfo { get; set; }
-    }
-
     public class CreateProjectUseCase : IUseCaseInputBoundary<CreateProjectRequest, CreateProjectResponse>
     {
         private IProjectRepository _projectRepository;

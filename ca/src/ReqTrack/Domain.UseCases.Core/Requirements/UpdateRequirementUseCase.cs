@@ -1,26 +1,11 @@
 ﻿using ReqTrack.Domain.Core.Repositories;
 using ReqTrack.Domain.UseCases.Core.Boundary.Interfaces;
 using ReqTrack.Domain.UseCases.Core.Boundary.Objects.Extensions;
-using ReqTrack.Domain.UseCases.Core.Boundary.Objects.Requirements;
+using ReqTrack.Domain.UseCases.Core.Requirements.RequestModels;
+using ReqTrack.Domain.UseCases.Core.Requirements.ResponseModels;
 
 namespace ReqTrack.Domain.UseCases.Core.Requirements
 {
-    public class UpdateRequirementRequest
-    {
-        /// <summary>
-        /// Requirement to be updated.
-        /// </summary>
-        public Requirement Requirement { get; set; }
-    }
-
-    public class UpdateRequirementResponse
-    {
-        /// <summary>
-        /// Updated requirement.
-        /// </summary>
-        public Requirement Requirement { get; set; }
-    }
-
     public class UpdateRequirementUseCase : IUseCaseInputBoundary<UpdateRequirementRequest, UpdateRequirementResponse>
     {
         private IRequirementRepository _requirementRepository;

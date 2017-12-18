@@ -2,24 +2,25 @@
 using ReqTrack.Application.Web.MVC.ViewModels.Projects;
 using ReqTrack.Domain.UseCases.Core.Boundary.Interfaces;
 using ReqTrack.Domain.UseCases.Core.Projects;
+using ReqTrack.Domain.UseCases.Core.Projects.ResponseModels;
 
 namespace ReqTrack.Application.Web.MVC.Presenters.Projects
 {
     public class UpdateProjectPresenter :
-        IPresenter<UpdateProjectResponse, ProjectInfoViewModel>,
-        IPresenter<GetProjectResponse, ProjectInfoViewModel>
+        IPresenter<UpdateProjectResponse, ProjectViewModel>,
+        IPresenter<GetProjectResponse, ProjectViewModel>
     {
         private GetProjectResponse _getProjectResponse;
 
         private UpdateProjectResponse _updateProjectResponse;
 
-        private ProjectInfoViewModel _updateProjectViewModel;
+        private ProjectViewModel _updateProjectViewModel;
 
         GetProjectResponse IUseCaseOutputBoundary<GetProjectResponse>.ResponseModel { set { _getProjectResponse = value; } }
 
         UpdateProjectResponse IUseCaseOutputBoundary<UpdateProjectResponse>.ResponseModel { set { _updateProjectResponse = value; } }
 
-        ProjectInfoViewModel IPresenter<GetProjectResponse, ProjectInfoViewModel>.ViewModel
+        ProjectViewModel IPresenter<GetProjectResponse, ProjectViewModel>.ViewModel
         {
             get
             {
@@ -31,7 +32,7 @@ namespace ReqTrack.Application.Web.MVC.Presenters.Projects
             }
         }
 
-        ProjectInfoViewModel IPresenter<UpdateProjectResponse, ProjectInfoViewModel>.ViewModel
+        ProjectViewModel IPresenter<UpdateProjectResponse, ProjectViewModel>.ViewModel
         {
             get
             {

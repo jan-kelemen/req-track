@@ -1,25 +1,11 @@
 ﻿using ReqTrack.Domain.Core.Repositories;
 using ReqTrack.Domain.UseCases.Core.Boundary.Interfaces;
 using ReqTrack.Domain.UseCases.Core.Boundary.Objects.Extensions;
+using ReqTrack.Domain.UseCases.Core.Requirements.RequestModels;
+using ReqTrack.Domain.UseCases.Core.Requirements.ResponseModels;
 
 namespace ReqTrack.Domain.UseCases.Core.Requirements
 {
-    public class DeleteRequirementRequest
-    {
-        /// <summary>
-        /// Identifier of the requirement to be deleted, <see cref="Entity{T}.Id"/>.
-        /// </summary>
-        public string Id { get; set; }
-    }
-
-    public class DeleteRequirementResponse
-    {
-        /// <summary>
-        /// Identifier of the deleted requirement, <see cref="Entity{T}.Id"/>.
-        /// </summary>
-        public string Id { get; set; }
-    }
-
     public class DeleteRequirementUseCase : IUseCaseInputBoundary<DeleteRequirementRequest, DeleteRequirementResponse>
     {
         private IRequirementRepository _requirementRepository;

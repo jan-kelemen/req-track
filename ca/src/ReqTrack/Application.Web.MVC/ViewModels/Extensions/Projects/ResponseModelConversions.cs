@@ -5,9 +5,9 @@ namespace ReqTrack.Application.Web.MVC.ViewModels.Extensions.Projects
 {
     public static class ResponseModelConversions
     {
-        public static ProjectInfoViewModel ToViewModel(this ProjectInfo projectInfo)
+        public static ProjectViewModel ToViewModel(this ProjectInfo projectInfo)
         {
-            return new ProjectInfoViewModel
+            return new ProjectViewModel
             {
                 Id = projectInfo.Id,
                 Name = projectInfo.Name,

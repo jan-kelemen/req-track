@@ -2,10 +2,10 @@
 using ReqTrack.Application.Web.MVC.ViewModels.Projects;
 using ReqTrack.Runtime.Core.Registry;
 using ReqTrack.Domain.UseCases.Core.Factories;
-using ReqTrack.Application.Web.MVC.ViewModels.Extensions;
 using ReqTrack.Domain.UseCases.Core.Projects;
 using ReqTrack.Application.Web.MVC.Presenters.Factories;
 using ReqTrack.Application.Web.MVC.ViewModels.Extensions.Projects;
+using ReqTrack.Domain.UseCases.Core.Projects.RequestModels;
 
 namespace Application.Web.MVC.Controllers
 {
@@ -22,7 +22,7 @@ namespace Application.Web.MVC.Controllers
         }
 
         [HttpPost]
-        public IActionResult CreateProject(ProjectInfoViewModel vm)
+        public IActionResult CreateProject(ProjectViewModel vm)
         {
             var request = vm.ToCreateRequestModel();
             var uc = _useCaseFactory.CreateProject();
@@ -59,7 +59,7 @@ namespace Application.Web.MVC.Controllers
         }
 
         [HttpPost]
-        public IActionResult EditProject(ProjectInfoViewModel vm)
+        public IActionResult EditProject(ProjectViewModel vm)
         {
             var request = vm.ToUpdateRequestModel();
             var uc = _useCaseFactory.UpdateProject();
