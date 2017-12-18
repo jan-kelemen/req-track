@@ -1,10 +1,10 @@
 ﻿using MongoDB.Bson;
 using ReqTrack.Domain.Core.Entities;
-using ReqTrack.Domain.Core.Entities.Project;
+using ReqTrack.Domain.Core.Entities.Projects;
 using System.Linq;
 using System.Collections.Generic;
 using System.Text;
-using ReqTrack.Domain.Core.Entities.Requirement;
+using ReqTrack.Domain.Core.Entities.Requirements;
 using System;
 
 namespace ReqTrack.Persistence.Concrete.MongoDB.Entities.Extensions

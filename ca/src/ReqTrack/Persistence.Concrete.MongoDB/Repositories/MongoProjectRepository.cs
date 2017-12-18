@@ -1,7 +1,7 @@
 ﻿using ReqTrack.Domain.Core.Repositories;
 using System.Collections.Generic;
 using ReqTrack.Domain.Core.Entities;
-using ReqTrack.Domain.Core.Entities.Project;
+using ReqTrack.Domain.Core.Entities.Projects;
 using ReqTrack.Domain.Core.Repositories.Results;
 using ReqTrack.Persistence.Concrete.MongoDB.Database;
 using ReqTrack.Persistence.Concrete.MongoDB.Entities;

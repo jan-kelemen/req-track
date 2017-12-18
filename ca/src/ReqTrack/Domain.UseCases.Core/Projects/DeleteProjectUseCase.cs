@@ -2,7 +2,7 @@
 using ReqTrack.Domain.Core.Repositories;
 using ReqTrack.Domain.UseCases.Core.Boundary.Interfaces;
 
-namespace ReqTrack.Domain.UseCases.Core.Project
+namespace ReqTrack.Domain.UseCases.Core.Projects
 {
     public class DeleteProjectRequest
     {

@@ -1,8 +1,8 @@
 ﻿using ReqTrack.Domain.Core.Repositories;
 using ReqTrack.Domain.UseCases.Core.Boundary.Interfaces;
-using ReqTrack.Domain.UseCases.Core.Boundary.Objects.Project;
+using ReqTrack.Domain.UseCases.Core.Boundary.Objects.Projects;
 
-namespace ReqTrack.Domain.UseCases.Core.Project
+namespace ReqTrack.Domain.UseCases.Core.Projects
 {
     public class CreateProjectRequest
     {

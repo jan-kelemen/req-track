@@ -1,7 +1,7 @@
-﻿using ReqTrack.Application.Web.MVC.ViewModels.Project;
-using ReqTrack.Domain.UseCases.Core.Project;
+﻿using ReqTrack.Application.Web.MVC.ViewModels.Projects;
+using ReqTrack.Domain.UseCases.Core.Projects;
 
-namespace ReqTrack.Application.Web.MVC.Presenters.Project
+namespace ReqTrack.Application.Web.MVC.Presenters.Projects
 {
     public class GetProjectPresenter : Presenter<GetProjectResponse, GetProjectViewModel>
     {

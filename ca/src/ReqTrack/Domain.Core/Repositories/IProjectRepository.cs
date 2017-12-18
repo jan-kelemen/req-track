@@ -1,5 +1,5 @@
 ﻿using ReqTrack.Domain.Core.Entities;
-using ReqTrack.Domain.Core.Entities.Project;
+using ReqTrack.Domain.Core.Entities.Projects;
 using ReqTrack.Domain.Core.Repositories.Results;
 using System.Collections.Generic;
 

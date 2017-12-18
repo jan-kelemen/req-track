@@ -1,6 +1,6 @@
 ﻿using ReqTrack.Domain.Core.Entities;
 
-namespace ReqTrack.Domain.UseCases.Core.Boundary.Objects.Project
+namespace ReqTrack.Domain.UseCases.Core.Boundary.Objects.Projects
 {
     /// <summary>
     /// Boundary object for basic project information, <see cref="Domain.Core.Entities.Project.ProjectInfo"/>.
@@ -25,13 +25,13 @@ namespace ReqTrack.Domain.UseCases.Core.Boundary.Objects.Project
         /// </summary>
         /// <param name="projectInfo">Boundary object project info.</param>
         /// <returns>Domain entity.</returns>
-        public static Domain.Core.Entities.Project.ProjectInfo ConvertToDomainEntity(this ProjectInfo projectInfo, string identifier = null)
+        public static Domain.Core.Entities.Projects.ProjectInfo ConvertToDomainEntity(this ProjectInfo projectInfo, string identifier = null)
         {
             var id = string.IsNullOrEmpty(projectInfo.Id) 
                 ? (string.IsNullOrEmpty(identifier) ? Identity.BlankIdentity : Identity.FromString(identifier))
                 : Identity.FromString(projectInfo.Id);
 
-            var rv = new Domain.Core.Entities.Project.ProjectInfo(id, projectInfo.Name);
+            var rv = new Domain.Core.Entities.Projects.ProjectInfo(id, projectInfo.Name);
 
             return rv;
         }
@@ -41,7 +41,7 @@ namespace ReqTrack.Domain.UseCases.Core.Boundary.Objects.Project
         /// </summary>
         /// <param name="projectInfo">Domain entity project info.</param>
         /// <returns>Boundary object.</returns>
-        public static ProjectInfo ConvertToBoundaryEntity(this Domain.Core.Entities.Project.ProjectInfo projectInfo)
+        public static ProjectInfo ConvertToBoundaryEntity(this Domain.Core.Entities.Projects.ProjectInfo projectInfo)
         {
             return new ProjectInfo
             {

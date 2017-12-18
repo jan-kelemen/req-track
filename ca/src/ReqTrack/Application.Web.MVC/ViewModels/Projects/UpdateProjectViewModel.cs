@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace ReqTrack.Application.Web.MVC.ViewModels.Project
+namespace ReqTrack.Application.Web.MVC.ViewModels.Projects
 {
-    public class GetProjectViewModel
+    public class UpdateProjectViewModel
     {
         public string Id { get; set; }
 

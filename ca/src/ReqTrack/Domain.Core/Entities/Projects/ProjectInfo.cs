@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace ReqTrack.Domain.Core.Entities.Project
+namespace ReqTrack.Domain.Core.Entities.Projects
 {
     /// <summary>
     /// Represents basic project information.

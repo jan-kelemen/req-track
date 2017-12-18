@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using ReqTrack.Application.Web.MVC.ViewModels.Project;
+using ReqTrack.Application.Web.MVC.ViewModels.Projects;
 using ReqTrack.Runtime.Core.Registry;
 using ReqTrack.Domain.UseCases.Core.Factories;
-using ReqTrack.Application.Web.MVC.Presenters.Project;
+using ReqTrack.Application.Web.MVC.Presenters.Projects;
 using ReqTrack.Application.Web.MVC.ViewModels.Extensions;
 
 namespace Application.Web.MVC.Controllers
@@ -44,7 +44,7 @@ namespace Application.Web.MVC.Controllers
         {
             var uc = _projectFactory.GetProject();
             var presenter = new GetProjectPresenter();
-            uc.Execute(presenter, new ReqTrack.Domain.UseCases.Core.Project.GetProjectRequest { Id = id });
+            uc.Execute(presenter, new ReqTrack.Domain.UseCases.Core.Projects.GetProjectRequest { Id = id });
             return View(presenter.ViewModel);
         }
 
@@ -63,7 +63,7 @@ namespace Application.Web.MVC.Controllers
         {
             var uc = _projectFactory.DeleteProject();
             var presenter = new DeleteProjectPresenter();
-            uc.Execute(presenter, new ReqTrack.Domain.UseCases.Core.Project.DeleteProjectRequest { Id = id });
+            uc.Execute(presenter, new ReqTrack.Domain.UseCases.Core.Projects.DeleteProjectRequest { Id = id });
             return View(presenter.ViewModel);
         }
     }

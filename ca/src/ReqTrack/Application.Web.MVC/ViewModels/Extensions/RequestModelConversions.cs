@@ -1,6 +1,6 @@
-﻿using ReqTrack.Application.Web.MVC.ViewModels.Project;
-using ReqTrack.Domain.UseCases.Core.Boundary.Objects.Project;
-using ReqTrack.Domain.UseCases.Core.Project;
+﻿using ReqTrack.Application.Web.MVC.ViewModels.Projects;
+using ReqTrack.Domain.UseCases.Core.Boundary.Objects.Projects;
+using ReqTrack.Domain.UseCases.Core.Projects;
 
 namespace ReqTrack.Application.Web.MVC.ViewModels.Extensions
 {

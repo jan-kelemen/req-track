@@ -1,4 +1,4 @@
-﻿namespace ReqTrack.Domain.Core.Entities.Requirement
+﻿namespace ReqTrack.Domain.Core.Entities.Requirements
 {
     /// <summary>
     /// Represents a type of the requirement.

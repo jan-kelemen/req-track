@@ -1,4 +1,4 @@
-﻿namespace ReqTrack.Application.Web.MVC.ViewModels.Project
+﻿namespace ReqTrack.Application.Web.MVC.ViewModels.Projects
 {
     public class DeleteProjectViewModel
     {

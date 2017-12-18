@@ -1,5 +1,5 @@
 ﻿using ReqTrack.Domain.UseCases.Core.Boundary.Interfaces;
-using ReqTrack.Domain.UseCases.Core.Project;
+using ReqTrack.Domain.UseCases.Core.Projects;
 
 namespace ReqTrack.Domain.UseCases.Core.Factories
 {

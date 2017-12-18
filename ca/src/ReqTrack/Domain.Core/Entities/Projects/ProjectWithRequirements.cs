@@ -1,7 +1,7 @@
-﻿using ReqTrack.Domain.Core.Entities.Requirement;
+﻿using ReqTrack.Domain.Core.Entities.Requirements;
 using System.Collections.Generic;
 
-namespace ReqTrack.Domain.Core.Entities.Project
+namespace ReqTrack.Domain.Core.Entities.Projects
 {
     /// <summary>
     /// Represents a project with requirements and basic information.

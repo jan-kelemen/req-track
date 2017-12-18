@@ -1,9 +1,9 @@
 ﻿using ReqTrack.Domain.Core.Repositories;
 using ReqTrack.Domain.UseCases.Core.Boundary.Interfaces;
-using ReqTrack.Domain.UseCases.Core.Boundary.Objects.Project;
+using ReqTrack.Domain.UseCases.Core.Boundary.Objects.Projects;
 using System.Collections.Generic;
 
-namespace ReqTrack.Domain.UseCases.Core.Project
+namespace ReqTrack.Domain.UseCases.Core.Projects
 {
     public class GetAllProjectsRequest
     {
@@ -42,7 +42,7 @@ namespace ReqTrack.Domain.UseCases.Core.Project
             };
         }
 
-        private IEnumerable<ProjectInfo> convertEntityToResponseModel(IEnumerable<Domain.Core.Entities.Project.ProjectInfo> entities)
+        private IEnumerable<ProjectInfo> convertEntityToResponseModel(IEnumerable<Domain.Core.Entities.Projects.ProjectInfo> entities)
         {
             var rv = new List<ProjectInfo>();
             foreach(var e in entities)
