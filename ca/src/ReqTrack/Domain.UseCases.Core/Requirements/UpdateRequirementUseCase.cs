@@ -21,7 +21,7 @@ namespace ReqTrack.Domain.UseCases.Core.Requirements
         public Requirement Requirement { get; set; }
     }
 
-    internal class UpdateRequirementUseCase : IUseCaseInputBoundary<UpdateRequirementRequest, UpdateRequirementResponse>
+    public class UpdateRequirementUseCase : IUseCaseInputBoundary<UpdateRequirementRequest, UpdateRequirementResponse>
     {
         private IRequirementRepository _requirementRepository;
 

@@ -21,7 +21,7 @@ namespace ReqTrack.Domain.UseCases.Core.Projects
         public ProjectInfo ProjectInfo { get; set; }
     }
 
-    internal class UpdateProjectUseCase : IUseCaseInputBoundary<UpdateProjectRequest, UpdateProjectResponse>
+    public class UpdateProjectUseCase : IUseCaseInputBoundary<UpdateProjectRequest, UpdateProjectResponse>
     {
         private IProjectRepository _projectRepository;
 

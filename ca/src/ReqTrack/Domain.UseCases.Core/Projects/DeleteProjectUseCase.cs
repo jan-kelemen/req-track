@@ -20,7 +20,7 @@ namespace ReqTrack.Domain.UseCases.Core.Projects
         public string Id { get; set; }
     }
 
-    internal class DeleteProjectUseCase : IUseCaseInputBoundary<DeleteProjectRequest, DeleteProjectResponse>
+    public class DeleteProjectUseCase : IUseCaseInputBoundary<DeleteProjectRequest, DeleteProjectResponse>
     {
         private IProjectRepository _projectRepository;
 

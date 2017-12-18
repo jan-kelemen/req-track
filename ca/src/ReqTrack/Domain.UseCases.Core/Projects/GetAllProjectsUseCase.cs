@@ -3,6 +3,7 @@ using ReqTrack.Domain.UseCases.Core.Boundary.Interfaces;
 using ReqTrack.Domain.UseCases.Core.Boundary.Objects.Extensions;
 using ReqTrack.Domain.UseCases.Core.Boundary.Objects.Projects;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace ReqTrack.Domain.UseCases.Core.Projects
 {
@@ -19,7 +20,7 @@ namespace ReqTrack.Domain.UseCases.Core.Projects
         public IEnumerable<ProjectInfo> Projects { get; set; }
     }
 
-    internal class GetAllProjectsUseCase : IUseCaseInputBoundary<GetAllProjectsRequest, GetAllProjectsResponse>
+    public class GetAllProjectsUseCase : IUseCaseInputBoundary<GetAllProjectsRequest, GetAllProjectsResponse>
     {
         private IProjectRepository _projectRepository;
 
