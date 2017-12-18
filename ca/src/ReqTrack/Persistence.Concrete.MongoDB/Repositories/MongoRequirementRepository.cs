@@ -71,8 +71,15 @@ namespace ReqTrack.Persistence.Concrete.MongoDB.Repositories
 
         public DeleteResult<Identity> DeleteRequirement(Identity id)
         {
-            var result = _projectCollection.DeleteOne(p => p.Id == id.ToMongoIdentity());
-            return new DeleteResult<Identity>(result.DeletedCount == 1, id);
+            var result = _requirementCollection.FindOneAndDelete(p => p.Id == id.ToMongoIdentity());
+
+            //Remove requirement from the project
+            var filter = Builders<MongoProject>.Filter.Eq(x => x.Id, result.ProjectId);
+            var updateDefinition = Builders<MongoProject>.Update
+                .Pull(x => x.RequirementIds, result.Id);
+            _projectCollection.UpdateOne(filter, updateDefinition);
+
+            return new DeleteResult<Identity>(true, id);
         }
 
         public DeleteResult<Identity> DeleteRequirement(Requirement requirement)

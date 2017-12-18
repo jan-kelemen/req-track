@@ -60,7 +60,6 @@ namespace ReqTrack.Persistence.Concrete.MongoDB.Repositories
 
         public DeleteResult<Identity> DeleteProject(Identity id)
         {
-            //TODO: delete requirements of the project also
             var result = _projectCollection.DeleteOne(p => p.Id == id.ToMongoIdentity());
 
             //Delete related requirements
