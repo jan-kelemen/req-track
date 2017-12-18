@@ -4,6 +4,8 @@ using ReqTrack.Runtime.Core.Registry;
 using ReqTrack.Domain.UseCases.Core.Factories;
 using ReqTrack.Application.Web.MVC.Presenters.Projects;
 using ReqTrack.Application.Web.MVC.ViewModels.Extensions;
+using ReqTrack.Domain.UseCases.Core.Projects;
+using ReqTrack.Application.Web.MVC.Presenters;
 
 namespace Application.Web.MVC.Controllers
 {
@@ -24,9 +26,7 @@ namespace Application.Web.MVC.Controllers
             var request = vm.ToRequestModel();
             var uc = _projectFactory.CreateProject();
             var presenter = new CreateProjectPresenter();
-
             uc.Execute(presenter, request);
-
             return View(presenter.ViewModel);
         }
 
@@ -44,8 +44,17 @@ namespace Application.Web.MVC.Controllers
         {
             var uc = _projectFactory.GetProject();
             var presenter = new GetProjectPresenter();
-            uc.Execute(presenter, new ReqTrack.Domain.UseCases.Core.Projects.GetProjectRequest { Id = id });
+            uc.Execute(presenter, new GetProjectRequest { Id = id });
             return View(presenter.ViewModel);
+        }
+
+        [HttpGet]
+        public IActionResult EditProject(string id)
+        {
+            var uc = _projectFactory.GetProject();
+            var presenter = new UpdateProjectPresenter();
+            uc.Execute(presenter, new GetProjectRequest { Id = id });
+            return View((presenter as IPresenter<GetProjectResponse, UpdateProjectViewModel>).ViewModel);
         }
 
         [HttpPost]
@@ -55,7 +64,7 @@ namespace Application.Web.MVC.Controllers
             var uc = _projectFactory.UpdateProject();
             var presenter = new UpdateProjectPresenter();
             uc.Execute(presenter, request);
-            return View(presenter.ViewModel);
+            return View((presenter as IPresenter<UpdateProjectResponse, UpdateProjectViewModel>).ViewModel);
         }
 
         [HttpPost]
@@ -63,7 +72,7 @@ namespace Application.Web.MVC.Controllers
         {
             var uc = _projectFactory.DeleteProject();
             var presenter = new DeleteProjectPresenter();
-            uc.Execute(presenter, new ReqTrack.Domain.UseCases.Core.Projects.DeleteProjectRequest { Id = id });
+            uc.Execute(presenter, new DeleteProjectRequest { Id = id });
             return View(presenter.ViewModel);
         }
     }
