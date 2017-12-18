@@ -3,7 +3,7 @@ using ReqTrack.Persistence.Concrete.MongoDB.Entities;
 
 namespace ReqTrack.Persistence.Concrete.MongoDB.Database
 {
-    class MongoReqTrackDatabase
+    internal class MongoReqTrackDatabase
     {
         private IMongoClient _client;
 
@@ -16,5 +16,7 @@ namespace ReqTrack.Persistence.Concrete.MongoDB.Database
         }
 
         public IMongoCollection<Project> ProjectCollection => _database.GetCollection<Project>(Project.CollectionName);
+
+        public IMongoCollection<Requirement> RequirementCollection => _database.GetCollection<Requirement>(Requirement.CollectionName);
     }
 }

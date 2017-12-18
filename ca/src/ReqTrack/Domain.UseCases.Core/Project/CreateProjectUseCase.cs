@@ -31,7 +31,7 @@ namespace ReqTrack.Domain.UseCases.Core.Project
 
         public void Execute(IUseCaseOutputBoundary<CreateProjectResponse> outputBoundary, CreateProjectRequest requestModel)
         {
-            var project = requestModel.ProjectInfo.ConvertToDomainEntity();
+            var project = requestModel.ProjectInfo.ConvertToDomainEntity(_projectRepository.GenerateNewIdentity().ToString());
 
             var result = _projectRepository.CreateProject(project);
 

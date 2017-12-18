@@ -6,8 +6,20 @@ using System.Text;
 
 namespace ReqTrack.Persistence.Concrete.MongoDB.Entities
 {
-    class Project
+    internal class Project
     {
+        internal class Requirement
+        {
+            [BsonElement("id")]
+            public ObjectId Id { get; set; }
+
+            [BsonElement("type")]
+            public string Type { get; set; }
+
+            [BsonElement("orderMarker")]
+            public int OrderMarker { get; set; }
+        }
+
         public static readonly string CollectionName = "Projects";
 
         [BsonId]
@@ -15,5 +27,8 @@ namespace ReqTrack.Persistence.Concrete.MongoDB.Entities
 
         [BsonElement("name")]
         public string Name { get; set; }
+
+        [BsonElement("requirements")]
+        public IEnumerable<Requirement> Requirements { get; set; }
     }
 }

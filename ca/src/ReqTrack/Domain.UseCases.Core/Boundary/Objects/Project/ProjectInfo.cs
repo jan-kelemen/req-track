@@ -25,9 +25,11 @@ namespace ReqTrack.Domain.UseCases.Core.Boundary.Objects.Project
         /// </summary>
         /// <param name="projectInfo">Boundary object project info.</param>
         /// <returns>Domain entity.</returns>
-        public static Domain.Core.Entities.Project.ProjectInfo ConvertToDomainEntity(this ProjectInfo projectInfo)
+        public static Domain.Core.Entities.Project.ProjectInfo ConvertToDomainEntity(this ProjectInfo projectInfo, string identifier = null)
         {
-            var id = string.IsNullOrEmpty(projectInfo.Id) ? Identity.BlankIdentity : Identity.FromString(projectInfo.Id);
+            var id = string.IsNullOrEmpty(projectInfo.Id) 
+                ? (string.IsNullOrEmpty(identifier) ? Identity.BlankIdentity : Identity.FromString(identifier))
+                : Identity.FromString(projectInfo.Id);
 
             var rv = new Domain.Core.Entities.Project.ProjectInfo(id, projectInfo.Name);
 

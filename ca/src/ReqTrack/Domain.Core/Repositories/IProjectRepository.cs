@@ -8,7 +8,7 @@ namespace ReqTrack.Domain.Core.Repositories
     /// <summary>
     /// Repository for persisting project entities.
     /// </summary>
-    public interface IProjectRepository
+    public interface IProjectRepository : IRepository
     {
         /// <summary>
         /// Creates the given project.
@@ -50,5 +50,19 @@ namespace ReqTrack.Domain.Core.Repositories
         /// <param name="id">Identifier of the project.</param>
         /// <returns>Result of the operation, <see cref="DeleteResult{T}"/>.</returns>
         DeleteResult<Identity> DeleteProject(ProjectInfo projectInfo);
+
+        /// <summary>
+        /// Reads all of the requirements of the project with specified identifer.
+        /// </summary>
+        /// <param name="id">Identifier of the project</param>
+        /// <returns>Project with all requirements.</returns>
+        ReadResult<ProjectWithRequirements> ReadProjectRequirements(Identity id);
+
+        /// <summary>
+        /// Persists the changes to project requirements.
+        /// </summary>
+        /// <param name="projectWithRequirements">Project with updated requirements.</param>
+        /// <returns>Project with updated requirements.</returns>
+        UpdateResult<ProjectWithRequirements> UpdateProjectRequirements(ProjectWithRequirements projectWithRequirements);
     }
 }

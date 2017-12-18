@@ -23,6 +23,8 @@ namespace ReqTrack.Persistence.Concrete.MongoDB.Repositories
 
         private IMongoCollection<Project> _projectCollection => _database.ProjectCollection;
 
+        private IMongoCollection<Requirement> _requirementCollection => _database.RequirementCollection;
+
         public CreateResult<ProjectInfo> CreateProject(ProjectInfo projectInfo)
         {
             var entity = projectInfo.ToMongoEntity();
@@ -66,6 +68,30 @@ namespace ReqTrack.Persistence.Concrete.MongoDB.Repositories
         public DeleteResult<Identity> DeleteProject(ProjectInfo projectInfo)
         {
             return DeleteProject(projectInfo.Id);
+        }
+
+        public Identity GenerateNewIdentity()
+        {
+            return Identity.FromString(ObjectId.GenerateNewId().ToString());
+        }
+
+        public ReadResult<ProjectWithRequirements> ReadProjectRequirements(Identity id)
+        {
+            var project = _projectCollection.Find(p => p.Id == ObjectId.Parse(id.ToString())).FirstOrDefault();
+            var requirements = _requirementCollection.Find(r => r.ProjectId == ObjectId.Parse(id.ToString()))
+                .ToList()
+                .ToDictionary(r => r.Id, r => r);
+            var result = project.ToDomainEntity(requirements);
+            return new ReadResult<ProjectWithRequirements>(true, result);
+        }
+
+        public UpdateResult<ProjectWithRequirements> UpdateProjectRequirements(ProjectWithRequirements projectWithRequirements)
+        {
+            var entity = projectWithRequirements.ToMongoEntity();
+            var updateDefinition = Builders<Project>.Update.Set(p => p.Requirements, entity.Requirements);
+            var result = _projectCollection.UpdateOne(p => p.Id == entity.Id, updateDefinition);
+            var readResult = ReadProjectRequirements(projectWithRequirements.Id);
+            return new UpdateResult<ProjectWithRequirements>(result.ModifiedCount == 1 && readResult, readResult.Read);
         }
     }
 }
