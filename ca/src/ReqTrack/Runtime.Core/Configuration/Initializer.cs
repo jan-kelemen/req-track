@@ -13,8 +13,9 @@ namespace ReqTrack.Runtime.Core.Configuration
             IRepositoryFactory repositoryFactory = new Persistence.Concrete.MongoDB.Configuration.Initializer().Initialize();
             RegistryProxy.Get.RegisterFactory(repositoryFactory);
 
-            IProjectUseCaseFactory projectUseCaseFactory = new DefaultUseCaseFactory(repositoryFactory);
-            RegistryProxy.Get.RegisterFactory(projectUseCaseFactory);
+            var factory = new DefaultUseCaseFactory(repositoryFactory);
+            RegistryProxy.Get.RegisterFactory<IProjectUseCaseFactory>(factory);
+            RegistryProxy.Get.RegisterFactory<IRequirementUseCaseFactory>(factory);
         }
     }
 }
