@@ -11,16 +11,12 @@ namespace ReqTrack.Domain.UseCases.Core.Boundary.Objects.Extensions
         /// Converts the boundary object to domain entity.
         /// </summary>
         /// <param name="projectInfo">Boundary object project info.</param>
+        /// <param name="identifier">Identifer to use if the boundar objects identity is <c>null</c>.</param>
         /// <returns>Domain entity.</returns>
         public static DProjectInfo ConvertToDomainEntity(this ProjectInfo projectInfo, string identifier = null)
         {
-            var id = string.IsNullOrEmpty(projectInfo.Id) 
-                ? (string.IsNullOrEmpty(identifier) ? Identity.BlankIdentity : Identity.FromString(identifier))
-                : Identity.FromString(projectInfo.Id);
-
-            var rv = new DProjectInfo(id, projectInfo.Name);
-
-            return rv;
+            var id = projectInfo.Id.ToDomainIdentity(identifier);
+            return new DProjectInfo(id, projectInfo.Name);
         }
 
         /// <summary>
@@ -32,7 +28,7 @@ namespace ReqTrack.Domain.UseCases.Core.Boundary.Objects.Extensions
         {
             return new ProjectInfo
             {
-                Id = projectInfo.Id.ToString(),
+                Id = projectInfo.Id.ToBoundaryIdentity(),
                 Name = projectInfo.Name,
             };
         }
