@@ -48,7 +48,7 @@ namespace ReqTrack.Domain.UseCases.Core.Projects
             var rv = new List<ProjectInfo>();
             foreach(var e in entities)
             {
-                rv.Add(e.ConvertToBoundaryEntity());
+                rv.Add(e.ToBoundaryObject());
             }
             return rv;
         }

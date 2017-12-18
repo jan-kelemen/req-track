@@ -42,7 +42,7 @@ namespace ReqTrack.Domain.UseCases.Core.Projects
 
             outputBoundary.ResponseModel = new GetProjectResponse
             {
-                ProjectInfo = result.Read.ConvertToBoundaryEntity(),
+                ProjectInfo = result.Read.ToBoundaryObject(),
             };
         }
     }

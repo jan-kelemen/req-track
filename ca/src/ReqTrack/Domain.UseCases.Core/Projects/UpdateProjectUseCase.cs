@@ -32,7 +32,7 @@ namespace ReqTrack.Domain.UseCases.Core.Projects
 
         public void Execute(IUseCaseOutputBoundary<UpdateProjectResponse> outputBoundary, UpdateProjectRequest requestModel)
         {
-            var projectToUpdate = requestModel.ProjectInfo.ConvertToDomainEntity();
+            var projectToUpdate = requestModel.ProjectInfo.ToDomainEntity();
             var result = _projectRepository.UpdateProject(projectToUpdate);
 
             if(!result)
@@ -42,7 +42,7 @@ namespace ReqTrack.Domain.UseCases.Core.Projects
 
             outputBoundary.ResponseModel = new UpdateProjectResponse
             {
-                ProjectInfo = result.Updated.ConvertToBoundaryEntity(),
+                ProjectInfo = result.Updated.ToBoundaryObject(),
             };
         }
     }
