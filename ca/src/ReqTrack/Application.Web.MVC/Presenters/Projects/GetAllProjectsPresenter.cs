@@ -1,5 +1,4 @@
 ﻿using ReqTrack.Application.Web.MVC.ViewModels.Projects;
-using ReqTrack.Domain.UseCases.Core.Projects;
 using ReqTrack.Application.Web.MVC.ViewModels.Extensions.Projects;
 using System.Linq;
 using ReqTrack.Domain.UseCases.Core.Projects.ResponseModels;

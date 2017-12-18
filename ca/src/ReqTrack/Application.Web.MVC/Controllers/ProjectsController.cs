@@ -2,7 +2,6 @@
 using ReqTrack.Application.Web.MVC.ViewModels.Projects;
 using ReqTrack.Runtime.Core.Registry;
 using ReqTrack.Domain.UseCases.Core.Factories;
-using ReqTrack.Domain.UseCases.Core.Projects;
 using ReqTrack.Application.Web.MVC.Presenters.Factories;
 using ReqTrack.Application.Web.MVC.ViewModels.Extensions.Projects;
 using ReqTrack.Domain.UseCases.Core.Projects.RequestModels;
