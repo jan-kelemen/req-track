@@ -1,5 +1,7 @@
 ﻿using ReqTrack.Domain.UseCases.Core.Boundary.Interfaces;
-using ReqTrack.Domain.UseCases.Core.Requirements;
+using ReqTrack.Domain.UseCases.Core.Requirements.Interfaces;
+using ReqTrack.Domain.UseCases.Core.Requirements.RequestModels;
+using ReqTrack.Domain.UseCases.Core.Requirements.ResponseModels;
 
 namespace ReqTrack.Domain.UseCases.Core.Factories
 {
@@ -12,25 +14,25 @@ namespace ReqTrack.Domain.UseCases.Core.Factories
         /// Creates a use case for creating a new requirement.
         /// </summary>
         /// <returns>The use case.</returns>
-        IUseCaseInputBoundary<CreateRequirementRequest, CreateRequirementResponse> CreateRequirement();
+        ICreateRequirementUseCase CreateRequirement();
 
         /// <summary>
         /// Creates a use case for deleting a requirement.
         /// </summary>
         /// <returns>The use case.</returns>
-        IUseCaseInputBoundary<DeleteRequirementRequest, DeleteRequirementResponse> DeleteRequirement();
+        IDeleteRequirementUseCase DeleteRequirement();
 
 
         /// <summary>
         /// Creates a use case for reading a requirement.
         /// </summary>
         /// <returns>The use case.</returns>
-        IUseCaseInputBoundary<GetRequirementRequest, GetRequirementResponse> GetRequirement();
+        IGetRequirementUseCase GetRequirement();
 
         /// <summary>
         /// Creates a use case for updating a requirement.
         /// </summary>
         /// <returns>The use case.</returns>
-        IUseCaseInputBoundary<UpdateRequirementRequest, UpdateRequirementResponse> UpdateRequirement();
+        IUpdateRequirementUseCase UpdateRequirement();
     }
 }

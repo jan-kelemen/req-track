@@ -1,4 +1,5 @@
 ﻿using ReqTrack.Domain.UseCases.Core.Boundary.Interfaces;
+using ReqTrack.Domain.UseCases.Core.Projects.Interfaces;
 using ReqTrack.Domain.UseCases.Core.Projects.RequestModels;
 using ReqTrack.Domain.UseCases.Core.Projects.ResponseModels;
 
@@ -13,30 +14,30 @@ namespace ReqTrack.Domain.UseCases.Core.Factories
         /// Creates a use case for creating a new project.
         /// </summary>
         /// <returns>The use case.</returns>
-        IUseCaseInputBoundary<CreateProjectRequest, CreateProjectResponse> CreateProject();
+        ICreateProjectUseCase CreateProject();
 
         /// <summary>
         /// Creates a use case for deleting a project.
         /// </summary>
         /// <returns>The use case.</returns>
-        IUseCaseInputBoundary<DeleteProjectRequest, DeleteProjectResponse> DeleteProject();
+        IDeleteProjectUseCase DeleteProject();
 
         /// <summary>
         /// Creates a use case for reading all projects.
         /// </summary>
         /// <returns>The use case.</returns>
-        IUseCaseInputBoundary<GetAllProjectsRequest, GetAllProjectsResponse> GetAllProjects();
+        IGetAllProjectsUseCase GetAllProjects();
 
         /// <summary>
         /// Creates a use case for reading a project.
         /// </summary>
         /// <returns>The use case.</returns>
-        IUseCaseInputBoundary<GetProjectRequest, GetProjectResponse> GetProject();
+        IGetProjectUseCase GetProject();
 
         /// <summary>
         /// Creates a use case for updating a project.
         /// </summary>
         /// <returns>The use case.</returns>
-        IUseCaseInputBoundary<UpdateProjectRequest, UpdateProjectResponse> UpdateProject();
+        IUpdateProjectUseCase UpdateProject();
     }
 }

@@ -4,6 +4,10 @@ using ReqTrack.Domain.Core.Repositories.Factories;
 using ReqTrack.Domain.UseCases.Core.Requirements;
 using ReqTrack.Domain.UseCases.Core.Projects.ResponseModels;
 using ReqTrack.Domain.UseCases.Core.Projects.RequestModels;
+using ReqTrack.Domain.UseCases.Core.Requirements.ResponseModels;
+using ReqTrack.Domain.UseCases.Core.Requirements.RequestModels;
+using ReqTrack.Domain.UseCases.Core.Projects.Interfaces;
+using ReqTrack.Domain.UseCases.Core.Requirements.Interfaces;
 
 namespace ReqTrack.Domain.UseCases.Core.Factories
 {
@@ -19,49 +23,49 @@ namespace ReqTrack.Domain.UseCases.Core.Factories
         }
 
         #region IProjectUseCaseFactory implementation
-        IUseCaseInputBoundary<CreateProjectRequest, CreateProjectResponse> IProjectUseCaseFactory.CreateProject()
+        ICreateProjectUseCase IProjectUseCaseFactory.CreateProject()
         {
             return new CreateProjectUseCase(_repositoryFactory.ProjectRepository);
         }
 
-        IUseCaseInputBoundary<DeleteProjectRequest, DeleteProjectResponse> IProjectUseCaseFactory.DeleteProject()
+        IDeleteProjectUseCase IProjectUseCaseFactory.DeleteProject()
         {
             return new DeleteProjectUseCase(_repositoryFactory.ProjectRepository);
         }
 
-        IUseCaseInputBoundary<GetAllProjectsRequest, GetAllProjectsResponse> IProjectUseCaseFactory.GetAllProjects()
+        IGetAllProjectsUseCase IProjectUseCaseFactory.GetAllProjects()
         {
             return new GetAllProjectsUseCase(_repositoryFactory.ProjectRepository);
         }
 
-        IUseCaseInputBoundary<GetProjectRequest, GetProjectResponse> IProjectUseCaseFactory.GetProject()
+        IGetProjectUseCase IProjectUseCaseFactory.GetProject()
         {
             return new GetProjectUseCase(_repositoryFactory.ProjectRepository);
         }
 
-        IUseCaseInputBoundary<UpdateProjectRequest, UpdateProjectResponse> IProjectUseCaseFactory.UpdateProject()
+        IUpdateProjectUseCase IProjectUseCaseFactory.UpdateProject()
         {
             return new UpdateProjectUseCase(_repositoryFactory.ProjectRepository);
         }
         #endregion
 
         #region IRequirementUseCaseFactory implementation
-        IUseCaseInputBoundary<CreateRequirementRequest, CreateRequirementResponse> IRequirementUseCaseFactory.CreateRequirement()
+        ICreateRequirementUseCase IRequirementUseCaseFactory.CreateRequirement()
         {
             return new CreateRequirementUseCase(_repositoryFactory.RequirementRepository);
         }
 
-        IUseCaseInputBoundary<DeleteRequirementRequest, DeleteRequirementResponse> IRequirementUseCaseFactory.DeleteRequirement()
+        IDeleteRequirementUseCase IRequirementUseCaseFactory.DeleteRequirement()
         {
             return new DeleteRequirementUseCase(_repositoryFactory.RequirementRepository);
         }
 
-        IUseCaseInputBoundary<GetRequirementRequest, GetRequirementResponse> IRequirementUseCaseFactory.GetRequirement()
+        IGetRequirementUseCase IRequirementUseCaseFactory.GetRequirement()
         {
             return new GetRequirementUseCase(_repositoryFactory.RequirementRepository);
         }
 
-        IUseCaseInputBoundary<UpdateRequirementRequest, UpdateRequirementResponse> IRequirementUseCaseFactory.UpdateRequirement()
+        IUpdateRequirementUseCase IRequirementUseCaseFactory.UpdateRequirement()
         {
             return new UpdateRequirementUseCase(_repositoryFactory.RequirementRepository);
         }

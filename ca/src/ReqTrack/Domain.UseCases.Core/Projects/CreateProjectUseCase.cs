@@ -1,12 +1,13 @@
 ﻿using ReqTrack.Domain.Core.Repositories;
 using ReqTrack.Domain.UseCases.Core.Boundary.Interfaces;
 using ReqTrack.Domain.UseCases.Core.Boundary.Objects.Extensions;
+using ReqTrack.Domain.UseCases.Core.Projects.Interfaces;
 using ReqTrack.Domain.UseCases.Core.Projects.RequestModels;
 using ReqTrack.Domain.UseCases.Core.Projects.ResponseModels;
 
 namespace ReqTrack.Domain.UseCases.Core.Projects
 {
-    public class CreateProjectUseCase : IUseCaseInputBoundary<CreateProjectRequest, CreateProjectResponse>
+    public class CreateProjectUseCase : ICreateProjectUseCase
     {
         private IProjectRepository _projectRepository;
 
