@@ -45,12 +45,7 @@ namespace ReqTrack.Domain.UseCases.Core.Projects
 
         private IEnumerable<ProjectInfo> convertEntityToResponseModel(IEnumerable<Domain.Core.Entities.Projects.ProjectInfo> entities)
         {
-            var rv = new List<ProjectInfo>();
-            foreach(var e in entities)
-            {
-                rv.Add(e.ToBoundaryObject());
-            }
-            return rv;
+            return entities.Select(e => e.ToBoundaryObject());
         }
     }
 }
