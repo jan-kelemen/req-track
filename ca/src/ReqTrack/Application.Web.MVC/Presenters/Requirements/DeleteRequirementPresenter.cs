@@ -5,12 +5,9 @@ namespace ReqTrack.Application.Web.MVC.Presenters.Requirements
 {
     public class DeleteRequirementPresenter : Presenter<DeleteRequirementResponse, RequirementViewModel>
     {
-        protected override RequirementViewModel CreateViewModel(DeleteRequirementResponse response)
+        protected override RequirementViewModel CreateViewModel(DeleteRequirementResponse response) => new RequirementViewModel
         {
-            return new RequirementViewModel
-            {
-                Id = response.Id
-            };
-        }
+            Id = response.Id
+        };
     }
 }

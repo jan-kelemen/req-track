@@ -6,9 +6,6 @@ namespace ReqTrack.Application.Web.MVC.Presenters.Requirements
 {
     public class CreateRequirementPresenter : Presenter<CreateRequirementResponse, RequirementViewModel>
     {
-        protected override RequirementViewModel CreateViewModel(CreateRequirementResponse response)
-        {
-            return response.Requirement.ToViewModel();
-        }
+        protected override RequirementViewModel CreateViewModel(CreateRequirementResponse response) => response.Requirement.ToViewModel();
     }
 }

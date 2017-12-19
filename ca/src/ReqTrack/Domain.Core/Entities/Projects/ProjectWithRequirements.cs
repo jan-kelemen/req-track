@@ -61,10 +61,7 @@ namespace ReqTrack.Domain.Core.Entities.Projects
         /// </summary>
         /// <param name="id">identifier of the requirement.</param>
         /// <returns><c>true</c> if the project has the requirement.</returns>
-        public bool HasRequirement(Identity id)
-        {
-            return _requirementsById.ContainsKey(id);
-        }
+        public bool HasRequirement(Identity id) => _requirementsById.ContainsKey(id);
 
         /// <summary>
         /// Updates the requirements of the project.
@@ -110,13 +107,7 @@ namespace ReqTrack.Domain.Core.Entities.Projects
         /// </summary>
         /// <param name="id">Identity of the requirement.</param>
         /// <returns>Requirement with matching identity.</returns>
-        public Requirement this[Identity id]
-        {
-            get
-            {
-                return _requirementsById[id];
-            }
-        }
+        public Requirement this[Identity id] => _requirementsById[id];
 
         private void addRequirement(Requirement requirement)
         {

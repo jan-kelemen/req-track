@@ -24,7 +24,7 @@ namespace ReqTrack.Domain.Core.Entities
         /// <remarks>Usage of this method isn't recommended.</remarks>
         public static Identity FromString(string value) => new Identity(value);
 
-        private string _id;
+        private readonly string _id;
 
         private Identity(string id)
         {

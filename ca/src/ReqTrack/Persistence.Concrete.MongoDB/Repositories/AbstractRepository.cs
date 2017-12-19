@@ -7,9 +7,6 @@ namespace ReqTrack.Persistence.Concrete.MongoDB.Repositories
 {
     internal abstract class AbstractRepository : IRepository
     {
-        public Identity GenerateNewIdentity()
-        {
-            return ObjectId.GenerateNewId().ToDomainIdentity();
-        }
+        public Identity GenerateNewIdentity() => ObjectId.GenerateNewId().ToDomainIdentity();
     }
 }

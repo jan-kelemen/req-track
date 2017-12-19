@@ -9,19 +9,13 @@ namespace ReqTrack.Persistence.Concrete.MongoDB.Entities.Extensions
 {
     internal static class ProjectMappingExtensions
     {
-        public static MongoProject ToMongoEntity(this ProjectInfo projectInfo)
+        public static MongoProject ToMongoEntity(this ProjectInfo projectInfo) => new MongoProject
         {
-            return new MongoProject
-            {
-                Id = projectInfo.Id.ToMongoIdentity(),
-                Name = projectInfo.Name,
-            };
-        }
+            Id = projectInfo.Id.ToMongoIdentity(),
+            Name = projectInfo.Name,
+        };
 
-        public static ProjectInfo ToDomainEntity(this MongoProject project)
-        {
-            return new ProjectInfo(project.Id.ToDomainIdentity(), project.Name);
-        }
+        public static ProjectInfo ToDomainEntity(this MongoProject project) => new ProjectInfo(project.Id.ToDomainIdentity(), project.Name);
 
         public static MongoProject ToMongoEntity(this ProjectWithRequirements projectWithRequirements)
         {
@@ -30,18 +24,15 @@ namespace ReqTrack.Persistence.Concrete.MongoDB.Entities.Extensions
             return project;
         }
 
-        public static ProjectWithRequirements ToDomainEntity(this MongoProject project, Dictionary<ObjectId, MongoRequirement> requirements)
-        {
-            return new ProjectWithRequirements(
-                project.Id.ToDomainIdentity(),
-                project.Name,
-                project.RequirementIds.Select(
-                    id => new ProjectWithRequirements.Requirement(
-                        id.ToDomainIdentity(),
-                        Enum.Parse<RequirementType>(requirements[id].Type),
-                        requirements[id].Title)
-                        )
-                    );
-        }
+        public static ProjectWithRequirements ToDomainEntity(this MongoProject project, Dictionary<ObjectId, MongoRequirement> requirements) => new ProjectWithRequirements(
+            project.Id.ToDomainIdentity(),
+            project.Name,
+            project.RequirementIds.Select(
+                id => new ProjectWithRequirements.Requirement(
+                    id.ToDomainIdentity(),
+                    Enum.Parse<RequirementType>(requirements[id].Type),
+                    requirements[id].Title)
+            )
+        );
     }
 }

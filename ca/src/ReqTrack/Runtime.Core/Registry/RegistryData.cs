@@ -5,12 +5,9 @@ namespace ReqTrack.Runtime.Core.Registry
 {
     public class RegistryData : IRegistry
     {
-        private Dictionary<Type, object> _factories = new Dictionary<Type, object>();
+        private readonly Dictionary<Type, object> _factories = new Dictionary<Type, object>();
 
-        public T GetFactory<T>() where T : class
-        {
-            return _factories[typeof(T)] as T;
-        }
+        public T GetFactory<T>() where T : class => _factories[typeof(T)] as T;
 
         public bool RegisterFactory<T>(T factoryObject) where T : class
         {

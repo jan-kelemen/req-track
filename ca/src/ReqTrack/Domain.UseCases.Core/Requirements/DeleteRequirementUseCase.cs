@@ -9,7 +9,7 @@ namespace ReqTrack.Domain.UseCases.Core.Requirements
 {
     public class DeleteRequirementUseCase : IDeleteRequirementUseCase
     {
-        private IRequirementRepository _requirementRepository;
+        private readonly IRequirementRepository _requirementRepository;
 
         public DeleteRequirementUseCase(IRequirementRepository requirementRepository)
         {

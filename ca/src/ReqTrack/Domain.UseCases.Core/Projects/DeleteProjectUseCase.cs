@@ -9,7 +9,7 @@ namespace ReqTrack.Domain.UseCases.Core.Projects
 {
     public class DeleteProjectUseCase : IDeleteProjectUseCase
     {
-        private IProjectRepository _projectRepository;
+        private readonly IProjectRepository _projectRepository;
 
         public DeleteProjectUseCase(IProjectRepository projectRepository)
         {

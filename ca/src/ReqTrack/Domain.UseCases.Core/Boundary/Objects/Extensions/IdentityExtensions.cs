@@ -7,10 +7,7 @@ namespace ReqTrack.Domain.UseCases.Core.Boundary.Objects.Extensions
 {
     public static class IdentityExtensions
     {
-        public static string ToBoundaryIdentity(this Identity id)
-        {
-            return id.ToString();
-        }
+        public static string ToBoundaryIdentity(this Identity id) => id.ToString();
 
         /// <summary>
         /// Converts boundary identity to domain identity.

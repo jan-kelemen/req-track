@@ -5,9 +5,9 @@ namespace ReqTrack.Persistence.Concrete.MongoDB.Database
 {
     internal class MongoReqTrackDatabase
     {
-        private IMongoClient _client;
+        private readonly IMongoClient _client;
 
-        private IMongoDatabase _database;
+        private readonly IMongoDatabase _database;
 
         public MongoReqTrackDatabase()
         {

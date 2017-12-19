@@ -13,7 +13,7 @@ namespace ReqTrack.Persistence.Concrete.MongoDB.Repositories
 {
     internal class MongoProjectRepository : AbstractRepository, IProjectRepository
     {
-        private MongoReqTrackDatabase _database;
+        private readonly MongoReqTrackDatabase _database;
 
         internal MongoProjectRepository(MongoReqTrackDatabase database)
         {
@@ -68,10 +68,7 @@ namespace ReqTrack.Persistence.Concrete.MongoDB.Repositories
             return new DeleteResult<Identity>(result.DeletedCount == 1, id);
         }
 
-        public DeleteResult<Identity> DeleteProject(ProjectInfo projectInfo)
-        {
-            return DeleteProject(projectInfo.Id);
-        }
+        public DeleteResult<Identity> DeleteProject(ProjectInfo projectInfo) => DeleteProject(projectInfo.Id);
 
         public ReadResult<ProjectWithRequirements> ReadProjectRequirements(Identity id)
         {

@@ -9,7 +9,7 @@ namespace ReqTrack.Domain.UseCases.Core.Requirements
 {
     public class CreateRequirementUseCase : ICreateRequirementUseCase
     {
-        private IRequirementRepository _requirementRepository;
+        private readonly IRequirementRepository _requirementRepository;
 
         public CreateRequirementUseCase(IRequirementRepository requirementRepository)
         {

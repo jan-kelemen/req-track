@@ -11,7 +11,7 @@ namespace ReqTrack.Domain.UseCases.Core.Projects
 
     public class GetProjectUseCase : IGetProjectUseCase
     {
-        private IProjectRepository _projectRepository;
+        private readonly IProjectRepository _projectRepository;
 
         public GetProjectUseCase(IProjectRepository projectRepository)
         {

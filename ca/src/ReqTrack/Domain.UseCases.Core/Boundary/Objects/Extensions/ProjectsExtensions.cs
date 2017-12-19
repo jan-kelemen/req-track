@@ -24,13 +24,10 @@ namespace ReqTrack.Domain.UseCases.Core.Boundary.Objects.Extensions
         /// </summary>
         /// <param name="projectInfo">Domain entity project info.</param>
         /// <returns>Boundary object.</returns>
-        public static ProjectInfo ToBoundaryObject(this DProjectInfo projectInfo)
+        public static ProjectInfo ToBoundaryObject(this DProjectInfo projectInfo) => new ProjectInfo
         {
-            return new ProjectInfo
-            {
-                Id = projectInfo.Id.ToBoundaryIdentity(),
-                Name = projectInfo.Name,
-            };
-        }
+            Id = projectInfo.Id.ToBoundaryIdentity(),
+            Name = projectInfo.Name,
+        };
     }
 }

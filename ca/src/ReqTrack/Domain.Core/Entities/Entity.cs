@@ -27,7 +27,7 @@ namespace ReqTrack.Domain.Core.Entities
 
         public abstract bool HasSameValueAs(T other);
 
-        public override sealed bool Equals(object obj)
+        public sealed override bool Equals(object obj)
         {
             var other = obj as Entity<T>;
 
@@ -49,7 +49,7 @@ namespace ReqTrack.Domain.Core.Entities
             return _id == other._id;
         }
 
-        public override sealed int GetHashCode() => _id.GetHashCode();
+        public sealed override int GetHashCode() => _id.GetHashCode();
 
         public override string ToString() => $"ID={_id.ToString()}";
     }

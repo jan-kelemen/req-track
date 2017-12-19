@@ -9,7 +9,7 @@ namespace ReqTrack.Domain.UseCases.Core.Projects
 {
     public class UpdateProjectUseCase : IUpdateProjectUseCase
     {
-        private IProjectRepository _projectRepository;
+        private readonly IProjectRepository _projectRepository;
 
         public UpdateProjectUseCase(IProjectRepository projectRepository)
         {

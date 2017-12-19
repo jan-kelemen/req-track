@@ -7,7 +7,7 @@ namespace ReqTrack.Persistence.Concrete.MongoDB.Factories
 {
     internal class MongoRepositoryFactory : IRepositoryFactory
     {
-        private MongoReqTrackDatabase _database;
+        private readonly MongoReqTrackDatabase _database;
 
         public MongoRepositoryFactory(MongoReqTrackDatabase database)
         {

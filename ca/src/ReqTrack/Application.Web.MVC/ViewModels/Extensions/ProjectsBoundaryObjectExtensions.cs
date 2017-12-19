@@ -6,22 +6,16 @@ namespace ReqTrack.Application.Web.MVC.ViewModels.Extensions
 {
     public static class ProjectBoundaryObjectExtensions
     {
-        public static ProjectInfo ToBoundaryObject(this ProjectViewModel vm)
+        public static ProjectInfo ToBoundaryObject(this ProjectViewModel vm) => new ProjectInfo
         {
-            return new ProjectInfo
-            {
-                Id = vm.Id,
-                Name = vm.Name,
-            };
-        }
+            Id = vm.Id,
+            Name = vm.Name,
+        };
 
-        public static ProjectViewModel ToViewModel(this ProjectInfo projectInfo)
+        public static ProjectViewModel ToViewModel(this ProjectInfo projectInfo) => new ProjectViewModel
         {
-            return new ProjectViewModel
-            {
-                Id = projectInfo.Id,
-                Name = projectInfo.Name,
-            };
-        }
+            Id = projectInfo.Id,
+            Name = projectInfo.Name,
+        };
     }
 }

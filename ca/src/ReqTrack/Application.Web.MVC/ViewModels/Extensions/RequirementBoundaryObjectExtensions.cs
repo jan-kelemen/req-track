@@ -5,28 +5,22 @@ namespace ReqTrack.Application.Web.MVC.ViewModels.Extensions
 {
     public static class RequirementBoundaryObjectExtensions
     {
-        public static Requirement ToBoundaryObject(this RequirementViewModel vm)
+        public static Requirement ToBoundaryObject(this RequirementViewModel vm) => new Requirement
         {
-            return new Requirement
-            {
-                Id = vm.Id,
-                Title = vm.Title,
-                Type = vm.Type,
-                Details = vm.Details,
-                ProjectId = vm.ProjectId,
-            };
-        }
+            Id = vm.Id,
+            Title = vm.Title,
+            Type = vm.Type,
+            Details = vm.Details,
+            ProjectId = vm.ProjectId,
+        };
 
-        public static RequirementViewModel ToViewModel(this Requirement requirement)
+        public static RequirementViewModel ToViewModel(this Requirement requirement) => new RequirementViewModel
         {
-            return new RequirementViewModel
-            {
-                Id = requirement.Id,
-                Title = requirement.Title,
-                Type = requirement.Type,
-                Details = requirement.Details,
-                ProjectId = requirement.ProjectId,
-            };
-        }
+            Id = requirement.Id,
+            Title = requirement.Title,
+            Type = requirement.Type,
+            Details = requirement.Details,
+            ProjectId = requirement.ProjectId,
+        };
     }
 }

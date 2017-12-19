@@ -6,9 +6,6 @@ namespace ReqTrack.Application.Web.MVC.Presenters.Projects
 {
     public class CreateProjectPresenter : Presenter<CreateProjectResponse, ProjectViewModel>
     {
-        protected override ProjectViewModel CreateViewModel(CreateProjectResponse response)
-        {
-            return response.ProjectInfo.ToViewModel();
-        }
+        protected override ProjectViewModel CreateViewModel(CreateProjectResponse response) => response.ProjectInfo.ToViewModel();
     }
 }

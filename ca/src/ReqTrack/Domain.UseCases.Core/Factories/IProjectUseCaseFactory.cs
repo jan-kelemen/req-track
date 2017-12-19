@@ -1,7 +1,4 @@
-﻿using ReqTrack.Domain.UseCases.Core.Boundary.Interfaces;
-using ReqTrack.Domain.UseCases.Core.Projects.Interfaces;
-using ReqTrack.Domain.UseCases.Core.Projects.RequestModels;
-using ReqTrack.Domain.UseCases.Core.Projects.ResponseModels;
+﻿using ReqTrack.Domain.UseCases.Core.Projects.Interfaces;
 
 namespace ReqTrack.Domain.UseCases.Core.Factories
 {

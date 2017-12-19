@@ -19,16 +19,13 @@ namespace ReqTrack.Domain.UseCases.Core.Boundary.Objects.Extensions
                 projectId);
         }
 
-        public static Requirement ToBoundaryObject(this DRequirement requirement)
+        public static Requirement ToBoundaryObject(this DRequirement requirement) => new Requirement
         {
-            return new Requirement
-            {
-                Id = requirement.Id.ToBoundaryIdentity(),
-                Title = requirement.Title,
-                Type = requirement.Type.ToString(),
-                Details = requirement.Details,
-                ProjectId = requirement.ProjectId.ToBoundaryIdentity(),
-            };
-        }
+            Id = requirement.Id.ToBoundaryIdentity(),
+            Title = requirement.Title,
+            Type = requirement.Type.ToString(),
+            Details = requirement.Details,
+            ProjectId = requirement.ProjectId.ToBoundaryIdentity(),
+        };
     }
 }

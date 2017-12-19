@@ -5,13 +5,10 @@ namespace ReqTrack.Application.Web.MVC.Presenters.Projects
 {
     public class DeleteProjectPresenter : Presenter<DeleteProjectResponse, ProjectViewModel>
     {
-        protected override ProjectViewModel CreateViewModel(DeleteProjectResponse response)
+        protected override ProjectViewModel CreateViewModel(DeleteProjectResponse response) => new ProjectViewModel
         {
-            return new ProjectViewModel
-            {
-                Id = response.Id,
-                Name = "TODO",
-            };
-        }
+            Id = response.Id,
+            Name = "TODO",
+        };
     }
 }

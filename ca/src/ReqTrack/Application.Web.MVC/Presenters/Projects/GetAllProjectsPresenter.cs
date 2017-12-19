@@ -7,12 +7,9 @@ namespace ReqTrack.Application.Web.MVC.Presenters.Projects
 {
     public class GetAllProjectsPresenter : Presenter<GetAllProjectsResponse, ProjectsViewModel>
     {
-        protected override ProjectsViewModel CreateViewModel(GetAllProjectsResponse response)
+        protected override ProjectsViewModel CreateViewModel(GetAllProjectsResponse response) => new ProjectsViewModel
         {
-            return new ProjectsViewModel
-            {
-                Projects = response.Projects.Select(p => p.ToViewModel()),
-            };
-        }
+            Projects = response.Projects.Select(p => p.ToViewModel()),
+        };
     }
 }

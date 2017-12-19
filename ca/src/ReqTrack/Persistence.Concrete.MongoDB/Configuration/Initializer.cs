@@ -6,9 +6,6 @@ namespace ReqTrack.Persistence.Concrete.MongoDB.Configuration
 {
     public class Initializer
     {
-        public IRepositoryFactory Initialize(string url = "mongodb://localhost:27017")
-        {
-            return new MongoRepositoryFactory(new MongoReqTrackDatabase());
-        }
+        public IRepositoryFactory Initialize(string url = "mongodb://localhost:27017") => new MongoRepositoryFactory(new MongoReqTrackDatabase());
     }
 }
