@@ -15,9 +15,9 @@ namespace ReqTrack.Application.Web.MVC.Presenters.Projects
 
         private ProjectViewModel _updateProjectViewModel;
 
-        GetProjectResponse IUseCaseOutputBoundary<GetProjectResponse>.ResponseModel { set { _getProjectResponse = value; } }
+        GetProjectResponse IUseCaseOutputBoundary<GetProjectResponse>.ResponseModel { set => _getProjectResponse = value; }
 
-        UpdateProjectResponse IUseCaseOutputBoundary<UpdateProjectResponse>.ResponseModel { set { _updateProjectResponse = value; } }
+        UpdateProjectResponse IUseCaseOutputBoundary<UpdateProjectResponse>.ResponseModel { set => _updateProjectResponse = value; }
 
         ProjectViewModel IPresenter<GetProjectResponse, ProjectViewModel>.ViewModel
         {

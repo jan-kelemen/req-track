@@ -20,7 +20,10 @@ namespace ReqTrack.Application.Web.MVC
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
-            RegistryProxy.Get.RegisterFactory<IProjectPresenterFactory>(new DefaultPresenterFactory());
+
+            var presenterFactory = new DefaultPresenterFactory();
+            RegistryProxy.Get.RegisterFactory<IProjectPresenterFactory>(presenterFactory);
+            RegistryProxy.Get.RegisterFactory<IRequirementPresenterFactory>(presenterFactory);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
