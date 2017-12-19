@@ -75,5 +75,14 @@ namespace Application.Web.MVC.Controllers
             uc.Execute(presenter, new DeleteProjectRequest { Id = id });
             return View(presenter.ViewModel);
         }
+
+        [HttpGet]
+        public IActionResult ViewProjectRequirements(string id)
+        {
+            var uc = _useCaseFactory.GetProjectRequirements();
+            var presenter = _presenterFactory.GetProjectRequirements();
+            uc.Execute(presenter, new GetProjectRequirementsRequest { Id = id });
+            return View(presenter.ViewModel);
+        }
     }
 }

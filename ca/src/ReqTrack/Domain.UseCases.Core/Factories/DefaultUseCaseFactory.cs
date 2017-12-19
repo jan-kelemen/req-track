@@ -27,6 +27,8 @@ namespace ReqTrack.Domain.UseCases.Core.Factories
         IGetProjectUseCase IProjectUseCaseFactory.GetProject() => new GetProjectUseCase(_repositoryFactory.ProjectRepository);
 
         IUpdateProjectUseCase IProjectUseCaseFactory.UpdateProject() => new UpdateProjectUseCase(_repositoryFactory.ProjectRepository);
+
+        IGetProjectRequirementsUseCase IProjectUseCaseFactory.GetProjectRequirements() => new GetProjectRequirementsUseCase(_repositoryFactory.ProjectRepository);
         #endregion
 
         #region IRequirementUseCaseFactory implementation

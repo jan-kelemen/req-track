@@ -36,5 +36,7 @@ namespace ReqTrack.Domain.UseCases.Core.Factories
         /// </summary>
         /// <returns>The use case.</returns>
         IUpdateProjectUseCase UpdateProject();
+
+        IGetProjectRequirementsUseCase GetProjectRequirements();
     }
 }

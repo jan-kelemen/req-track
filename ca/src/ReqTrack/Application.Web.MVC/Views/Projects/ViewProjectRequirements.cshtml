@@ -1,0 +1,35 @@
+﻿@model ReqTrack.Application.Web.MVC.ViewModels.Projects.ProjectWithRequirementsViewModel
+
+@{
+    ViewData["Title"] = "ViewProjectRequirements";
+}
+
+<h2>ViewProjectRequirements</h2>
+
+<div>
+    <h4>ProjectWithRequirementsViewModel</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Id)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Id)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+    </dl>
+    <hr />
+    @foreach (var r in Model.Requirements)
+    {
+        <div>@r.Id|@r.Title|@r.Type -- @Html.ActionLink("View", "ViewRequirement", "Requirements", new { Id = @r.Id })</div>
+    }
+</div>
+<div>
+    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
+    <a asp-action="Index">Back to List</a>
+</div>

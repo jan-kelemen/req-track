@@ -16,5 +16,7 @@ namespace ReqTrack.Application.Web.MVC.Presenters.Factories
         IPresenter<GetProjectResponse, ProjectViewModel> UpdateProjectInitial();
 
         IPresenter<UpdateProjectResponse, ProjectViewModel> UpdateProject();
+
+        IPresenter<GetProjectRequirementsResponse, ProjectWithRequirementsViewModel> GetProjectRequirements();
     }
 }

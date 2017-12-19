@@ -1,7 +1,11 @@
-﻿using ReqTrack.Domain.Core.Entities;
-using ReqTrack.Domain.UseCases.Core.Boundary.Objects.Projects;
+﻿using ReqTrack.Domain.UseCases.Core.Boundary.Objects.Projects;
+using System;
+using System.Linq;
 
 using DProjectInfo = ReqTrack.Domain.Core.Entities.Projects.ProjectInfo;
+using DProjectWithRequirements = ReqTrack.Domain.Core.Entities.Projects.ProjectWithRequirements;
+using DRequirement = ReqTrack.Domain.Core.Entities.Projects.ProjectWithRequirements.Requirement;
+using DRequirementType = ReqTrack.Domain.Core.Entities.Requirements.RequirementType;
 
 namespace ReqTrack.Domain.UseCases.Core.Boundary.Objects.Extensions
 {
@@ -28,6 +32,30 @@ namespace ReqTrack.Domain.UseCases.Core.Boundary.Objects.Extensions
         {
             Id = projectInfo.Id.ToBoundaryIdentity(),
             Name = projectInfo.Name,
+        };
+
+        public static DProjectWithRequirements ToDomainEntity(this ProjectWithRequirements project) => new DProjectWithRequirements(
+            project.Id.ToDomainIdentity(),
+            project.Name,
+            project.Requirements.Select(r => r.ToDomainEntity()));
+
+        public static ProjectWithRequirements ToBoundaryObject(this DProjectWithRequirements project) => new ProjectWithRequirements
+        {
+            Id = project.Id.ToBoundaryIdentity(),
+            Name = project.Name,
+            Requirements = project.Requirements.Select(r => r.ToBoundaryObject()),
+        };
+
+        private static DRequirement ToDomainEntity(this ProjectWithRequirements.Requirement requirement) => new DRequirement(
+            requirement.Id.ToDomainIdentity(),
+            Enum.Parse<DRequirementType>(requirement.Type),
+            requirement.Title);
+
+        private static ProjectWithRequirements.Requirement ToBoundaryObject(this DRequirement requirement) => new ProjectWithRequirements.Requirement
+        {
+            Id = requirement.Id.ToBoundaryIdentity(),
+            Title = requirement.Title,
+            Type = requirement.Type.ToString()
         };
     }
 }

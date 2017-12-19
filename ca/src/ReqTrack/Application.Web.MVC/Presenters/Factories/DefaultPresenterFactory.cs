@@ -23,6 +23,8 @@ namespace ReqTrack.Application.Web.MVC.Presenters.Factories
 
         public IPresenter<GetProjectResponse, ProjectViewModel> UpdateProjectInitial() => new UpdateProjectPresenter();
 
+        public IPresenter<GetProjectRequirementsResponse, ProjectWithRequirementsViewModel> GetProjectRequirements() => new GetProjectRequirementsPresenter();
+
         public IPresenter<CreateRequirementResponse, RequirementViewModel> CreateRequirement() => new CreateRequirementPresenter();
 
         public IPresenter<DeleteRequirementResponse, RequirementViewModel> DeleteRequirement() => new DeleteRequirementPresenter();
