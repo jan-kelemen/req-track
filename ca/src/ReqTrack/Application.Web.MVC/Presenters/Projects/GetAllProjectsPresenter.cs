@@ -1,6 +1,6 @@
 ﻿using ReqTrack.Application.Web.MVC.ViewModels.Projects;
-using ReqTrack.Application.Web.MVC.ViewModels.Extensions.Projects;
 using System.Linq;
+using ReqTrack.Application.Web.MVC.ViewModels.Extensions;
 using ReqTrack.Domain.UseCases.Core.Projects.ResponseModels;
 
 namespace ReqTrack.Application.Web.MVC.Presenters.Projects
