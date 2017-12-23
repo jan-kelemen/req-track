@@ -6,4 +6,13 @@
     <RootNamespace>ReqTrack.Domain.Core</RootNamespace>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Folder Include="Contexts\UseCases\" />
+    <Folder Include="Contexts\Users\" />
+    <Folder Include="Contexts\Requirements\" />
+    <Folder Include="Contexts\Projects\" />
+    <Folder Include="Repositories\Factories\" />
+    <Folder Include="Repositories\Results\" />
+  </ItemGroup>
+
 </Project>
