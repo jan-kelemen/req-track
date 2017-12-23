@@ -6,7 +6,7 @@ namespace ReqTrack.Domain.Core.Contexts
     /// <c>Entity</c> is a base class for all entities in the domain model.
     /// </summary>
     /// <typeparam name="T">Type of the entity.</typeparam>
-    public abstract class Entity<T> 
+    public abstract class Entity<T> where T : class 
     {
         private Identity _id;
 
