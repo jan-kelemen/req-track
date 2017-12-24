@@ -8,7 +8,7 @@ namespace ReqTrack.Domain.Core.Entities.Users
     /// <summary>
     /// Represents a user of the application.
     /// </summary>
-    public class User : EntityWithValidation<User>
+    public class User : Entity<User>
     {
         /// <summary>
         /// Helper class for common operations and constants related to the user.
