@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ReqTrack.Domain.Core.Contexts
+namespace ReqTrack.Domain.Core.Entities
 {
     /// <summary>
     /// <c>Identity</c> is a value type which represents the unique identity of the entity.

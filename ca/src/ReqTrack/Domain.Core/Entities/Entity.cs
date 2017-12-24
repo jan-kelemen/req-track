@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ReqTrack.Domain.Core.Contexts
+namespace ReqTrack.Domain.Core.Entities
 {
     /// <summary>
     /// <c>Entity</c> is a base class for all entities in the domain model.

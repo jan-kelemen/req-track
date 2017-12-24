@@ -7,10 +7,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Contexts\UseCases\" />
-    <Folder Include="Contexts\Users\" />
-    <Folder Include="Contexts\Requirements\" />
-    <Folder Include="Contexts\Projects\" />
+    <Folder Include="Entities\UseCases\" />
+    <Folder Include="Entities\Requirements\" />
+    <Folder Include="Entities\Projects\" />
     <Folder Include="Repositories\Factories\" />
     <Folder Include="Repositories\Results\" />
   </ItemGroup>
