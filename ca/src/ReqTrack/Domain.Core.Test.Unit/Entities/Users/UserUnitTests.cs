@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using ReqTrack.Domain.Core.Entities.Projects;
 using ReqTrack.Domain.Core.Entities.Users;
 using ReqTrack.Domain.Core.Entities.ValidationHelpers;
 using Xunit;
@@ -23,13 +24,13 @@ namespace Domain.Core.Test.Unit.Entities.Users
 
             var validProjects = new[]
             {
-                new User.BasicProject("id2", "name1"),
-                new User.BasicProject("id3", "name2"),
+                new BasicProject("id2", "name1"),
+                new BasicProject("id3", "name2"),
             };
             var invalidProjects = new[]
             {
-                new User.BasicProject("id4", "name3"),
-                new User.BasicProject("id5", "name3"),
+                new BasicProject("id4", "name3"),
+                new BasicProject("id5", "name3"),
             };
 
             Assert.Throws<ArgumentException>(() =>
@@ -56,8 +57,8 @@ namespace Domain.Core.Test.Unit.Entities.Users
             var validPassword = UserValidationHelper.HashPassword("abc123");
             var validProjects = new[]
             {
-                new User.BasicProject("id2", "name1"),
-                new User.BasicProject("id3", "name2"),
+                new BasicProject("id2", "name1"),
+                new BasicProject("id3", "name2"),
             };
 
             var user = new User("id1", validUserName, validDisplayName, validPassword, validProjects);
@@ -71,7 +72,7 @@ namespace Domain.Core.Test.Unit.Entities.Users
         public void CantAddAProjectOfExistingNameAndDifferentIdToTheUser()
         {
             var user = CreateDefaultUser();
-            var projectToAdd = new User.BasicProject("id3", "name1");
+            var projectToAdd = new BasicProject("id3", "name1");
             var errors = user.CheckIfAllProjectsCanBeAdded(new[] {projectToAdd});
             var error = errors.FirstOrDefault();
 
@@ -86,7 +87,7 @@ namespace Domain.Core.Test.Unit.Entities.Users
         public void CanAddProjectOfExistingIdUnderDifferentNameToTheUser()
         {
             var user = CreateDefaultUser();
-            var projectToAdd = new User.BasicProject("id2", "name3");
+            var projectToAdd = new BasicProject("id2", "name3");
             var errors = user.CheckIfAllProjectsCanBeAdded(new[] { projectToAdd });
             var error = errors.FirstOrDefault();
 
@@ -107,7 +108,7 @@ namespace Domain.Core.Test.Unit.Entities.Users
         public void CantDeleteAProjectFromUserIfHeIsntAnAuthor()
         {
             var user = CreateDefaultUser();
-            var projectToDelete = new User.BasicProject("id3", "name2");
+            var projectToDelete = new BasicProject("id3", "name2");
             var errors = user.CheckIfAllProjectsCanBeDeleted(new[] {projectToDelete});
             var error = errors.FirstOrDefault();
 
@@ -122,7 +123,7 @@ namespace Domain.Core.Test.Unit.Entities.Users
         public void CanDeleteProjectEvenIfItsStoredUnderDifferentName()
         {
             var user = CreateDefaultUser();
-            var projectToDelete = new User.BasicProject("id1", "name3");
+            var projectToDelete = new BasicProject("id1", "name3");
             var errors = user.CheckIfAllProjectsCanBeDeleted(new[] { projectToDelete });
             var error = errors.FirstOrDefault();
 
@@ -143,7 +144,7 @@ namespace Domain.Core.Test.Unit.Entities.Users
         public void CorrectProjectIsDeletedFromTheUserEvenIfProjectOfTheSameNameExists()
         {
             var user = CreateDefaultUser();
-            var projectToDelete = new User.BasicProject("id1", "name2");
+            var projectToDelete = new BasicProject("id1", "name2");
             var errors = user.CheckIfAllProjectsCanBeDeleted(new[] { projectToDelete });
             var error = errors.FirstOrDefault();
 
@@ -169,8 +170,8 @@ namespace Domain.Core.Test.Unit.Entities.Users
             UserValidationHelper.HashPassword("passwordhash"),
             new[]
             {
-                new User.BasicProject("id1", "name1"),
-                new User.BasicProject("id2", "name2")
+                new BasicProject("id1", "name1"),
+                new BasicProject("id2", "name2")
             });
 
         #endregion
