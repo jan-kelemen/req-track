@@ -13,17 +13,7 @@ namespace ReqTrack.Domain.Core.Entities.Projects
 
         private string _description;
 
-        private readonly IDictionary<Identity, ProjectRequirement> _requirementsByIdentity = 
-            new Dictionary<Identity, ProjectRequirement>();
-
-        private readonly IDictionary<RequirementType, List<ProjectRequirement>> _requirementsByType =
-            new SortedDictionary<RequirementType, List<ProjectRequirement>>
-            {
-                {RequirementType.Bussiness, new List<ProjectRequirement>()},
-                {RequirementType.User, new List<ProjectRequirement>()},
-                {RequirementType.Functional, new List<ProjectRequirement>()},
-                {RequirementType.Nonfunctional, new List<ProjectRequirement>()},
-            };
+        private readonly ProjectRequirements _requirements;
 
         private readonly IDictionary<Identity, ProjectUseCase> _useCasesById = new Dictionary<Identity, ProjectUseCase>();
         private readonly IDictionary<string, ProjectUseCase> _useCasesByTitle = new SortedDictionary<string, ProjectUseCase>();
@@ -32,14 +22,16 @@ namespace ReqTrack.Domain.Core.Entities.Projects
             Identity id, 
             BasicUser author, 
             string name, 
-            string description, 
-            IEnumerable<ProjectRequirement> requirements, 
+            string description,
+            ProjectRequirements requirements, 
             IEnumerable<ProjectUseCase> useCases) 
             : base(id, name)
         {
             Author = author;
             Description = description;
-            AddRequirements(requirements);
+
+            _requirements = requirements;
+
             AddUseCases(useCases);
         }
 
@@ -71,99 +63,71 @@ namespace ReqTrack.Domain.Core.Entities.Projects
             }
         }
 
-        public IEnumerable<ProjectRequirement> Requirements => _requirementsByIdentity.Values;
+        public IEnumerable<ProjectRequirement> Requirements => _requirements;
 
         public IEnumerable<ProjectUseCase> UseCases => _useCasesByTitle.Values;
 
-        public bool HasRequirement(Identity id) => _requirementsByIdentity.ContainsKey(id);
+        public bool HasRequirement(Identity id)
+        {
+            if (_requirements == null)
+            {
+                throw new ApplicationException("Project requirements weren't loaded");
+            }
+
+            return _requirements.HasRequirement(id);
+        }
+
+        public ProjectRequirement GetRequirement(Identity id)
+        {
+            if (_requirements == null)
+            {
+                throw new ApplicationException("Project requirements weren't loaded");
+            }
+
+            return _requirements[id];
+        }
+
+        public IEnumerable<ProjectRequirement> GetRequirementsOfType(RequirementType type)
+        {
+            if (_requirements == null)
+            {
+                throw new ApplicationException("Project requirements weren't loaded");
+            }
+
+            return _requirements[type];
+        }
+
+        public IEnumerable<Tuple<ProjectRequirement, string>> CanChangeRequirements(
+            IEnumerable<ProjectRequirement> requirementsToAdd,
+            IEnumerable<ProjectRequirement> requirementsToUpdate,
+            IEnumerable<ProjectRequirement> requirementsToDelete)
+        {
+            if (_requirements == null)
+            {
+                throw new ApplicationException("Project requirements weren't loaded");
+            }
+
+            return _requirements.CanAddRequirements(requirementsToAdd)
+                .Union(_requirements.CanUpdateRequirements(requirementsToUpdate))
+                .Union(_requirements.CanDeleteRequirements(requirementsToDelete));
+        }
+
+        public void ChangeRequirements(
+            IEnumerable<ProjectRequirement> requirementsToAdd,
+            IEnumerable<ProjectRequirement> requirementsToUpdate,
+            IEnumerable<ProjectRequirement> requirementsToDelete)
+        {
+            if (_requirements == null)
+            {
+                throw new ApplicationException("Project requirements weren't loaded");
+            }
+
+            _requirements.ChangeRequirements(requirementsToAdd, requirementsToUpdate, requirementsToDelete);
+        }
 
         public bool HasUseCase(Identity id) => _useCasesById.ContainsKey(id);
 
         public bool HasUseCase(string title) => _useCasesByTitle.ContainsKey(title);
-
-        public IReadOnlyList<ProjectRequirement> GetRequirementsOfType(RequirementType type) => _requirementsByType[type];
-
-        public IEnumerable<Tuple<ProjectRequirement, string>> CheckIfAllRequirementsCanBeAdded(IEnumerable<ProjectRequirement> requirements)
-        {
-            var errorList = new List<Tuple<ProjectRequirement, string>>();
-            foreach (var requirement in requirements)
-            {
-                if (HasRequirement(requirement.Id) && _requirementsByIdentity[requirement.Id].Type != requirement.Type)
-                {
-                    errorList.Add(
-                        new Tuple<ProjectRequirement, string>(
-                            requirement, 
-                            "Can't change type of the requirement.")
-                        );
-                }
-            }
-
-            return errorList;
-        }
-
-        public void AddRequirements(IEnumerable<ProjectRequirement> requirements)
-        {
-            var reqs = requirements as ProjectRequirement[] ?? requirements.ToArray();
-
-            var errors = CheckIfAllRequirementsCanBeAdded(reqs);
-            if (errors.Any())
-            {
-                throw new ArgumentException("Can't add some of the requirements to the user.");
-            }
-
-            foreach (var requirement in reqs)
-            {
-                if (HasRequirement(requirement.Id))
-                {
-                    var oldEntity = _requirementsByIdentity[requirement.Id];
-
-                    _requirementsByIdentity[requirement.Id] = requirement;
-                    var index = _requirementsByType[requirement.Type].IndexOf(oldEntity);
-                    _requirementsByType[requirement.Type][index] = requirement;
-                }
-                else
-                {
-                    _requirementsByIdentity.Add(requirement.Id, requirement);
-                    _requirementsByType[requirement.Type].Add(requirement);
-                }
-            }
-        }
-
-        public IEnumerable<Tuple<ProjectRequirement, string>> CheckIfAllRequirementsCanBeDeleted(IEnumerable<ProjectRequirement> requirements)
-        {
-            var errorList = new List<Tuple<ProjectRequirement, string>>();
-            foreach (var requirement in requirements)
-            {
-                if (!HasRequirement(requirement.Id))
-                {
-                    errorList.Add(
-                        new Tuple<ProjectRequirement, string>(
-                            requirement,
-                            "Project doesn't have this requirement.")
-                        );
-                }
-            }
-
-            return errorList;
-        }
-
-        public void DeleteRequirements(IEnumerable<ProjectRequirement> requirements)
-        {
-            var reqs = requirements as ProjectRequirement[] ?? requirements.ToArray();
-
-            var errors = CheckIfAllRequirementsCanBeDeleted(reqs);
-            if (errors.Any())
-            {
-                throw new ArgumentException("Can't delete some of the requirements");
-            }
-
-            foreach (var requirement in reqs)
-            {
-                var oldEntity = _requirementsByIdentity[requirement.Id];
-                _requirementsByIdentity.Remove(requirement.Id);
-                _requirementsByType[oldEntity.Type].Remove(oldEntity);
-            }
-        }
 
         public IEnumerable<Tuple<ProjectUseCase, string>> CheckIfAllUseCasesCanBeAdded(IEnumerable<ProjectUseCase> useCases)
         {
