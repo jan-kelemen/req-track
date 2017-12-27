@@ -4,42 +4,11 @@ using ReqTrack.Domain.Core.Entities.Users;
 
 namespace ReqTrack.Domain.Core.Entities.Requirements
 {
-    public class Requirement : Entity<Requirement>
+    public class Requirement : BasicRequirement
     {
-        public static class Helper
-        {
-            public static readonly int MaximumTitleLength = 200;
-
-            public static readonly int MaximumNoteLength = 1000;
-
-            public static bool IsProjectValid(BasicProject project)
-            {
-                return !ReferenceEquals(project, null);
-            }
-
-            public static bool IsAuthorValid(BasicUser author)
-            {
-                return !ReferenceEquals(author, null);
-            }
-
-            public static bool IsTitleValid(string title)
-            {
-                return !string.IsNullOrWhiteSpace(title) && title.Length <= MaximumTitleLength;
-            }
-
-            public static bool IsNoteValid(string note)
-            {
-                return note == null || note.Length <= MaximumNoteLength;
-            }
-        }
-
         private BasicProject _project;
 
         private BasicUser _author;
-
-        private RequirementType _type;
-
-        private string _title;
 
         private string _note;
 
@@ -50,21 +19,19 @@ namespace ReqTrack.Domain.Core.Entities.Requirements
             RequirementType type, 
             string title, 
             string note) 
-            : base(id)
+            : base(id, type, title)
         {
-            ContainingProject = project;
+            Project = project;
             Author = author;
-            Type = type;
-            Title = title;
             Note = note;
         }
 
-        public BasicProject ContainingProject
+        public BasicProject Project
         {
             get => _project;
             set
             {
-                if(!Helper.IsProjectValid(value))
+                if(!RequirementValidationHelper.IsProjectValid(value))
                 {
                     throw new ArgumentException("Project is invalid");
                 }
@@ -78,7 +45,7 @@ namespace ReqTrack.Domain.Core.Entities.Requirements
             get => _author;
             set
             {
-                if (!Helper.IsAuthorValid(value))
+                if (!RequirementValidationHelper.IsAuthorValid(value))
                 {
                     throw new ArgumentException("Author is invalid");
                 }
@@ -87,32 +54,12 @@ namespace ReqTrack.Domain.Core.Entities.Requirements
             }
         }
 
-        public RequirementType Type
-        {
-            get => _type;
-            set => _type = value;
-        }
-
-        public string Title
-        {
-            get => _title;
-            set
-            {
-                if (!Helper.IsTitleValid(value))
-                {
-                    throw new ArgumentException("Title is invalid");
-                }
-
-                _title = value;
-            }
-        }
-
         public string Note
         {
             get => _note;
             set
             {
-                if (!Helper.IsNoteValid(value))
+                if (!RequirementValidationHelper.IsNoteValid(value))
                 {
                     throw new ArgumentException("Note is invalid");
                 }

@@ -8,13 +8,15 @@ namespace ReqTrack.Domain.Core.Entities.Projects
 {
     public class Project : BasicProject
     {
-        public class Requirement
+        public class Requirement : BasicRequirement
         {
-            public Identity Id { get; set; }
+            public Requirement(Identity id, RequirementType type, string title, int orderMarker) 
+                : base(id, type, title)
+            {
+                OrderMarker = orderMarker;
+            }
 
-            public RequirementType Type { get; set; }
-
-            public string Title { get; set; }
+            public int OrderMarker { get; set; }
         }
 
         public class UseCase
