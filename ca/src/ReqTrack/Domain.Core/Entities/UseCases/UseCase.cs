@@ -8,11 +8,18 @@ namespace ReqTrack.Domain.Core.Entities.UseCases
 {
     public class UseCase : BasicUseCase
     {
-        public class UseCaseStep
+        public class UseCaseStep : IComparable<UseCaseStep>
         {
             public int OrderMarker { get; set; }
 
             public string Content { get; set; }
+
+            public int CompareTo(UseCaseStep other)
+            {
+                if (ReferenceEquals(this, other)) return 0;
+                if (ReferenceEquals(null, other)) return 1;
+                return OrderMarker.CompareTo(other.OrderMarker);
+            }
         }
 
         private BasicProject _project;
@@ -88,6 +95,7 @@ namespace ReqTrack.Domain.Core.Entities.UseCases
                     }
                 }
 
+                given.Sort();
                 _steps = given;
             }
         }
