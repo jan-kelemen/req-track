@@ -8,50 +8,32 @@ namespace ReqTrack.Domain.Core.Entities.Projects
 {
     public class Project : BasicProject
     {
-        public class Requirement : BasicRequirement
-        {
-            public Requirement(Identity id, RequirementType type, string title, int orderMarker) 
-                : base(id, type, title)
-            {
-                OrderMarker = orderMarker;
-            }
-
-            public int OrderMarker { get; set; }
-        }
-
-        public class UseCase
-        {
-            public Identity Id { get; set; }
-
-            public string Title { get; set; }
-        }
-
         private BasicUser _author;
 
         private string _description;
 
-        private readonly IDictionary<Identity, Requirement> _requirementsByIdentity = 
-            new Dictionary<Identity, Requirement>();
+        private readonly IDictionary<Identity, ProjectRequirement> _requirementsByIdentity = 
+            new Dictionary<Identity, ProjectRequirement>();
 
-        private readonly IDictionary<RequirementType, List<Requirement>> _requirementsByType =
-            new SortedDictionary<RequirementType, List<Requirement>>
+        private readonly IDictionary<RequirementType, List<ProjectRequirement>> _requirementsByType =
+            new SortedDictionary<RequirementType, List<ProjectRequirement>>
             {
-                {RequirementType.Bussiness, new List<Requirement>()},
-                {RequirementType.User, new List<Requirement>()},
-                {RequirementType.Functional, new List<Requirement>()},
-                {RequirementType.Nonfunctional, new List<Requirement>()},
+                {RequirementType.Bussiness, new List<ProjectRequirement>()},
+                {RequirementType.User, new List<ProjectRequirement>()},
+                {RequirementType.Functional, new List<ProjectRequirement>()},
+                {RequirementType.Nonfunctional, new List<ProjectRequirement>()},
             };
 
-        private readonly IDictionary<Identity, UseCase> _useCasesById = new Dictionary<Identity, UseCase>();
-        private readonly IDictionary<string, UseCase> _useCasesByTitle = new SortedDictionary<string, UseCase>();
+        private readonly IDictionary<Identity, ProjectUseCase> _useCasesById = new Dictionary<Identity, ProjectUseCase>();
+        private readonly IDictionary<string, ProjectUseCase> _useCasesByTitle = new SortedDictionary<string, ProjectUseCase>();
 
         public Project(
             Identity id, 
             BasicUser author, 
             string name, 
             string description, 
-            IEnumerable<Requirement> requirements, 
-            IEnumerable<UseCase> useCases) 
+            IEnumerable<ProjectRequirement> requirements, 
+            IEnumerable<ProjectUseCase> useCases) 
             : base(id, name)
         {
             Author = author;
@@ -88,9 +70,9 @@ namespace ReqTrack.Domain.Core.Entities.Projects
             }
         }
 
-        public IEnumerable<Requirement> Requirements => _requirementsByIdentity.Values;
+        public IEnumerable<ProjectRequirement> Requirements => _requirementsByIdentity.Values;
 
-        public IEnumerable<UseCase> UseCases => _useCasesByTitle.Values;
+        public IEnumerable<ProjectUseCase> UseCases => _useCasesByTitle.Values;
 
         public bool HasRequirement(Identity id) => _requirementsByIdentity.ContainsKey(id);
 
@@ -98,17 +80,17 @@ namespace ReqTrack.Domain.Core.Entities.Projects
 
         public bool HasUseCase(string title) => _useCasesByTitle.ContainsKey(title);
 
-        public IReadOnlyList<Requirement> GetRequirementsOfType(RequirementType type) => _requirementsByType[type];
+        public IReadOnlyList<ProjectRequirement> GetRequirementsOfType(RequirementType type) => _requirementsByType[type];
 
-        public IEnumerable<Tuple<Requirement, string>> CheckIfAllRequirementsCanBeAdded(IEnumerable<Requirement> requirements)
+        public IEnumerable<Tuple<ProjectRequirement, string>> CheckIfAllRequirementsCanBeAdded(IEnumerable<ProjectRequirement> requirements)
         {
-            var errorList = new List<Tuple<Requirement, string>>();
+            var errorList = new List<Tuple<ProjectRequirement, string>>();
             foreach (var requirement in requirements)
             {
                 if (HasRequirement(requirement.Id) && _requirementsByIdentity[requirement.Id].Type != requirement.Type)
                 {
                     errorList.Add(
-                        new Tuple<Requirement, string>(
+                        new Tuple<ProjectRequirement, string>(
                             requirement, 
                             "Can't change type of the requirement.")
                         );
@@ -118,9 +100,9 @@ namespace ReqTrack.Domain.Core.Entities.Projects
             return errorList;
         }
 
-        public void AddRequirements(IEnumerable<Requirement> requirements)
+        public void AddRequirements(IEnumerable<ProjectRequirement> requirements)
         {
-            var reqs = requirements as Requirement[] ?? requirements.ToArray();
+            var reqs = requirements as ProjectRequirement[] ?? requirements.ToArray();
 
             var errors = CheckIfAllRequirementsCanBeAdded(reqs);
             if (errors.Any())
@@ -146,15 +128,15 @@ namespace ReqTrack.Domain.Core.Entities.Projects
             }
         }
 
-        public IEnumerable<Tuple<Requirement, string>> CheckIfAllRequirementsCanBeDeleted(IEnumerable<Requirement> requirements)
+        public IEnumerable<Tuple<ProjectRequirement, string>> CheckIfAllRequirementsCanBeDeleted(IEnumerable<ProjectRequirement> requirements)
         {
-            var errorList = new List<Tuple<Requirement, string>>();
+            var errorList = new List<Tuple<ProjectRequirement, string>>();
             foreach (var requirement in requirements)
             {
                 if (!HasRequirement(requirement.Id))
                 {
                     errorList.Add(
-                        new Tuple<Requirement, string>(
+                        new Tuple<ProjectRequirement, string>(
                             requirement,
                             "Project doesn't have this requirement.")
                         );
@@ -164,9 +146,9 @@ namespace ReqTrack.Domain.Core.Entities.Projects
             return errorList;
         }
 
-        public void DeleteRequirements(IEnumerable<Requirement> requirements)
+        public void DeleteRequirements(IEnumerable<ProjectRequirement> requirements)
         {
-            var reqs = requirements as Requirement[] ?? requirements.ToArray();
+            var reqs = requirements as ProjectRequirement[] ?? requirements.ToArray();
 
             var errors = CheckIfAllRequirementsCanBeDeleted(reqs);
             if (errors.Any())
@@ -182,15 +164,15 @@ namespace ReqTrack.Domain.Core.Entities.Projects
             }
         }
 
-        public IEnumerable<Tuple<UseCase, string>> CheckIfAllUseCasesCanBeAdded(IEnumerable<UseCase> useCases)
+        public IEnumerable<Tuple<ProjectUseCase, string>> CheckIfAllUseCasesCanBeAdded(IEnumerable<ProjectUseCase> useCases)
         {
-            var errorList = new List<Tuple<UseCase, string>>();
+            var errorList = new List<Tuple<ProjectUseCase, string>>();
             foreach (var useCase in useCases)
             {
                 if (HasUseCase(useCase.Title) && !HasUseCase(useCase.Id))
                 {
                     errorList.Add(
-                        new Tuple<UseCase, string>(
+                        new Tuple<ProjectUseCase, string>(
                             useCase,
                             "Project already has a usecase of the same name")
                         );
@@ -200,9 +182,9 @@ namespace ReqTrack.Domain.Core.Entities.Projects
             return errorList;
         }
 
-        public void AddUseCases(IEnumerable<UseCase> useCases)
+        public void AddUseCases(IEnumerable<ProjectUseCase> useCases)
         {
-            var cases = useCases as UseCase[] ?? useCases.ToArray();
+            var cases = useCases as ProjectUseCase[] ?? useCases.ToArray();
 
             var errors = CheckIfAllUseCasesCanBeAdded(cases);
             if (errors.Any())
@@ -228,15 +210,15 @@ namespace ReqTrack.Domain.Core.Entities.Projects
             }
         }
 
-        public IEnumerable<Tuple<UseCase, string>> CheckIfAllUseCasesCanBeDeleted(IEnumerable<UseCase> useCases)
+        public IEnumerable<Tuple<ProjectUseCase, string>> CheckIfAllUseCasesCanBeDeleted(IEnumerable<ProjectUseCase> useCases)
         {
-            var errorList = new List<Tuple<UseCase, string>>();
+            var errorList = new List<Tuple<ProjectUseCase, string>>();
             foreach (var useCase in useCases)
             {
                 if (!HasRequirement(useCase.Id))
                 {
                     errorList.Add(
-                        new Tuple<UseCase, string>(
+                        new Tuple<ProjectUseCase, string>(
                             useCase,
                             "Project doesn't have this use case.")
                     );
@@ -246,9 +228,9 @@ namespace ReqTrack.Domain.Core.Entities.Projects
             return errorList;
         }
 
-        public void DeleteUseCases(IEnumerable<UseCase> useCases)
+        public void DeleteUseCases(IEnumerable<ProjectUseCase> useCases)
         {
-            var ucs = useCases as UseCase[] ?? useCases.ToArray();
+            var ucs = useCases as ProjectUseCase[] ?? useCases.ToArray();
 
             var errors = CheckIfAllUseCasesCanBeDeleted(ucs);
             if (errors.Any())
