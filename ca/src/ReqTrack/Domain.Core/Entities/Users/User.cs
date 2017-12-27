@@ -234,7 +234,7 @@ namespace ReqTrack.Domain.Core.Entities.Users
         /// <exception cref="ArgumentException">If users existing project contain a project of the same name but different id.</exception>
         public void AddProjects(IEnumerable<ProjectInfo> projects)
         {
-            var projectInfos = projects.ToList();
+            var projectInfos = projects as ProjectInfo[] ?? projects.ToArray();
 
             var errors = CheckIfAllProjectsCanBeAdded(projectInfos);
             if (errors.Any())
@@ -277,7 +277,7 @@ namespace ReqTrack.Domain.Core.Entities.Users
                         new Tuple<ProjectInfo, string>(
                             project,
                             "User isn't an author on one of the projects.")
-                    );
+                        );
                 }
             }
 
@@ -290,10 +290,10 @@ namespace ReqTrack.Domain.Core.Entities.Users
         /// <param name="projects">Projects to remove.</param>
         /// <exception cref="ArgumentException">If the user isn't an author on one of the passed projects.</exception>
         public void DeleteProjects(IEnumerable<ProjectInfo> projects)
-        { 
-            var projectInfos = projects.ToList();
+        {
+            var projectInfos = projects as ProjectInfo[] ?? projects.ToArray();
 
-            var errors = CheckIfAllProjectsCanBeAdded(projectInfos);
+            var errors = CheckIfAllProjectsCanBeDeleted(projectInfos);
             if (errors.Any())
             {
                 throw new ArgumentException("User isn't an author on one of the projects.");

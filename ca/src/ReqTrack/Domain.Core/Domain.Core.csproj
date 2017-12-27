@@ -8,8 +8,6 @@
 
   <ItemGroup>
     <Folder Include="Entities\UseCases\" />
-    <Folder Include="Entities\Requirements\" />
-    <Folder Include="Entities\Projects\" />
     <Folder Include="Repositories\Factories\" />
     <Folder Include="Repositories\Results\" />
   </ItemGroup>
