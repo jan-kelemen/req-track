@@ -70,7 +70,7 @@ namespace ReqTrack.Domain.Core.Entities.Projects
                 {RequirementType.Nonfunctional, new List<Requirement>()},
             };
 
-        private readonly IDictionary<Identity, UseCase> _useCasesByIdentity = new Dictionary<Identity, UseCase>();
+        private readonly IDictionary<Identity, UseCase> _useCasesById = new Dictionary<Identity, UseCase>();
         private readonly IDictionary<string, UseCase> _useCasesByTitle = new SortedDictionary<string, UseCase>();
 
         public Project(
@@ -137,7 +137,7 @@ namespace ReqTrack.Domain.Core.Entities.Projects
 
         public bool HasRequirement(Identity id) => _requirementsByIdentity.ContainsKey(id);
 
-        public bool HasUseCase(Identity id) => _useCasesByIdentity.ContainsKey(id);
+        public bool HasUseCase(Identity id) => _useCasesById.ContainsKey(id);
 
         public bool HasUseCase(string title) => _useCasesByTitle.ContainsKey(title);
 
@@ -257,15 +257,15 @@ namespace ReqTrack.Domain.Core.Entities.Projects
             {
                 if (HasUseCase(useCase.Id))
                 {
-                    var oldEntity = _useCasesByIdentity[useCase.Id];
+                    var oldEntity = _useCasesById[useCase.Id];
 
-                    _useCasesByIdentity[useCase.Id] = useCase;
+                    _useCasesById[useCase.Id] = useCase;
                     _useCasesByTitle.Remove(oldEntity.Title);
                     _useCasesByTitle.Add(useCase.Title, useCase);
                 }
                 else
                 {
-                    _useCasesByIdentity.Add(useCase.Id, useCase);
+                    _useCasesById.Add(useCase.Id, useCase);
                     _useCasesByTitle.Add(useCase.Title, useCase);
                 }
             }
@@ -301,8 +301,8 @@ namespace ReqTrack.Domain.Core.Entities.Projects
 
             foreach (var useCase in ucs)
             {
-                _useCasesByTitle.Remove(_useCasesByIdentity[useCase.Id].Title);
-                _useCasesByIdentity.Remove(useCase.Id);
+                _useCasesByTitle.Remove(_useCasesById[useCase.Id].Title);
+                _useCasesById.Remove(useCase.Id);
             }
         }
     }
