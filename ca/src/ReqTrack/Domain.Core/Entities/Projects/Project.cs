@@ -15,24 +15,22 @@ namespace ReqTrack.Domain.Core.Entities.Projects
 
         private readonly ProjectRequirements _requirements;
 
-        private readonly IDictionary<Identity, ProjectUseCase> _useCasesById = new Dictionary<Identity, ProjectUseCase>();
-        private readonly IDictionary<string, ProjectUseCase> _useCasesByTitle = new SortedDictionary<string, ProjectUseCase>();
+        private readonly ProjectUseCases _useCases;
 
         public Project(
             Identity id, 
             BasicUser author, 
             string name, 
-            string description,
-            ProjectRequirements requirements, 
-            IEnumerable<ProjectUseCase> useCases) 
+            string description = null,
+            ProjectRequirements requirements = null, 
+            ProjectUseCases useCases = null) 
             : base(id, name)
         {
             Author = author;
             Description = description;
 
             _requirements = requirements;
-
-            AddUseCases(useCases);
+            _useCases = useCases;
         }
 
         public BasicUser Author
@@ -65,7 +63,7 @@ namespace ReqTrack.Domain.Core.Entities.Projects
 
         public IEnumerable<ProjectRequirement> Requirements => _requirements;
 
-        public IEnumerable<ProjectUseCase> UseCases => _useCasesByTitle.Values;
+        public IEnumerable<ProjectUseCase> UseCases => _useCases;
 
         public bool HasRequirement(Identity id)
         {
@@ -125,89 +123,72 @@ namespace ReqTrack.Domain.Core.Entities.Projects
             _requirements.ChangeRequirements(requirementsToAdd, requirementsToUpdate, requirementsToDelete);
         }
 
-        public bool HasUseCase(Identity id) => _useCasesById.ContainsKey(id);
-
-        public bool HasUseCase(string title) => _useCasesByTitle.ContainsKey(title);
-
-        public IEnumerable<Tuple<ProjectUseCase, string>> CheckIfAllUseCasesCanBeAdded(IEnumerable<ProjectUseCase> useCases)
+        public bool HasUseCase(Identity id)
         {
-            var errorList = new List<Tuple<ProjectUseCase, string>>();
-            foreach (var useCase in useCases)
+            if (_useCases == null)
             {
-                if (HasUseCase(useCase.Title) && !HasUseCase(useCase.Id))
-                {
-                    errorList.Add(
-                        new Tuple<ProjectUseCase, string>(
-                            useCase,
-                            "Project already has a usecase of the same name")
-                        );
-                }
+                throw new ApplicationException("Project use cases weren't loaded");
             }
 
-            return errorList;
+            return _useCases.HasUseCase(id);
         }
 
-        public void AddUseCases(IEnumerable<ProjectUseCase> useCases)
+        public bool HasUseCase(string title)
         {
-            var cases = useCases as ProjectUseCase[] ?? useCases.ToArray();
-
-            var errors = CheckIfAllUseCasesCanBeAdded(cases);
-            if (errors.Any())
+            if (_useCases == null)
             {
-                throw new ArgumentException("Use cases with same name already exits for this project");
+                throw new ApplicationException("Project use cases weren't loaded");
             }
 
-            foreach (var useCase in cases)
-            {
-                if (HasUseCase(useCase.Id))
-                {
-                    var oldEntity = _useCasesById[useCase.Id];
-
-                    _useCasesById[useCase.Id] = useCase;
-                    _useCasesByTitle.Remove(oldEntity.Title);
-                    _useCasesByTitle.Add(useCase.Title, useCase);
-                }
-                else
-                {
-                    _useCasesById.Add(useCase.Id, useCase);
-                    _useCasesByTitle.Add(useCase.Title, useCase);
-                }
-            }
+            return _useCases.HasUseCase(title);
         }
 
-        public IEnumerable<Tuple<ProjectUseCase, string>> CheckIfAllUseCasesCanBeDeleted(IEnumerable<ProjectUseCase> useCases)
+        public ProjectUseCase GetUseCase(Identity id)
         {
-            var errorList = new List<Tuple<ProjectUseCase, string>>();
-            foreach (var useCase in useCases)
+            if (_useCases == null)
             {
-                if (!HasRequirement(useCase.Id))
-                {
-                    errorList.Add(
-                        new Tuple<ProjectUseCase, string>(
-                            useCase,
-                            "Project doesn't have this use case.")
-                    );
-                }
+                throw new ApplicationException("Project use cases weren't loaded");
             }
 
-            return errorList;
+            return _useCases[id];
         }
 
-        public void DeleteUseCases(IEnumerable<ProjectUseCase> useCases)
+        public ProjectUseCase GetUseCase(string title)
         {
-            var ucs = useCases as ProjectUseCase[] ?? useCases.ToArray();
-
-            var errors = CheckIfAllUseCasesCanBeDeleted(ucs);
-            if (errors.Any())
+            if (_useCases == null)
             {
-                throw new ArgumentException("Project doesn't contain one of the use cases.");
+                throw new ApplicationException("Project use cases weren't loaded");
             }
 
-            foreach (var useCase in ucs)
+            return _useCases[title];
+        }
+
+        public IEnumerable<Tuple<ProjectUseCase, string>> CanChangeUseCases(
+            IEnumerable<ProjectUseCase> useCasesToAdd,
+            IEnumerable<ProjectUseCase> useCasesToUpdate,
+            IEnumerable<ProjectUseCase> useCasesToDelete)
+        {
+            if (_useCases == null)
             {
-                _useCasesByTitle.Remove(_useCasesById[useCase.Id].Title);
-                _useCasesById.Remove(useCase.Id);
+                throw new ApplicationException("Project use cases weren't loaded");
             }
+
+            return _useCases.CanAddUseCases(useCasesToAdd)
+                .Union(_useCases.CanUpdateUseCases(useCasesToUpdate))
+                .Union(_useCases.CanDeleteUseCases(useCasesToDelete));
+        }
+
+        public void ChangeUseCases(
+            IEnumerable<ProjectUseCase> useCasesToAdd,
+            IEnumerable<ProjectUseCase> useCasesToUpdate,
+            IEnumerable<ProjectUseCase> useCasesToDelete)
+        {
+            if (_useCases == null)
+            {
+                throw new ApplicationException("Project use cases weren't loaded");
+            }
+
+            _useCases.ChangeUseCases(useCasesToAdd, useCasesToUpdate, useCasesToDelete);
         }
     }
 }
