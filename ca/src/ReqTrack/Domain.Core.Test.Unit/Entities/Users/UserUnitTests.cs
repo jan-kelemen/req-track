@@ -22,13 +22,13 @@ namespace Domain.Core.Test.Unit.Entities.Users
 
             var validProjects = new[]
             {
-                new User.ProjectInfo("id2", "name1"),
-                new User.ProjectInfo("id3", "name2"),
+                new User.BasicProject("id2", "name1"),
+                new User.BasicProject("id3", "name2"),
             };
             var invalidProjects = new[]
             {
-                new User.ProjectInfo("id4", "name3"),
-                new User.ProjectInfo("id5", "name3"),
+                new User.BasicProject("id4", "name3"),
+                new User.BasicProject("id5", "name3"),
             };
 
             Assert.Throws<ArgumentException>(() =>
@@ -55,8 +55,8 @@ namespace Domain.Core.Test.Unit.Entities.Users
             var validPassword = UserValidationHelper.HashPassword("abc123");
             var validProjects = new[]
             {
-                new User.ProjectInfo("id2", "name1"),
-                new User.ProjectInfo("id3", "name2"),
+                new User.BasicProject("id2", "name1"),
+                new User.BasicProject("id3", "name2"),
             };
 
             var user = new User("id1", validUserName, validDisplayName, validPassword, validProjects);
@@ -70,7 +70,7 @@ namespace Domain.Core.Test.Unit.Entities.Users
         public void CantAddAProjectOfExistingNameAndDifferentIdToTheUser()
         {
             var user = CreateDefaultUser();
-            var projectToAdd = new User.ProjectInfo("id3", "name1");
+            var projectToAdd = new User.BasicProject("id3", "name1");
             var errors = user.CheckIfAllProjectsCanBeAdded(new[] {projectToAdd});
             var error = errors.FirstOrDefault();
 
@@ -85,7 +85,7 @@ namespace Domain.Core.Test.Unit.Entities.Users
         public void CanAddProjectOfExistingIdUnderDifferentNameToTheUser()
         {
             var user = CreateDefaultUser();
-            var projectToAdd = new User.ProjectInfo("id2", "name3");
+            var projectToAdd = new User.BasicProject("id2", "name3");
             var errors = user.CheckIfAllProjectsCanBeAdded(new[] { projectToAdd });
             var error = errors.FirstOrDefault();
 
@@ -106,7 +106,7 @@ namespace Domain.Core.Test.Unit.Entities.Users
         public void CantDeleteAProjectFromUserIfHeIsntAnAuthor()
         {
             var user = CreateDefaultUser();
-            var projectToDelete = new User.ProjectInfo("id3", "name2");
+            var projectToDelete = new User.BasicProject("id3", "name2");
             var errors = user.CheckIfAllProjectsCanBeDeleted(new[] {projectToDelete});
             var error = errors.FirstOrDefault();
 
@@ -121,7 +121,7 @@ namespace Domain.Core.Test.Unit.Entities.Users
         public void CanDeleteProjectEvenIfItsStoredUnderDifferentName()
         {
             var user = CreateDefaultUser();
-            var projectToDelete = new User.ProjectInfo("id1", "name3");
+            var projectToDelete = new User.BasicProject("id1", "name3");
             var errors = user.CheckIfAllProjectsCanBeDeleted(new[] { projectToDelete });
             var error = errors.FirstOrDefault();
 
@@ -142,7 +142,7 @@ namespace Domain.Core.Test.Unit.Entities.Users
         public void CorrectProjectIsDeletedFromTheUserEvenIfProjectOfTheSameNameExists()
         {
             var user = CreateDefaultUser();
-            var projectToDelete = new User.ProjectInfo("id1", "name2");
+            var projectToDelete = new User.BasicProject("id1", "name2");
             var errors = user.CheckIfAllProjectsCanBeDeleted(new[] { projectToDelete });
             var error = errors.FirstOrDefault();
 
@@ -168,8 +168,8 @@ namespace Domain.Core.Test.Unit.Entities.Users
             UserValidationHelper.HashPassword("passwordhash"),
             new[]
             {
-                new User.ProjectInfo("id1", "name1"),
-                new User.ProjectInfo("id2", "name2")
+                new User.BasicProject("id1", "name1"),
+                new User.BasicProject("id2", "name2")
             });
 
         #endregion

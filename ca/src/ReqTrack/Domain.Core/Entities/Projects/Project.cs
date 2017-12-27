@@ -6,30 +6,8 @@ using ReqTrack.Domain.Core.Entities.Users;
 
 namespace ReqTrack.Domain.Core.Entities.Projects
 {
-    public class Project : Entity<Project>
+    public class Project : BasicProject
     {
-        public static class Helper
-        {
-            public static readonly int MaximumNameLength = 50;
-
-            public static readonly int MaximumDescriptionLength = 1000;
-
-            public static bool IsAuthorValid(BasicUser author)
-            {
-                return !ReferenceEquals(author, null);
-            }
-
-            public static bool IsNameValid(string name)
-            {
-                return !string.IsNullOrWhiteSpace(name) && name.Length <= MaximumNameLength;
-            }
-
-            public static bool IsDescriptionValid(string description)
-            {
-                return description == null || description.Length <= MaximumDescriptionLength;
-            }
-        }
-
         public class Requirement
         {
             public Identity Id { get; set; }
@@ -47,8 +25,6 @@ namespace ReqTrack.Domain.Core.Entities.Projects
         }
 
         private BasicUser _author;
-
-        private string _name;
 
         private string _description;
 
@@ -74,10 +50,9 @@ namespace ReqTrack.Domain.Core.Entities.Projects
             string description, 
             IEnumerable<Requirement> requirements, 
             IEnumerable<UseCase> useCases) 
-            : base(id)
+            : base(id, name)
         {
             Author = author;
-            Name = name;
             Description = description;
             AddRequirements(requirements);
             AddUseCases(useCases);
@@ -88,7 +63,7 @@ namespace ReqTrack.Domain.Core.Entities.Projects
             get => _author;
             set
             {
-                if (!Helper.IsAuthorValid(value))
+                if (!ProjectValidationHelper.IsAuthorValid(value))
                 {
                     throw new ArgumentException("Author is null");
                 }
@@ -97,26 +72,12 @@ namespace ReqTrack.Domain.Core.Entities.Projects
             }
         }
 
-        public string Name
-        {
-            get => _name;
-            set
-            {
-                if (!Helper.IsNameValid(value))
-                {
-                    throw new ArgumentException("Name is invalid");
-                }
-
-                _name = value;
-            }
-        }
-
         public string Description
         {
             get => _description;
             set
             {
-                if (!Helper.IsDescriptionValid(value))
+                if (!ProjectValidationHelper.IsDescriptionValid(value))
                 {
                     throw new ArgumentException("Description is invalid");
                 }

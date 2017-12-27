@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using ReqTrack.Domain.Core.Entities.Projects;
 
 namespace ReqTrack.Domain.Core.Entities.Users
 {
@@ -9,34 +10,12 @@ namespace ReqTrack.Domain.Core.Entities.Users
     /// </summary>
     public class User : BasicUser
     {
-        /// <summary>
-        /// Basic information about the project of which the user is an author.
-        /// </summary>
-        public class ProjectInfo
-        {
-            public ProjectInfo(Identity id, string name)
-            {
-                Id = id;
-                Name = name;
-            }
-
-            /// <summary>
-            /// Identifier of the project.
-            /// </summary>
-            public Identity Id { get; }
-
-            /// <summary>
-            /// Name of the project.
-            /// </summary>
-            public string Name { get; }
-        }
-
         private string _userName;
 
         private string _passwordHash;
 
-        private readonly IDictionary<Identity, ProjectInfo> _projectsById = new Dictionary<Identity, ProjectInfo>();
-        private readonly IDictionary<string, ProjectInfo> _projectsByName = new SortedDictionary<string, ProjectInfo>();
+        private readonly IDictionary<Identity, BasicProject> _projectsById = new Dictionary<Identity, BasicProject>();
+        private readonly IDictionary<string, BasicProject> _projectsByName = new SortedDictionary<string, BasicProject>();
 
         /// <summary>
         /// Creates the user.
@@ -52,7 +31,7 @@ namespace ReqTrack.Domain.Core.Entities.Users
             string userName,
             string displayName,
             string passwordHash,
-            IEnumerable<ProjectInfo> projects) 
+            IEnumerable<BasicProject> projects) 
             : base(id, displayName)
         {
             UserName = userName;
@@ -100,7 +79,7 @@ namespace ReqTrack.Domain.Core.Entities.Users
         /// <summary>
         /// Projects of which the user is author in arbitrary order.
         /// </summary>
-        public IEnumerable<ProjectInfo> Projects => _projectsByName.Values;
+        public IEnumerable<BasicProject> Projects => _projectsByName.Values;
 
         /// <summary>
         /// Checks if the user is an author on project with specified identity.
@@ -127,15 +106,15 @@ namespace ReqTrack.Domain.Core.Entities.Users
         /// </summary>
         /// <param name="projects">Projects to add.</param>
         /// <returns>List of projects that can't be added.</returns>
-        public IEnumerable<Tuple<ProjectInfo, string>> CheckIfAllProjectsCanBeAdded(IEnumerable<ProjectInfo> projects)
+        public IEnumerable<Tuple<BasicProject, string>> CheckIfAllProjectsCanBeAdded(IEnumerable<BasicProject> projects)
         {
-            var errorList = new List<Tuple<ProjectInfo, string>>();
+            var errorList = new List<Tuple<BasicProject, string>>();
             foreach (var project in projects)
             {
                 if (HasProject(project.Name) && !HasProject(project.Id))
                 {
                     errorList.Add(
-                        new Tuple<ProjectInfo, string>(
+                        new Tuple<BasicProject, string>(
                             project,
                             "User is already an author on the project of the same name")
                     );
@@ -151,9 +130,9 @@ namespace ReqTrack.Domain.Core.Entities.Users
         /// <param name="projects">Projects to add.</param>
         /// <returns><c>true</c> if operation was executed.</returns>
         /// <exception cref="ArgumentException">If users existing project contain a project of the same name but different id.</exception>
-        public void AddProjects(IEnumerable<ProjectInfo> projects)
+        public void AddProjects(IEnumerable<BasicProject> projects)
         {
-            var projectInfos = projects as ProjectInfo[] ?? projects.ToArray();
+            var projectInfos = projects as BasicProject[] ?? projects.ToArray();
 
             var errors = CheckIfAllProjectsCanBeAdded(projectInfos);
             if (errors.Any())
@@ -185,15 +164,15 @@ namespace ReqTrack.Domain.Core.Entities.Users
         /// </summary>
         /// <param name="projects">Projects to delete.</param>
         /// <returns>List of projects that can't be deleted.</returns>
-        public IEnumerable<Tuple<ProjectInfo, string>> CheckIfAllProjectsCanBeDeleted(IEnumerable<ProjectInfo> projects)
+        public IEnumerable<Tuple<BasicProject, string>> CheckIfAllProjectsCanBeDeleted(IEnumerable<BasicProject> projects)
         {
-            var errorList = new List<Tuple<ProjectInfo, string>>();
+            var errorList = new List<Tuple<BasicProject, string>>();
             foreach (var project in projects)
             {
                 if (!HasProject(project.Id))
                 {
                     errorList.Add(
-                        new Tuple<ProjectInfo, string>(
+                        new Tuple<BasicProject, string>(
                             project,
                             "User isn't an author on one of the projects.")
                         );
@@ -208,9 +187,9 @@ namespace ReqTrack.Domain.Core.Entities.Users
         /// </summary>
         /// <param name="projects">Projects to remove.</param>
         /// <exception cref="ArgumentException">If the user isn't an author on one of the passed projects.</exception>
-        public void DeleteProjects(IEnumerable<ProjectInfo> projects)
+        public void DeleteProjects(IEnumerable<BasicProject> projects)
         {
-            var projectInfos = projects as ProjectInfo[] ?? projects.ToArray();
+            var projectInfos = projects as BasicProject[] ?? projects.ToArray();
 
             var errors = CheckIfAllProjectsCanBeDeleted(projectInfos);
             if (errors.Any())

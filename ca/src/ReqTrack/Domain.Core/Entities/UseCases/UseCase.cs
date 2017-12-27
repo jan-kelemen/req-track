@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Security;
 using System.Text;
+using ReqTrack.Domain.Core.Entities.Projects;
 using ReqTrack.Domain.Core.Entities.Users;
 
 namespace ReqTrack.Domain.Core.Entities.UseCases
@@ -17,7 +18,7 @@ namespace ReqTrack.Domain.Core.Entities.UseCases
 
             public static readonly int MaximumStepContentLength = 200;
 
-            public static bool IsProjectValid(Project project)
+            public static bool IsProjectValid(BasicProject project)
             {
                 return !ReferenceEquals(project, null);
             }
@@ -43,13 +44,6 @@ namespace ReqTrack.Domain.Core.Entities.UseCases
             }
         }
 
-        public class Project
-        {
-            public Identity Id { get; set; }
-
-            public string Name { get; set; }
-        }
-
         public class Step
         {
             public Identity Id { get; set; }
@@ -59,7 +53,7 @@ namespace ReqTrack.Domain.Core.Entities.UseCases
             public string Content { get; set; }
         }
 
-        private Project _project;
+        private BasicProject _project;
 
         private BasicUser _author;
 
@@ -69,12 +63,12 @@ namespace ReqTrack.Domain.Core.Entities.UseCases
 
         private readonly IDictionary<Identity, Step> _stepsById = new Dictionary<Identity, Step>();
 
-        public UseCase(Identity id, Project project, BasicUser author, string title, string note, IEnumerable<Step> steps)
+        public UseCase(Identity id, BasicProject project, BasicUser author, string title, string note, IEnumerable<Step> steps)
             : base(id)
         {
         }
 
-        public Project ContainingProject
+        public BasicProject Project
         {
             get => _project;
             set

@@ -1,4 +1,5 @@
 ﻿using System;
+using ReqTrack.Domain.Core.Entities.Projects;
 using ReqTrack.Domain.Core.Entities.Users;
 
 namespace ReqTrack.Domain.Core.Entities.Requirements
@@ -11,7 +12,7 @@ namespace ReqTrack.Domain.Core.Entities.Requirements
 
             public static readonly int MaximumNoteLength = 1000;
 
-            public static bool IsProjectValid(Project project)
+            public static bool IsProjectValid(BasicProject project)
             {
                 return !ReferenceEquals(project, null);
             }
@@ -32,14 +33,7 @@ namespace ReqTrack.Domain.Core.Entities.Requirements
             }
         }
 
-        public class Project
-        {
-            public Identity Id { get; set; }
-
-            public string Name { get; set; }
-        }
-
-        private Project _project;
+        private BasicProject _project;
 
         private BasicUser _author;
 
@@ -51,7 +45,7 @@ namespace ReqTrack.Domain.Core.Entities.Requirements
 
         public Requirement(
             Identity id, 
-            Project project, 
+            BasicProject project, 
             BasicUser author, 
             RequirementType type, 
             string title, 
@@ -65,7 +59,7 @@ namespace ReqTrack.Domain.Core.Entities.Requirements
             Note = note;
         }
 
-        public Project ContainingProject
+        public BasicProject ContainingProject
         {
             get => _project;
             set
