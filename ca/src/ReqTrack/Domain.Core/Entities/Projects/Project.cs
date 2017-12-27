@@ -20,7 +20,7 @@ namespace ReqTrack.Domain.Core.Entities.Projects
 
             public static bool IsNameValid(string name)
             {
-                return !string.IsNullOrWhiteSpace(name) && name.Length <= 50;
+                return !string.IsNullOrWhiteSpace(name) && name.Length <= MaximumNameLength;
             }
 
             public static bool IsDescriptionValid(string description)

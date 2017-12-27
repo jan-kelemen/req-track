@@ -22,7 +22,7 @@ namespace ReqTrack.Domain.Core.Entities.Requirements
 
             public static bool IsTitleValid(string title)
             {
-                return !string.IsNullOrWhiteSpace(title) && title.Length <= 50;
+                return !string.IsNullOrWhiteSpace(title) && title.Length <= MaximumTitleLength;
             }
 
             public static bool IsNoteValid(string note)
