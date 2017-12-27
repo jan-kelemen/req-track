@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Security;
 using System.Text;
+using ReqTrack.Domain.Core.Entities.Users;
 
 namespace ReqTrack.Domain.Core.Entities.UseCases
 {
@@ -21,7 +22,7 @@ namespace ReqTrack.Domain.Core.Entities.UseCases
                 return !ReferenceEquals(project, null);
             }
 
-            public static bool IsAuthorValid(User author)
+            public static bool IsAuthorValid(BasicUser author)
             {
                 return !ReferenceEquals(author, null);
             }
@@ -42,13 +43,6 @@ namespace ReqTrack.Domain.Core.Entities.UseCases
             }
         }
 
-        public class User
-        {
-            public Identity Id { get; set; }
-
-            public string Name { get; set; }
-        }
-
         public class Project
         {
             public Identity Id { get; set; }
@@ -67,7 +61,7 @@ namespace ReqTrack.Domain.Core.Entities.UseCases
 
         private Project _project;
 
-        private User _author;
+        private BasicUser _author;
 
         private string _title;
 
@@ -75,7 +69,7 @@ namespace ReqTrack.Domain.Core.Entities.UseCases
 
         private readonly IDictionary<Identity, Step> _stepsById = new Dictionary<Identity, Step>();
 
-        public UseCase(Identity id, Project project, User author, string title, string note, IEnumerable<Step> steps)
+        public UseCase(Identity id, Project project, BasicUser author, string title, string note, IEnumerable<Step> steps)
             : base(id)
         {
         }
@@ -94,7 +88,7 @@ namespace ReqTrack.Domain.Core.Entities.UseCases
             }
         }
 
-        public User Author
+        public BasicUser Author
         {
             get => _author;
             set

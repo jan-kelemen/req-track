@@ -1,4 +1,5 @@
 ﻿using System;
+using ReqTrack.Domain.Core.Entities.Users;
 
 namespace ReqTrack.Domain.Core.Entities.Requirements
 {
@@ -15,7 +16,7 @@ namespace ReqTrack.Domain.Core.Entities.Requirements
                 return !ReferenceEquals(project, null);
             }
 
-            public static bool IsAuthorValid(User author)
+            public static bool IsAuthorValid(BasicUser author)
             {
                 return !ReferenceEquals(author, null);
             }
@@ -31,13 +32,6 @@ namespace ReqTrack.Domain.Core.Entities.Requirements
             }
         }
 
-        public class User
-        {
-            public Identity Id { get; set; }
-
-            public string Name { get; set; }
-        }
-
         public class Project
         {
             public Identity Id { get; set; }
@@ -47,7 +41,7 @@ namespace ReqTrack.Domain.Core.Entities.Requirements
 
         private Project _project;
 
-        private User _author;
+        private BasicUser _author;
 
         private RequirementType _type;
 
@@ -58,7 +52,7 @@ namespace ReqTrack.Domain.Core.Entities.Requirements
         public Requirement(
             Identity id, 
             Project project, 
-            User author, 
+            BasicUser author, 
             RequirementType type, 
             string title, 
             string note) 
@@ -85,7 +79,7 @@ namespace ReqTrack.Domain.Core.Entities.Requirements
             }
         }
 
-        public User Author
+        public BasicUser Author
         {
             get => _author;
             set

@@ -1,75 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace ReqTrack.Domain.Core.Entities.Users
 {
     /// <summary>
     /// Represents a user of the application.
     /// </summary>
-    public class User : Entity<User>
+    public class User : BasicUser
     {
-        /// <summary>
-        /// Helper class for common operations and constants related to the user.
-        /// </summary>
-        public static class Helper
-        {        
-            /// <summary>
-            /// Maximum length of the user's userName.
-            /// </summary>
-            public static readonly int MaximumUserNameLength = 50;
-
-            /// <summary>
-            /// Maximum length of the user's display name.
-            /// </summary>
-            public static readonly int MaximumDisplayNameLenght = 100;
-
-            /// <summary>
-            /// Calculate the hash of the password.
-            /// </summary>
-            /// <param name="password">Password to hash.</param>
-            /// <returns>Hashed password using the MD5 algorithm.</returns>
-            public static string HashPassword(string password)
-            {
-                var hasher = System.Security.Cryptography.MD5.Create();
-                var input = Encoding.UTF8.GetBytes(password);
-                var output = hasher.ComputeHash(input);
-
-                return output.Aggregate(string.Empty, (current, o) => current + o.ToString("x2"));
-            }
-
-            /// <summary>
-            /// Checks if the passed user name represents a valid user name.
-            /// </summary>
-            /// <param name="userName">Username to be checked.</param>
-            /// <returns><c>true</c> if the user name is valid.</returns>
-            public static bool IsUserNameValid(string userName)
-            {
-                return !string.IsNullOrWhiteSpace(userName) && userName.Length <= MaximumUserNameLength;
-            }
-
-            /// <summary>
-            /// Checks if the passed display name represents a valid display name.
-            /// </summary>
-            /// <param name="displayName">Display name to be checked.</param>
-            /// <returns><c>true</c> if the display name is valid.</returns>
-            public static bool IsDisplayNameValid(string displayName)
-            {
-                return !string.IsNullOrWhiteSpace(displayName) && displayName.Length <= MaximumDisplayNameLenght;
-            }
-
-            /// <summary>
-            /// Checks if the password hash is valid.
-            /// </summary>
-            /// <param name="passwordHash"></param>
-            /// <returns></returns>
-            public static bool IsPasswordHashValid(string passwordHash)
-            {
-                return !string.IsNullOrWhiteSpace(passwordHash) && passwordHash.Length == 32;
-            }
-        }
-
         /// <summary>
         /// Basic information about the project of which the user is an author.
         /// </summary>
@@ -94,8 +33,6 @@ namespace ReqTrack.Domain.Core.Entities.Users
 
         private string _userName;
 
-        private string _displayName;
-
         private string _passwordHash;
 
         private readonly IDictionary<Identity, ProjectInfo> _projectsById = new Dictionary<Identity, ProjectInfo>();
@@ -116,7 +53,7 @@ namespace ReqTrack.Domain.Core.Entities.Users
             string displayName,
             string passwordHash,
             IEnumerable<ProjectInfo> projects) 
-            : base(id)
+            : base(id, displayName)
         {
             UserName = userName;
             DisplayName = displayName;
@@ -125,15 +62,15 @@ namespace ReqTrack.Domain.Core.Entities.Users
         }
 
         /// <summary>
-        /// Username of the user, can't be longer than <see cref="Helper.MaximumUserNameLength"/> characters.
+        /// Username of the user, can't be longer than <see cref="UserValidationHelper.MaximumUserNameLength"/> characters.
         /// </summary>
-        /// <exception cref="ArgumentException">If passed user name is invalid. <see cref="Helper.IsUserNameValid"/>.</exception>
+        /// <exception cref="ArgumentException">If passed user name is invalid. <see cref="UserValidationHelper.IsUserNameValid"/>.</exception>
         public string UserName
         {
             get => _userName;
             set
             {
-                if (!Helper.IsUserNameValid(value))
+                if (!UserValidationHelper.IsUserNameValid(value))
                 {
                     throw new ArgumentException($"User name \"{value}\" is invalid.");
                 }
@@ -143,33 +80,15 @@ namespace ReqTrack.Domain.Core.Entities.Users
         }
 
         /// <summary>
-        /// Display name of the user, can't be longer than <see cref="Helper.MaximumDisplayNameLenght"/> characters.
-        /// </summary>
-        /// <exception cref="ArgumentException">If passed display name is invalid. <see cref="Helper.IsDisplayNameValid"/></exception>
-        public string DisplayName
-        {
-            get => _displayName;
-            set
-            {
-                if (!Helper.IsDisplayNameValid(value))
-                {
-                    throw new ArgumentException($"Display name \"{value}\" is invalid.");
-                }
-
-                _displayName = value;
-            }
-        }
-
-        /// <summary>
         /// Hash of the users current password, using the MD5 algorithm.
         /// </summary>
-        /// <exception cref="ArgumentException">If passed password hash is invalid. <see cref="Helper.IsPasswordHashValid"/></exception>
+        /// <exception cref="ArgumentException">If passed password hash is invalid. <see cref="UserValidationHelper.IsPasswordHashValid"/></exception>
         public string PasswordHash
         {
             get => _passwordHash;
             set
             {
-                if (!Helper.IsPasswordHashValid(value))
+                if (!UserValidationHelper.IsPasswordHashValid(value))
                 {
                     throw new ArgumentException($"Password hash \"{value}\" is invalid.");
                 }

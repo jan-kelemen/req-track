@@ -16,7 +16,7 @@ namespace Domain.Core.Test.Unit.Entities.Users
             var validDisplayName = "display1";
             var invalidDisplayName = new string('d', 101);
 
-            var validPassword = User.Helper.HashPassword("abc123");
+            var validPassword = UserValidationHelper.HashPassword("abc123");
             var invalidPassword1 = "abc123";
             var invalidPassword2 = new string('p', 33);
 
@@ -52,7 +52,7 @@ namespace Domain.Core.Test.Unit.Entities.Users
         {
             var validUserName = "user1";
             var validDisplayName = "display1";
-            var validPassword = User.Helper.HashPassword("abc123");
+            var validPassword = UserValidationHelper.HashPassword("abc123");
             var validProjects = new[]
             {
                 new User.ProjectInfo("id2", "name1"),
@@ -165,7 +165,7 @@ namespace Domain.Core.Test.Unit.Entities.Users
             "id",
             "username",
             "displayname",
-            User.Helper.HashPassword("passwordhash"),
+            UserValidationHelper.HashPassword("passwordhash"),
             new[]
             {
                 new User.ProjectInfo("id1", "name1"),

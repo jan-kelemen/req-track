@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using ReqTrack.Domain.Core.Entities.Requirements;
+using ReqTrack.Domain.Core.Entities.Users;
 
 namespace ReqTrack.Domain.Core.Entities.Projects
 {
@@ -13,7 +14,7 @@ namespace ReqTrack.Domain.Core.Entities.Projects
 
             public static readonly int MaximumDescriptionLength = 1000;
 
-            public static bool IsAuthorValid(User author)
+            public static bool IsAuthorValid(BasicUser author)
             {
                 return !ReferenceEquals(author, null);
             }
@@ -27,13 +28,6 @@ namespace ReqTrack.Domain.Core.Entities.Projects
             {
                 return description == null || description.Length <= MaximumDescriptionLength;
             }
-        }
-
-        public class User
-        {
-            public Identity Id { get; set; }
-
-            public string Name { get; set; }
         }
 
         public class Requirement
@@ -52,7 +46,7 @@ namespace ReqTrack.Domain.Core.Entities.Projects
             public string Title { get; set; }
         }
 
-        private User _author;
+        private BasicUser _author;
 
         private string _name;
 
@@ -75,7 +69,7 @@ namespace ReqTrack.Domain.Core.Entities.Projects
 
         public Project(
             Identity id, 
-            User author, 
+            BasicUser author, 
             string name, 
             string description, 
             IEnumerable<Requirement> requirements, 
@@ -89,7 +83,7 @@ namespace ReqTrack.Domain.Core.Entities.Projects
             AddUseCases(useCases);
         }
 
-        public User Author
+        public BasicUser Author
         {
             get => _author;
             set
