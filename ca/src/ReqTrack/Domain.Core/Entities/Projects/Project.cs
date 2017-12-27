@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using ReqTrack.Domain.Core.Entities.Requirements;
+using ReqTrack.Domain.Core.Entities.UseCases;
 using ReqTrack.Domain.Core.Entities.Users;
 using ReqTrack.Domain.Core.Entities.ValidationHelpers;
 
@@ -9,6 +10,49 @@ namespace ReqTrack.Domain.Core.Entities.Projects
 {
     public class Project : BasicProject
     {
+        public class Requirement : BasicRequirement, IComparable<Requirement>
+        {
+            public Requirement(Identity id, RequirementType type, string title, int orderMarker)
+                : base(id, type, title)
+            {
+                OrderMarker = orderMarker;
+            }
+
+            public int OrderMarker { get; set; }
+
+            public int CompareTo(Requirement other)
+            {
+                if (ReferenceEquals(this, other)) return 0;
+                if (ReferenceEquals(null, other)) return 1;
+
+                var typeComparison = Type.CompareTo(other.Type);
+
+                if (typeComparison == 0)
+                {
+                    return OrderMarker.CompareTo(other.OrderMarker);
+                }
+
+                return typeComparison;
+            }
+        }
+
+        public class UseCase : BasicUseCase, IComparable<UseCase>
+        {
+            public UseCase(Identity id, string title, int orderMarker) : base(id, title)
+            {
+                OrderMarker = orderMarker;
+            }
+
+            public int OrderMarker { get; set; }
+
+            public int CompareTo(UseCase other)
+            {
+                if (ReferenceEquals(this, other)) return 0;
+                if (ReferenceEquals(null, other)) return 1;
+                return OrderMarker.CompareTo(other.OrderMarker);
+            }
+        }
+
         private BasicUser _author;
 
         private string _description;
@@ -61,9 +105,9 @@ namespace ReqTrack.Domain.Core.Entities.Projects
             }
         }
 
-        public IEnumerable<ProjectRequirement> Requirements => _requirements;
+        public IEnumerable<Requirement> Requirements => _requirements;
 
-        public IEnumerable<ProjectUseCase> UseCases => _useCases;
+        public IEnumerable<UseCase> UseCases => _useCases;
 
         public bool HasRequirement(Identity id)
         {
@@ -75,7 +119,7 @@ namespace ReqTrack.Domain.Core.Entities.Projects
             return _requirements.HasRequirement(id);
         }
 
-        public ProjectRequirement GetRequirement(Identity id)
+        public Requirement GetRequirement(Identity id)
         {
             if (_requirements == null)
             {
@@ -85,7 +129,7 @@ namespace ReqTrack.Domain.Core.Entities.Projects
             return _requirements[id];
         }
 
-        public IEnumerable<ProjectRequirement> GetRequirementsOfType(RequirementType type)
+        public IEnumerable<Requirement> GetRequirementsOfType(RequirementType type)
         {
             if (_requirements == null)
             {
@@ -95,10 +139,10 @@ namespace ReqTrack.Domain.Core.Entities.Projects
             return _requirements[type];
         }
 
-        public IEnumerable<Tuple<ProjectRequirement, string>> CanChangeRequirements(
-            IEnumerable<ProjectRequirement> requirementsToAdd,
-            IEnumerable<ProjectRequirement> requirementsToUpdate,
-            IEnumerable<ProjectRequirement> requirementsToDelete)
+        public IEnumerable<Tuple<Requirement, string>> CanChangeRequirements(
+            IEnumerable<Requirement> requirementsToAdd,
+            IEnumerable<Requirement> requirementsToUpdate,
+            IEnumerable<Requirement> requirementsToDelete)
         {
             if (_requirements == null)
             {
@@ -111,9 +155,9 @@ namespace ReqTrack.Domain.Core.Entities.Projects
         }
 
         public void ChangeRequirements(
-            IEnumerable<ProjectRequirement> requirementsToAdd,
-            IEnumerable<ProjectRequirement> requirementsToUpdate,
-            IEnumerable<ProjectRequirement> requirementsToDelete)
+            IEnumerable<Requirement> requirementsToAdd,
+            IEnumerable<Requirement> requirementsToUpdate,
+            IEnumerable<Requirement> requirementsToDelete)
         {
             if (_requirements == null)
             {
@@ -143,7 +187,7 @@ namespace ReqTrack.Domain.Core.Entities.Projects
             return _useCases.HasUseCase(title);
         }
 
-        public ProjectUseCase GetUseCase(Identity id)
+        public UseCase GetUseCase(Identity id)
         {
             if (_useCases == null)
             {
@@ -153,7 +197,7 @@ namespace ReqTrack.Domain.Core.Entities.Projects
             return _useCases[id];
         }
 
-        public ProjectUseCase GetUseCase(string title)
+        public UseCase GetUseCase(string title)
         {
             if (_useCases == null)
             {
@@ -163,10 +207,10 @@ namespace ReqTrack.Domain.Core.Entities.Projects
             return _useCases[title];
         }
 
-        public IEnumerable<Tuple<ProjectUseCase, string>> CanChangeUseCases(
-            IEnumerable<ProjectUseCase> useCasesToAdd,
-            IEnumerable<ProjectUseCase> useCasesToUpdate,
-            IEnumerable<ProjectUseCase> useCasesToDelete)
+        public IEnumerable<Tuple<UseCase, string>> CanChangeUseCases(
+            IEnumerable<UseCase> useCasesToAdd,
+            IEnumerable<UseCase> useCasesToUpdate,
+            IEnumerable<UseCase> useCasesToDelete)
         {
             if (_useCases == null)
             {
@@ -179,9 +223,9 @@ namespace ReqTrack.Domain.Core.Entities.Projects
         }
 
         public void ChangeUseCases(
-            IEnumerable<ProjectUseCase> useCasesToAdd,
-            IEnumerable<ProjectUseCase> useCasesToUpdate,
-            IEnumerable<ProjectUseCase> useCasesToDelete)
+            IEnumerable<UseCase> useCasesToAdd,
+            IEnumerable<UseCase> useCasesToUpdate,
+            IEnumerable<UseCase> useCasesToDelete)
         {
             if (_useCases == null)
             {

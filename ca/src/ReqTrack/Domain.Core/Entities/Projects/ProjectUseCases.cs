@@ -5,17 +5,17 @@ using System.Linq;
 
 namespace ReqTrack.Domain.Core.Entities.Projects
 {
-    public class ProjectUseCases : IEnumerable<ProjectUseCase>
+    public class ProjectUseCases : IEnumerable<Project.UseCase>
     {
-        private IDictionary<Identity, ProjectUseCase> _useCasesById;
-        private IDictionary<string, ProjectUseCase> _useCasesByTitle;
+        private IDictionary<Identity, Project.UseCase> _useCasesById;
+        private IDictionary<string, Project.UseCase> _useCasesByTitle;
 
-        private List<ProjectUseCase> _useCases;
+        private List<Project.UseCase> _useCases;
 
-        public ProjectUseCases(IEnumerable<ProjectUseCase> useCases)
+        public ProjectUseCases(IEnumerable<Project.UseCase> useCases)
         {
-            var dict = new Dictionary<Identity, ProjectUseCase>();
-            var dictByTitle = new SortedDictionary<string, ProjectUseCase>();
+            var dict = new Dictionary<Identity, Project.UseCase>();
+            var dictByTitle = new SortedDictionary<string, Project.UseCase>();
             foreach (var useCase in useCases)
             {
                 try
@@ -29,7 +29,7 @@ namespace ReqTrack.Domain.Core.Entities.Projects
                 }
             }
 
-            var list = new List<ProjectUseCase>(dict.Values);
+            var list = new List<Project.UseCase>(dict.Values);
             list.Sort();
 
             _useCasesById = dict;
@@ -41,50 +41,50 @@ namespace ReqTrack.Domain.Core.Entities.Projects
 
         public bool HasUseCase(string title) => _useCasesByTitle.ContainsKey(title);
 
-        public IEnumerable<Tuple<ProjectUseCase, string>> CanAddUseCases(IEnumerable<ProjectUseCase> useCases)
+        public IEnumerable<Tuple<Project.UseCase, string>> CanAddUseCases(IEnumerable<Project.UseCase> useCases)
         {
             return CanAddUseCases(useCases, _useCasesById, _useCasesByTitle);
         }
 
-        public IEnumerable<Tuple<ProjectUseCase, string>> CanUpdateUseCases(IEnumerable<ProjectUseCase> useCases)
+        public IEnumerable<Tuple<Project.UseCase, string>> CanUpdateUseCases(IEnumerable<Project.UseCase> useCases)
         {
             return CanUpdateUseCases(useCases, _useCasesById);
         }
 
-        public IEnumerable<Tuple<ProjectUseCase, string>> CanDeleteUseCases(IEnumerable<ProjectUseCase> useCases)
+        public IEnumerable<Tuple<Project.UseCase, string>> CanDeleteUseCases(IEnumerable<Project.UseCase> useCases)
         {
             return CanDeleteUseCases(useCases, _useCasesById);
         }
 
         public void ChangeUseCases(
-            IEnumerable<ProjectUseCase> useCasesToAdd,
-            IEnumerable<ProjectUseCase> useCasesToUpdate,
-            IEnumerable<ProjectUseCase> useCasesToDelete)
+            IEnumerable<Project.UseCase> useCasesToAdd,
+            IEnumerable<Project.UseCase> useCasesToUpdate,
+            IEnumerable<Project.UseCase> useCasesToDelete)
         {
-            var dict = new Dictionary<Identity, ProjectUseCase>(_useCasesById);
-            var dictByTitle = new Dictionary<string, ProjectUseCase>(_useCasesByTitle);
+            var dict = new Dictionary<Identity, Project.UseCase>(_useCasesById);
+            var dictByTitle = new Dictionary<string, Project.UseCase>(_useCasesByTitle);
 
-            var toDelete = useCasesToDelete as ProjectUseCase[] ?? useCasesToDelete.ToArray();
+            var toDelete = useCasesToDelete as Project.UseCase[] ?? useCasesToDelete.ToArray();
             DeleteUseCases(toDelete, dict, dictByTitle);
 
-            var toUpdate = useCasesToUpdate as ProjectUseCase[] ?? useCasesToUpdate.ToArray();
+            var toUpdate = useCasesToUpdate as Project.UseCase[] ?? useCasesToUpdate.ToArray();
             UpdateUseCases(toUpdate, dict);
 
-            var toAdd = useCasesToAdd as ProjectUseCase[] ?? useCasesToAdd.ToArray();
+            var toAdd = useCasesToAdd as Project.UseCase[] ?? useCasesToAdd.ToArray();
             AddUseCases(toAdd, dict, dictByTitle);
 
             _useCasesById = dict;
             _useCasesByTitle = dictByTitle;
 
-            _useCases = new List<ProjectUseCase>(_useCasesById.Values);
+            _useCases = new List<Project.UseCase>(_useCasesById.Values);
             _useCases.Sort();
         }
 
-        public IEnumerator<ProjectUseCase> GetEnumerator() => _useCases.GetEnumerator();
+        public IEnumerator<Project.UseCase> GetEnumerator() => _useCases.GetEnumerator();
 
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
-        public ProjectUseCase this[Identity id]
+        public Project.UseCase this[Identity id]
         {
             get
             {
@@ -97,7 +97,7 @@ namespace ReqTrack.Domain.Core.Entities.Projects
             }
         }
 
-        public ProjectUseCase this[string title]
+        public Project.UseCase this[string title]
         {
             get
             {
@@ -110,45 +110,45 @@ namespace ReqTrack.Domain.Core.Entities.Projects
             }
         }
 
-        private IEnumerable<Tuple<ProjectUseCase, string>> CanAddUseCases(
-            IEnumerable<ProjectUseCase> useCases,
-            IDictionary<Identity, ProjectUseCase> checkIn,
-            IDictionary<string, ProjectUseCase> checkInByName)
+        private IEnumerable<Tuple<Project.UseCase, string>> CanAddUseCases(
+            IEnumerable<Project.UseCase> useCases,
+            IDictionary<Identity, Project.UseCase> checkIn,
+            IDictionary<string, Project.UseCase> checkInByName)
         {
-            var projectUseCases = useCases as ProjectUseCase[] ?? useCases.ToArray();
+            var projectUseCases = useCases as Project.UseCase[] ?? useCases.ToArray();
 
             return projectUseCases
                 .Where(r => checkIn.ContainsKey(r.Id))
-                .Select(r => new Tuple<ProjectUseCase, string>(r, "Use case already exists"))
+                .Select(r => new Tuple<Project.UseCase, string>(r, "Use case already exists"))
                 .Union(
                     projectUseCases
                         .Where(r => checkInByName.ContainsKey(r.Title))
-                        .Select(r => new Tuple<ProjectUseCase, string>(r, "Use case with same title already exist"))
+                        .Select(r => new Tuple<Project.UseCase, string>(r, "Use case with same title already exist"))
                     );
         }
 
-        private IEnumerable<Tuple<ProjectUseCase, string>> CanUpdateUseCases(
-            IEnumerable<ProjectUseCase> useCases
-            , IDictionary<Identity, ProjectUseCase> checkIn)
+        private IEnumerable<Tuple<Project.UseCase, string>> CanUpdateUseCases(
+            IEnumerable<Project.UseCase> useCases
+            , IDictionary<Identity, Project.UseCase> checkIn)
         {
             return useCases
                 .Where(r => !checkIn.ContainsKey(r.Id))
-                .Select(r => new Tuple<ProjectUseCase, string>(r, "Use case doesn't exist in project."));
+                .Select(r => new Tuple<Project.UseCase, string>(r, "Use case doesn't exist in project."));
         }
 
-        private IEnumerable<Tuple<ProjectUseCase, string>> CanDeleteUseCases(
-            IEnumerable<ProjectUseCase> useCases
-            , IDictionary<Identity, ProjectUseCase> checkIn)
+        private IEnumerable<Tuple<Project.UseCase, string>> CanDeleteUseCases(
+            IEnumerable<Project.UseCase> useCases
+            , IDictionary<Identity, Project.UseCase> checkIn)
         {
             return useCases
                 .Where(r => !checkIn.ContainsKey(r.Id))
-                .Select(r => new Tuple<ProjectUseCase, string>(r, "Use case doesn't exist in project."));
+                .Select(r => new Tuple<Project.UseCase, string>(r, "Use case doesn't exist in project."));
         }
 
         private void DeleteUseCases(
-            ProjectUseCase[] toDelete, 
-            IDictionary<Identity, ProjectUseCase> dict, 
-            IDictionary<string, ProjectUseCase> dictByTitle)
+            Project.UseCase[] toDelete, 
+            IDictionary<Identity, Project.UseCase> dict, 
+            IDictionary<string, Project.UseCase> dictByTitle)
         {
             var deleteErrors = CanDeleteUseCases(toDelete);
             if (deleteErrors.Any())
@@ -164,7 +164,7 @@ namespace ReqTrack.Domain.Core.Entities.Projects
             }
         }
 
-        private void UpdateUseCases(ProjectUseCase[] toUpdate, IDictionary<Identity, ProjectUseCase> dict)
+        private void UpdateUseCases(Project.UseCase[] toUpdate, IDictionary<Identity, Project.UseCase> dict)
         {
             var updateErrors = CanUpdateUseCases(toUpdate, dict);
             if (updateErrors.Any())
@@ -179,9 +179,9 @@ namespace ReqTrack.Domain.Core.Entities.Projects
         }
 
         private void AddUseCases(
-            ProjectUseCase[] toAdd,
-            IDictionary<Identity, ProjectUseCase> dict,
-            IDictionary<string, ProjectUseCase> dictByTitle)
+            Project.UseCase[] toAdd,
+            IDictionary<Identity, Project.UseCase> dict,
+            IDictionary<string, Project.UseCase> dictByTitle)
         {
             var addErrors = CanAddUseCases(toAdd, dict, dictByTitle);
             if (addErrors.Any())

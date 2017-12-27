@@ -6,15 +6,15 @@ using ReqTrack.Domain.Core.Entities.Requirements;
 
 namespace ReqTrack.Domain.Core.Entities.Projects
 {
-    public class ProjectRequirements : IEnumerable<ProjectRequirement>
+    public class ProjectRequirements : IEnumerable<Project.Requirement>
     {
-        private IDictionary<Identity, ProjectRequirement> _requirementsById;
+        private IDictionary<Identity, Project.Requirement> _requirementsById;
 
-        private List<ProjectRequirement> _requirements;
+        private List<Project.Requirement> _requirements;
 
-        public ProjectRequirements(IEnumerable<ProjectRequirement> requirements)
+        public ProjectRequirements(IEnumerable<Project.Requirement> requirements)
         {
-            var dict = new Dictionary<Identity, ProjectRequirement>();
+            var dict = new Dictionary<Identity, Project.Requirement>();
             foreach (var requirement in requirements)
             {
                 try
@@ -27,7 +27,7 @@ namespace ReqTrack.Domain.Core.Entities.Projects
                 }
             }
 
-            var list = new List<ProjectRequirement>(dict.Values);
+            var list = new List<Project.Requirement>(dict.Values);
             list.Sort();
 
             _requirementsById = dict;
@@ -36,51 +36,51 @@ namespace ReqTrack.Domain.Core.Entities.Projects
 
         public bool HasRequirement(Identity id) => _requirementsById.ContainsKey(id);
 
-        public IEnumerable<Tuple<ProjectRequirement, string>> CanAddRequirements(
-            IEnumerable<ProjectRequirement> requirements)
+        public IEnumerable<Tuple<Project.Requirement, string>> CanAddRequirements(
+            IEnumerable<Project.Requirement> requirements)
         {
             return CanAddRequirements(requirements, _requirementsById);
         }
 
-        public IEnumerable<Tuple<ProjectRequirement, string>> CanUpdateRequirements(
-            IEnumerable<ProjectRequirement> requirements)
+        public IEnumerable<Tuple<Project.Requirement, string>> CanUpdateRequirements(
+            IEnumerable<Project.Requirement> requirements)
         {
             return CanUpdateRequirements(requirements, _requirementsById);
         }
 
-        public IEnumerable<Tuple<ProjectRequirement, string>> CanDeleteRequirements(
-            IEnumerable<ProjectRequirement> requirements)
+        public IEnumerable<Tuple<Project.Requirement, string>> CanDeleteRequirements(
+            IEnumerable<Project.Requirement> requirements)
         {
             return CanDeleteRequirements(requirements, _requirementsById);
         }
 
         public void ChangeRequirements(
-            IEnumerable<ProjectRequirement> requirementsToAdd,
-            IEnumerable<ProjectRequirement> requirementsToUpdate,
-            IEnumerable<ProjectRequirement> requirementsToDelete)
+            IEnumerable<Project.Requirement> requirementsToAdd,
+            IEnumerable<Project.Requirement> requirementsToUpdate,
+            IEnumerable<Project.Requirement> requirementsToDelete)
         {
-            var dict = new Dictionary<Identity, ProjectRequirement>(_requirementsById);
+            var dict = new Dictionary<Identity, Project.Requirement>(_requirementsById);
 
-            var toDelete = requirementsToDelete as ProjectRequirement[] ?? requirementsToDelete.ToArray();
+            var toDelete = requirementsToDelete as Project.Requirement[] ?? requirementsToDelete.ToArray();
             DeleteRequirements(toDelete, dict);
 
-            var toUpdate = requirementsToUpdate as ProjectRequirement[] ?? requirementsToUpdate.ToArray();
+            var toUpdate = requirementsToUpdate as Project.Requirement[] ?? requirementsToUpdate.ToArray();
             UpdateRequirements(toUpdate, dict);
 
-            var toAdd = requirementsToAdd as ProjectRequirement[] ?? requirementsToAdd.ToArray();
+            var toAdd = requirementsToAdd as Project.Requirement[] ?? requirementsToAdd.ToArray();
             AddRequirements(toAdd, dict);
 
             _requirementsById = dict;
 
-            _requirements = new List<ProjectRequirement>(_requirementsById.Values);
+            _requirements = new List<Project.Requirement>(_requirementsById.Values);
             _requirements.Sort();
         }
 
-        public IEnumerator<ProjectRequirement> GetEnumerator() => _requirements.GetEnumerator();
+        public IEnumerator<Project.Requirement> GetEnumerator() => _requirements.GetEnumerator();
 
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
-        public ProjectRequirement this[Identity id]
+        public Project.Requirement this[Identity id]
         {
             get
             {
@@ -93,43 +93,43 @@ namespace ReqTrack.Domain.Core.Entities.Projects
             }
         }
 
-        public IEnumerable<ProjectRequirement> this[RequirementType type] => _requirements.Where(r => r.Type == type);
+        public IEnumerable<Project.Requirement> this[RequirementType type] => _requirements.Where(r => r.Type == type);
 
-        private IEnumerable<Tuple<ProjectRequirement, string>> CanAddRequirements(
-            IEnumerable<ProjectRequirement> requirements
-            , IDictionary<Identity, ProjectRequirement> checkIn)
+        private IEnumerable<Tuple<Project.Requirement, string>> CanAddRequirements(
+            IEnumerable<Project.Requirement> requirements
+            , IDictionary<Identity, Project.Requirement> checkIn)
         {
             return requirements
                 .Where(r => checkIn.ContainsKey(r.Id))
-                .Select(r => new Tuple<ProjectRequirement, string>(r, "Requirement already exists"));
+                .Select(r => new Tuple<Project.Requirement, string>(r, "Requirement already exists"));
         }
 
-        private IEnumerable<Tuple<ProjectRequirement, string>> CanUpdateRequirements(
-            IEnumerable<ProjectRequirement> requirements
-            , IDictionary<Identity, ProjectRequirement> checkIn)
+        private IEnumerable<Tuple<Project.Requirement, string>> CanUpdateRequirements(
+            IEnumerable<Project.Requirement> requirements
+            , IDictionary<Identity, Project.Requirement> checkIn)
         {
-            var projectRequirements = requirements as ProjectRequirement[] ?? requirements.ToArray();
+            var projectRequirements = requirements as Project.Requirement[] ?? requirements.ToArray();
 
             return projectRequirements
                 .Where(r => !checkIn.ContainsKey(r.Id))
-                .Select(r => new Tuple<ProjectRequirement, string>(r, "Requirement doesn't exist in project."))
+                .Select(r => new Tuple<Project.Requirement, string>(r, "Requirement doesn't exist in project."))
                 .Union(
                     projectRequirements
                         .Where(r => checkIn.ContainsKey(r.Id) && r.Type != checkIn[r.Id].Type)
-                        .Select(r => new Tuple<ProjectRequirement, string>(r, "Can't change type of the requirement"))
+                        .Select(r => new Tuple<Project.Requirement, string>(r, "Can't change type of the requirement"))
                 );
         }
 
-        private IEnumerable<Tuple<ProjectRequirement, string>> CanDeleteRequirements(
-            IEnumerable<ProjectRequirement> requirements
-            , IDictionary<Identity, ProjectRequirement> checkIn)
+        private IEnumerable<Tuple<Project.Requirement, string>> CanDeleteRequirements(
+            IEnumerable<Project.Requirement> requirements
+            , IDictionary<Identity, Project.Requirement> checkIn)
         {
             return requirements
                 .Where(r => !checkIn.ContainsKey(r.Id))
-                .Select(r => new Tuple<ProjectRequirement, string>(r, "Requirement doesn't exist in project."));
+                .Select(r => new Tuple<Project.Requirement, string>(r, "Requirement doesn't exist in project."));
         }
 
-        private void DeleteRequirements(ProjectRequirement[] toDelete, IDictionary<Identity, ProjectRequirement> dict)
+        private void DeleteRequirements(Project.Requirement[] toDelete, IDictionary<Identity, Project.Requirement> dict)
         {
             var deleteErrors = CanDeleteRequirements(toDelete);
             if (deleteErrors.Any())
@@ -143,7 +143,7 @@ namespace ReqTrack.Domain.Core.Entities.Projects
             }
         }
 
-        private void UpdateRequirements(ProjectRequirement[] toUpdate, IDictionary<Identity, ProjectRequirement> dict)
+        private void UpdateRequirements(Project.Requirement[] toUpdate, IDictionary<Identity, Project.Requirement> dict)
         {
             var updateErrors = CanUpdateRequirements(toUpdate, dict);
             if (updateErrors.Any())
@@ -157,7 +157,7 @@ namespace ReqTrack.Domain.Core.Entities.Projects
             }
         }
 
-        private void AddRequirements(ProjectRequirement[] toAdd, IDictionary<Identity, ProjectRequirement> dict)
+        private void AddRequirements(Project.Requirement[] toAdd, IDictionary<Identity, Project.Requirement> dict)
         {
             var addErrors = CanAddRequirements(toAdd, dict);
             if (addErrors.Any())
