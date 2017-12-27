@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using ReqTrack.Domain.Core.Entities.Projects;
+using ReqTrack.Domain.Core.Entities.ValidationHelpers;
 
 namespace ReqTrack.Domain.Core.Entities.Users
 {

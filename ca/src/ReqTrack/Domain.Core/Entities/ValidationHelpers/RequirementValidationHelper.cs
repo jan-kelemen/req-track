@@ -2,7 +2,7 @@
 using ReqTrack.Domain.Core.Entities.Projects;
 using ReqTrack.Domain.Core.Entities.Users;
 
-namespace ReqTrack.Domain.Core.Entities.Requirements
+namespace ReqTrack.Domain.Core.Entities.ValidationHelpers
 {
     public static class RequirementValidationHelper
     {

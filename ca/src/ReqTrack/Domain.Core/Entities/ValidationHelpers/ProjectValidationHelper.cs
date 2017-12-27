@@ -1,7 +1,7 @@
 ﻿using System;
 using ReqTrack.Domain.Core.Entities.Users;
 
-namespace ReqTrack.Domain.Core.Entities.Projects
+namespace ReqTrack.Domain.Core.Entities.ValidationHelpers
 {
     public static class ProjectValidationHelper
     {

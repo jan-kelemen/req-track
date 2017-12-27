@@ -1,20 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Net.Security;
-using System.Text;
 using ReqTrack.Domain.Core.Entities.Projects;
 using ReqTrack.Domain.Core.Entities.Users;
+using ReqTrack.Domain.Core.Entities.ValidationHelpers;
 
 namespace ReqTrack.Domain.Core.Entities.UseCases
 {
     public class UseCase : BasicUseCase
     {
-        public class Step
+        public class UseCaseStep
         {
-            public Identity Id { get; set; }
-
-            public Identity UseCaseId { get; set; }
+            public int OrderMarker { get; set; }
 
             public string Content { get; set; }
         }
@@ -25,15 +21,15 @@ namespace ReqTrack.Domain.Core.Entities.UseCases
 
         private string _note;
 
-        private readonly IDictionary<Identity, Step> _stepsById = new Dictionary<Identity, Step>();
+        private IList<UseCaseStep> _steps;
 
-        public UseCase(Identity id, BasicProject project, BasicUser author, string title, string note, IEnumerable<Step> steps)
+        public UseCase(Identity id, BasicProject project, BasicUser author, string title, string note, IEnumerable<UseCaseStep> steps)
             : base(id, title)
         {
             Project = project;
             Author = author;
             Note = note;
-            AddSteps(steps);
+            Steps = steps;
         }
 
         public BasicProject Project
@@ -78,69 +74,21 @@ namespace ReqTrack.Domain.Core.Entities.UseCases
             }
         }
 
-        public IEnumerable<Step> Steps => _stepsById.Values;
-
-        public bool HasStep(Identity id) => _stepsById.ContainsKey(id);
-
-        public IEnumerable<Tuple<Step, string>> CheckIfAllStepsCanBeAdded(IEnumerable<Step> steps)
+        public IEnumerable<UseCaseStep> Steps
         {
-            return new List<Tuple<Step, string>>();
-        }
-
-        public void AddSteps(IEnumerable<Step> steps)
-        {
-            var s = steps as Step[] ?? steps.ToArray();
-
-            var errors = CheckIfAllStepsCanBeAdded(s);
-            if (errors.Any())
+            get => _steps;
+            set
             {
-                throw new ArgumentException("Can't add some of the steps to the use case.");
-            }
-
-            foreach (var step in s)
-            {
-                if (HasStep(step.Id))
+                var given = new List<UseCaseStep>(value);
+                foreach (var step in given)
                 {
-                    _stepsById[step.Id] = step;
+                    if (!UseCaseValidationHelper.IsStepContentValid(step.Content))
+                    {
+                        throw new ArgumentException("Use case step isn't valid");
+                    }
                 }
-                else
-                {
-                    _stepsById.Add(step.Id, step);
-                }
-            }
-        }
 
-        public IEnumerable<Tuple<Step, string>> CheckIfAllStepsCanBeDeleted(IEnumerable<Step> steps)
-        {
-            var errorList = new List<Tuple<Step, string>>();
-            foreach (var step in steps)
-            {
-                if (!HasStep(step.Id))
-                {
-                    errorList.Add(
-                        new Tuple<Step, string>(
-                            step,
-                            "Use case doesn't have this step.")
-                    );
-                }
-            }
-
-            return errorList;
-        }
-
-        public void DeleteSteps(IEnumerable<Step> steps)
-        {
-            var s = steps as Step[] ?? steps.ToArray();
-
-            var errors = CheckIfAllStepsCanBeDeleted(s);
-            if (errors.Any())
-            {
-                throw new ArgumentException("Use case doesn't contain one of those use cases.");
-            }
-
-            foreach (var step in s)
-            {
-                _stepsById.Remove(step.Id);
+                _steps = given;
             }
         }
     }

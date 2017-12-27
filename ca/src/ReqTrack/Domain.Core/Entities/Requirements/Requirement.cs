@@ -1,6 +1,7 @@
 ﻿using System;
 using ReqTrack.Domain.Core.Entities.Projects;
 using ReqTrack.Domain.Core.Entities.Users;
+using ReqTrack.Domain.Core.Entities.ValidationHelpers;
 
 namespace ReqTrack.Domain.Core.Entities.Requirements
 {

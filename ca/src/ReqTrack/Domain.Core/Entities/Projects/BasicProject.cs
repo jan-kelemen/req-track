@@ -1,6 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
+using ReqTrack.Domain.Core.Entities.ValidationHelpers;
 
 namespace ReqTrack.Domain.Core.Entities.Projects
 {

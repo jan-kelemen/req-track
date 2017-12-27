@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using ReqTrack.Domain.Core.Entities.Requirements;
 using ReqTrack.Domain.Core.Entities.Users;
+using ReqTrack.Domain.Core.Entities.ValidationHelpers;
 
 namespace ReqTrack.Domain.Core.Entities.Projects
 {

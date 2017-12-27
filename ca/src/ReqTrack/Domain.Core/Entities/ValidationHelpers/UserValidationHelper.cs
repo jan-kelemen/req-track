@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Text;
 
-namespace ReqTrack.Domain.Core.Entities.Users
+namespace ReqTrack.Domain.Core.Entities.ValidationHelpers
 {
     /// <summary>
     /// Helper class for common operations and constants related to the user.

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using ReqTrack.Domain.Core.Entities.Users;
+using ReqTrack.Domain.Core.Entities.ValidationHelpers;
 using Xunit;
 
 namespace Domain.Core.Test.Unit.Entities.Users
