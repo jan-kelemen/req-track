@@ -11,6 +11,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Persistence.Concrete.MongoD
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Persistence.Concrete.MongoDB.Test.Unit", "Persistence.Concrete.MongoDB.Test.Unit\Persistence.Concrete.MongoDB.Test.Unit.csproj", "{6CD48E37-8763-4D94-9B6B-4EABD6B11283}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain.Core.UseCases", "Domain.Core.UseCases\Domain.Core.UseCases.csproj", "{71044882-0AD6-4585-A00B-FA75D70AB264}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain.Core.UseCases.Test.Unit", "Domain.Core.UseCases.Test.Unit\Domain.Core.UseCases.Test.Unit.csproj", "{EDC86C6F-38EE-403E-908E-65603BBBD95A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +37,14 @@ Global
 		{6CD48E37-8763-4D94-9B6B-4EABD6B11283}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6CD48E37-8763-4D94-9B6B-4EABD6B11283}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6CD48E37-8763-4D94-9B6B-4EABD6B11283}.Release|Any CPU.Build.0 = Release|Any CPU
+		{71044882-0AD6-4585-A00B-FA75D70AB264}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{71044882-0AD6-4585-A00B-FA75D70AB264}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{71044882-0AD6-4585-A00B-FA75D70AB264}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{71044882-0AD6-4585-A00B-FA75D70AB264}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EDC86C6F-38EE-403E-908E-65603BBBD95A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EDC86C6F-38EE-403E-908E-65603BBBD95A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EDC86C6F-38EE-403E-908E-65603BBBD95A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EDC86C6F-38EE-403E-908E-65603BBBD95A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
