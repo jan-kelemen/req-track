@@ -9,10 +9,10 @@ namespace ReqTrack.Persistence.Concrete.MongoDB.Database
 
         private readonly IMongoDatabase _database;
 
-        public MongoReqTrackDatabase(string connectionString)
+        public MongoReqTrackDatabase(string connectionString, string databaseName)
         {
             _client = new MongoClient(connectionString);
-            _database = _client.GetDatabase("ReqTrack");
+            _database = _client.GetDatabase(databaseName);
         }
 
         public IMongoCollection<MongoUser> UserCollection => 

@@ -6,9 +6,9 @@ namespace ReqTrack.Persistence.Concrete.MongoDB.Initialization
 {
     public class Initializer
     {
-        public Initializer(string connectionString = "mongodb://localhost:27017")
+        public Initializer(string connectionString = "mongodb://localhost:27017", string databaseName = "ReqTrack")
         {
-            var database = new MongoReqTrackDatabase(connectionString);
+            var database = new MongoReqTrackDatabase(connectionString, databaseName);
             RepositoryFactory = new MongoRepositoryFactory(database);
             SecurityGatewayFactory = new MongoSecurityGatewayFactory(database);
         }

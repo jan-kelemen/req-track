@@ -1,5 +1,4 @@
-﻿using MongoDB.Driver;
-using ReqTrack.Domain.Core.Factories;
+﻿using ReqTrack.Domain.Core.Factories;
 using ReqTrack.Domain.Core.Repositories;
 using ReqTrack.Persistence.Concrete.MongoDB.Database;
 using ReqTrack.Persistence.Concrete.MongoDB.Repositories;
@@ -27,7 +26,16 @@ namespace ReqTrack.Persistence.Concrete.MongoDB.Factories
                 _database.UseCaseCollection
             );
 
-        public IRequirementRepository RequirementRepository { get; }
-        public IUseCaseRepository UseCaseRepository { get; }
+        public IRequirementRepository RequirementRepository => 
+            new MongoRequirementRepository(
+                _database.RequirementCollection,
+                _database.ProjectCollection,
+                _database.UserCollection);
+
+        public IUseCaseRepository UseCaseRepository => 
+            new MongoUseCaseRepository(
+                _database.UseCaseCollection,
+                _database.ProjectCollection,
+                _database.UserCollection);
     }
 }
