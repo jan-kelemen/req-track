@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
+using MongoDB.Bson;
 using MongoDB.Driver;
 using ReqTrack.Domain.Core.Entities;
 using ReqTrack.Domain.Core.Entities.Users;
@@ -16,10 +19,20 @@ namespace ReqTrack.Persistence.Concrete.MongoDB.Repositories
 
         private readonly IMongoCollection<MongoProject> _projects;
 
-        public MongoUserRepository(IMongoCollection<MongoUser> users, IMongoCollection<MongoProject> projects)
+        private readonly IMongoCollection<MongoRequirement> _requirements;
+
+        private readonly IMongoCollection<MongoUseCase> _useCases;
+
+        public MongoUserRepository(
+            IMongoCollection<MongoUser> users, 
+            IMongoCollection<MongoProject> projects,
+            IMongoCollection<MongoRequirement> requirements,
+            IMongoCollection<MongoUseCase> useCases)
         {
             _users = users;
             _projects = projects;
+            _requirements = requirements;
+            _useCases = useCases;
         }
 
         public CreateResult<User> CreateUser(User user)
@@ -39,32 +52,14 @@ namespace ReqTrack.Persistence.Concrete.MongoDB.Repositories
 
         public ReadResult<User> ReadUser(Identity id, bool loadProjects)
         {
-            var mongoUser = _users.Find(x => x.Id == id.ToMongoIdentity()).FirstOrDefault();
-
-            if (mongoUser == null)
-            {
-                throw new AbandonedMutexException();
-            }
-
-            //TODO: handle projects
-
-            return new ReadResult<User>(true, mongoUser.ToDomainEntity());
+            var mongoUser = FindByIdOrThrow(_users, id.ToMongoIdentity());
+            var projects = _projects.Find(x => mongoUser.AssociatedProjects.Contains(x.Id)).ToEnumerable();
+            return new ReadResult<User>(true, mongoUser.ToDomainEntity(projects));
         }
 
         public ReadResult<BasicUser> ReadUserInfo(Identity id)
         {
-            var projection = Builders<MongoUser>.Projection
-                .Include(x => x.Id).Include(x => x.DisplayName);
-
-            var mongoUser = _users
-                .Find(x => x.Id == id.ToMongoIdentity())
-                .Project<MongoUser>(projection)
-                .FirstOrDefault();
-
-            if (mongoUser == null)
-            {
-                throw new AbandonedMutexException();
-            }
+            var mongoUser = FindByIdOrThrow(_users, id.ToMongoIdentity());
 
             return new ReadResult<BasicUser>(
                 true, 
@@ -79,7 +74,11 @@ namespace ReqTrack.Persistence.Concrete.MongoDB.Repositories
                 .Set(x => x.DisplayName, user.DisplayName)
                 .Set(x => x.Password, user.PasswordHash);
 
-            //TODO: handle projects
+            if (updateProjects)
+            {
+                var projects = user.Projects.Select(x => x.Id.ToMongoIdentity());
+                updateDefinition.Set(x => x.AssociatedProjects, projects);
+            }
 
             var options = new FindOneAndUpdateOptions<MongoUser> {ReturnDocument = ReturnDocument.After};
 
@@ -111,8 +110,23 @@ namespace ReqTrack.Persistence.Concrete.MongoDB.Repositories
 
         public DeleteResult<Identity> DeleteUser(Identity id)
         {
-            var filter = Builders<MongoUser>.Filter.Eq(x => x.Id, id.ToMongoIdentity());
-            var mongoUser = _users.FindOneAndDelete(filter);
+            var mongoIdentity = id.ToMongoIdentity();
+
+            var projectFilter = Builders<MongoProject>.Filter.Eq(x => x.AuthorId, mongoIdentity);
+            var projectUpdateDefinition = Builders<MongoProject>.Update.Set(x => x.AuthorId, ObjectId.Empty);
+            _projects.UpdateMany(projectFilter, projectUpdateDefinition);
+
+            var requirementFilter = Builders<MongoRequirement>.Filter.Eq(x => x.AuthorId, mongoIdentity);
+            var requirementUpdateDefinition = Builders<MongoRequirement>.Update.Set(x => x.AuthorId, ObjectId.Empty);
+            _requirements.UpdateMany(requirementFilter, requirementUpdateDefinition);
+
+            var useCaseFilter = Builders<MongoUseCase>.Filter.Eq(x => x.AuthorId, mongoIdentity);
+            var useCaseUpdateDefinition = Builders<MongoUseCase>.Update.Set(x => x.AuthorId, ObjectId.Empty);
+            _useCases.UpdateMany(useCaseFilter, useCaseUpdateDefinition);
+
+            var userFilter = Builders<MongoUser>.Filter.Eq(x => x.Id, mongoIdentity);
+            var mongoUser = _users.FindOneAndDelete(userFilter);
+
             return new DeleteResult<Identity>(true, mongoUser.Id.ToDomainIdentity());
         }
     }
