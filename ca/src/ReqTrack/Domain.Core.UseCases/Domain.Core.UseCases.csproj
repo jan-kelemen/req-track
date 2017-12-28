@@ -2,6 +2,8 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.0</TargetFramework>
+    <AssemblyName>ReqTrack.Domain.Core.UseCases</AssemblyName>
+    <RootNamespace>ReqTrack.Domain.Core.UseCases</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>

@@ -1,7 +1,7 @@
 ﻿using ReqTrack.Domain.Core.Entities;
 using Xunit;
 
-namespace Domain.Core.Test.Unit.Entities
+namespace ReqTrack.Domain.Core.Test.Unit.Entities
 {
 
     public class IdentityUnitTests

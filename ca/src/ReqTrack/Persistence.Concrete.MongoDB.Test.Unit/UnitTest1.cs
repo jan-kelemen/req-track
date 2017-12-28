@@ -1,7 +1,6 @@
-using System;
 using Xunit;
 
-namespace Persistence.Concrete.MongoDB.Test.Unit
+namespace ReqTrack.Persistence.Concrete.MongoDB.Test.Unit
 {
     public class UnitTest1
     {

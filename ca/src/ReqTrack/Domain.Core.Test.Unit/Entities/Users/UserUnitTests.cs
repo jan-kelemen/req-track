@@ -4,7 +4,7 @@ using ReqTrack.Domain.Core.Entities.Users;
 using ReqTrack.Domain.Core.Entities.ValidationHelpers;
 using Xunit;
 
-namespace Domain.Core.Test.Unit.Entities.Users
+namespace ReqTrack.Domain.Core.Test.Unit.Entities.Users
 {
     public class UserUnitTests
     {

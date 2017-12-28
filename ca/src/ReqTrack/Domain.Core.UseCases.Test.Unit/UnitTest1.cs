@@ -1,7 +1,6 @@
-using System;
 using Xunit;
 
-namespace Domain.Core.UseCases.Test.Unit
+namespace ReqTrack.Domain.Core.UseCases.Test.Unit
 {
     public class UnitTest1
     {

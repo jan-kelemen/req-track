@@ -4,6 +4,10 @@
     <TargetFramework>netcoreapp2.0</TargetFramework>
 
     <IsPackable>false</IsPackable>
+
+    <AssemblyName>ReqTrack.Domain.Core.UseCases.Test.Unit</AssemblyName>
+
+    <RootNamespace>ReqTrack.Domain.Core.UseCases.Test.Unit</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>

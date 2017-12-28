@@ -4,6 +4,10 @@
     <TargetFramework>netcoreapp2.0</TargetFramework>
 
     <IsPackable>false</IsPackable>
+
+    <AssemblyName>ReqTrack.Persistence.Concrete.MongoDB.Test.Unit</AssemblyName>
+
+    <RootNamespace>ReqTrack.Persistence.Concrete.MongoDB.Test.Unit</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>

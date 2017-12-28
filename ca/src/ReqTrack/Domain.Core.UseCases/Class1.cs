@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Domain.Core.UseCases
+﻿namespace ReqTrack.Domain.Core.UseCases
 {
     public class Class1
     {
