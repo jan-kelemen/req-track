@@ -56,10 +56,7 @@ namespace ReqTrack.Persistence.Concrete.MongoDB.Repositories
 
             var mongoProject = FindByIdOrThrow(_projects, mongoRequirement.ProjectId);
             var mongoUser = FindByIdOrThrow(_users, mongoRequirement.AuthorId);
-            var orderMarker = LastOrderMarker(
-                                  requirement.Project.Id.ToMongoIdentity(),
-                                  requirement.Type.ToString()
-                              ) + 1;
+            var orderMarker = LastOrderMarker(mongoProject.Id, requirement.Type.ToString()) + 1;
 
             var requirementFilter = Builders<MongoRequirement>.Filter.Eq(x => x.Id, mongoRequirement.Id);
             var updateDefinition = Builders<MongoRequirement>.Update

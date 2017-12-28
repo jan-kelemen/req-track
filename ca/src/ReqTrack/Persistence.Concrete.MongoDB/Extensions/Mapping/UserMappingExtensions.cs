@@ -21,7 +21,7 @@ namespace ReqTrack.Persistence.Concrete.MongoDB.Extensions.Mapping
             };
         }
 
-        public static User ToDomainEntity(this MongoUser user, IEnumerable<MongoProject> projects)
+        public static User ToDomainEntity(this MongoUser user, IEnumerable<MongoProject> projects = null)
         {
             var projs = projects?.Select(p => new BasicProject(p.Id.ToDomainIdentity(), p.Name));
             var projsObject = projs == null ? null : new UserProjects(projs);

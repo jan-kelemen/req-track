@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using ReqTrack.Domain.Core.Entities.Projects;
 using ReqTrack.Domain.Core.Entities.Requirements;
+using ReqTrack.Domain.Core.Entities.Users;
 using ReqTrack.Persistence.Concrete.MongoDB.Entities;
 
 namespace ReqTrack.Persistence.Concrete.MongoDB.Extensions.Mapping
@@ -38,7 +39,7 @@ namespace ReqTrack.Persistence.Concrete.MongoDB.Extensions.Mapping
 
             return new Project(
                 project.Id.ToDomainIdentity(),
-                author.ToDomainEntity(),
+                new BasicUser(author.Id.ToDomainIdentity(), author.DisplayName), 
                 project.Name,
                 project.Description,
                 reqsObject);
