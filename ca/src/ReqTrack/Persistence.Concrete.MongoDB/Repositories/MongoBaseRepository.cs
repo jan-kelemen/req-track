@@ -2,7 +2,7 @@
 using ReqTrack.Domain.Core.Entities;
 using ReqTrack.Domain.Core.Repositories;
 
-namespace Persistence.Concrete.MongoDB.Repositories
+namespace ReqTrack.Persistence.Concrete.MongoDB.Repositories
 {
     public abstract class MongoBaseRepository : IRepository
     {
