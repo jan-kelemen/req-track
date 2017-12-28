@@ -27,5 +27,8 @@ namespace ReqTrack.Persistence.Concrete.MongoDB.Entities
 
         [BsonElement("note")]
         public string Note { get; set; }
+
+        [BsonElement("orderMarker")]
+        public int OrderMarker { get; set; }
     }
 }

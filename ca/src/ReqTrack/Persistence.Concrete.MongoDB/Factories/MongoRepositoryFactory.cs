@@ -15,7 +15,14 @@ namespace ReqTrack.Persistence.Concrete.MongoDB.Factories
         public IUserRepository UserRepository => 
             new MongoUserRepository(_database.UserCollection, _database.ProjectCollection);
 
-        public IProjectRepository ProjectRepository { get; }
+        public IProjectRepository ProjectRepository =>
+            new MongoProjectRepository(
+                _database.ProjectCollection,
+                _database.RequirementCollection,
+                _database.UserCollection,
+                _database.UseCaseCollection
+            );
+
         public IRequirementRepository RequirementRepository { get; }
         public IUseCaseRepository UseCaseRepository { get; }
     }

@@ -1,4 +1,5 @@
-﻿using MongoDB.Bson;
+﻿using System.Collections.Generic;
+using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
 namespace ReqTrack.Persistence.Concrete.MongoDB.Entities
@@ -18,5 +19,8 @@ namespace ReqTrack.Persistence.Concrete.MongoDB.Entities
 
         [BsonElement("password")]
         public string Password { get; set; }
+
+        [BsonElement("associatedProjects")]
+        public IEnumerable<ObjectId> AssociatedProjects { get; set; }
     }
 }
