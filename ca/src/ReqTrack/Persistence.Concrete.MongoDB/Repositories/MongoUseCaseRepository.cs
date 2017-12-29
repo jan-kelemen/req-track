@@ -3,7 +3,6 @@ using MongoDB.Driver;
 using ReqTrack.Domain.Core.Entities;
 using ReqTrack.Domain.Core.Entities.UseCases;
 using ReqTrack.Domain.Core.Repositories;
-using ReqTrack.Domain.Core.Repositories.Results;
 using ReqTrack.Persistence.Concrete.MongoDB.Entities;
 using ReqTrack.Persistence.Concrete.MongoDB.Extensions.Mapping;
 
@@ -27,7 +26,7 @@ namespace ReqTrack.Persistence.Concrete.MongoDB.Repositories
             _users = users;
         }
 
-        public CreateResult<UseCase> CreateUseCase(UseCase useCase)
+        public Identity CreateUseCase(UseCase useCase)
         {
             var mongoUseCase = useCase.ToMongoEntity();
 
@@ -38,19 +37,19 @@ namespace ReqTrack.Persistence.Concrete.MongoDB.Repositories
 
             _useCases.InsertOne(mongoUseCase);
 
-            return new CreateResult<UseCase>(true, mongoUseCase.ToDomainEntity(user, project));
+            return mongoUseCase.Id.ToDomainIdentity();
         }
 
-        public ReadResult<UseCase> ReadUseCase(Identity id)
+        public UseCase ReadUseCase(Identity id)
         {
             var mongoUseCase = FindByIdOrThrow(_useCases, id.ToMongoIdentity());
             var mongoProject = FindByIdOrThrow(_projects, mongoUseCase.ProjectId);
             var mongoUser = FindByIdOrThrow(_users, mongoUseCase.AuthorId);
 
-            return new ReadResult<UseCase>(true, mongoUseCase.ToDomainEntity(mongoUser, mongoProject));
+            return mongoUseCase.ToDomainEntity(mongoUser, mongoProject);
         }
 
-        public UpdateResult<UseCase> UpdateUseCase(UseCase useCase)
+        public bool UpdateUseCase(UseCase useCase)
         {
             var mongoUseCase = useCase.ToMongoEntity();
 
@@ -72,14 +71,14 @@ namespace ReqTrack.Persistence.Concrete.MongoDB.Repositories
 
             var updated = _useCases.FindOneAndUpdate(useCaseFilter, updateDefinition, options);
 
-            return new UpdateResult<UseCase>(true, updated.ToDomainEntity(mongoUser, mongoProject));
+            return true;
         }
 
-        public DeleteResult<Identity> DeleteUseCase(Identity id)
+        public bool DeleteUseCase(Identity id)
         {
             var filter = Builders<MongoUseCase>.Filter.Eq(x => x.Id, id.ToMongoIdentity());
             var entity = _useCases.FindOneAndDelete(filter);
-            return new DeleteResult<Identity>(true, entity.Id.ToDomainIdentity());
+            return true;
         }
 
         private int LastOrderMarker(ObjectId projectId)

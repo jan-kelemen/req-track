@@ -23,14 +23,14 @@ namespace ReqTrack.Domain.Core.UseCases.Users.ViewProfile
         {
             try
             {
-                var result = _userRepository.ReadUser(request.UserId, true);
+                var user = _userRepository.ReadUser(request.UserId, true);
 
                 output.Response = new ViewProfileResponse(ExecutionStatus.Success)
                 {
-                    UserId = result.Read.Id,
-                    UserName = result.Read.UserName,
-                    DisplayName = result.Read.DisplayName,
-                    Projects = result.Read.Projects.Select(x => new ViewProfileResponse.Project()
+                    UserId = user.Id,
+                    UserName = user.UserName,
+                    DisplayName = user.DisplayName,
+                    Projects = user.Projects.Select(x => new ViewProfileResponse.Project()
                     {
                         Identifier = x.Id,
                         Name = x.Name,

@@ -32,14 +32,14 @@ namespace ReqTrack.Domain.Core.UseCases.Users.ChangePassword
         {
             try
             {
-                var result = _userRepository.ReadUser(request.RequestedBy, false);
+                var user = _userRepository.ReadUser(request.RequestedBy, false);
                 var passwordHash = UserValidationHelper.HashPassword(request.NewPassword);
-                result.Read.PasswordHash = passwordHash;
-                var updateResult = _userRepository.UpdateUser(result.Read, false);
+                user.PasswordHash = passwordHash;
+                var updateResult = _userRepository.UpdateUser(user, false);
 
                 output.Response = new ChangePasswordResponse(ExecutionStatus.Success)
                 {
-                    UserId = updateResult.Updated.Id,
+                    UserId = user.Id,
                     Message = "Password changed successfully",
                 };
             }

@@ -23,12 +23,12 @@ namespace ReqTrack.Domain.Core.UseCases.Users.ChangeInformation
         {
             try
             {
-                var result = _userRepository.ReadUserInfo(request.UserId);
+                var user = _userRepository.ReadUserInfo(request.UserId);
 
                 output.Response = new ChangeInformationResponse(ExecutionStatus.Success)
                 {
-                    UserId = result.Read.Id,
-                    DisplayName = result.Read.DisplayName,
+                    UserId = user.Id,
+                    DisplayName = user.DisplayName,
                 };
             }
             catch (Exception e)
@@ -41,9 +41,7 @@ namespace ReqTrack.Domain.Core.UseCases.Users.ChangeInformation
         {
             try
             {
-                var result = _userRepository.ReadUserInfo(request.UserId);
-
-                var user = result.Read;
+                var user = _userRepository.ReadUserInfo(request.UserId);
                 user.DisplayName = request.DisplayName;
 
                 var updateResult = _userRepository.UpdateUserInfo(user);

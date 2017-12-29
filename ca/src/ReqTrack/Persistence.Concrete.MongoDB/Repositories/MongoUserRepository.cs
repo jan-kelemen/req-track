@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using ReqTrack.Domain.Core.Entities;
 using ReqTrack.Domain.Core.Entities.Users;
 using ReqTrack.Domain.Core.Repositories;
-using ReqTrack.Domain.Core.Repositories.Results;
 using ReqTrack.Persistence.Concrete.MongoDB.Entities;
 using ReqTrack.Persistence.Concrete.MongoDB.Extensions.Mapping;
 
@@ -35,7 +32,7 @@ namespace ReqTrack.Persistence.Concrete.MongoDB.Repositories
             _useCases = useCases;
         }
 
-        public CreateResult<User> CreateUser(User user)
+        public Identity CreateUser(User user)
         {
             var filter = Builders<MongoUser>.Filter.Eq(x => x.Username, user.UserName);
             if (_users.Count(filter) != 0)
@@ -47,26 +44,26 @@ namespace ReqTrack.Persistence.Concrete.MongoDB.Repositories
             var mongoUser = user.ToMongoEntity();
             _users.InsertOne(mongoUser);
 
-            return new CreateResult<User>(true, mongoUser.ToDomainEntity());
+            return mongoUser.Id.ToDomainIdentity();
         }
 
-        public ReadResult<User> ReadUser(Identity id, bool loadProjects)
+        public User ReadUser(Identity id, bool loadProjects)
         {
             var mongoUser = FindByIdOrThrow(_users, id.ToMongoIdentity());
-            var projects = _projects.Find(x => mongoUser.AssociatedProjects.Contains(x.Id)).ToEnumerable();
-            return new ReadResult<User>(true, mongoUser.ToDomainEntity(projects));
+            var projects = loadProjects
+                ? _projects.Find(x => mongoUser.AssociatedProjects.Contains(x.Id)).ToEnumerable()
+                : null;
+            return mongoUser.ToDomainEntity(projects);
         }
 
-        public ReadResult<BasicUser> ReadUserInfo(Identity id)
+        public BasicUser ReadUserInfo(Identity id)
         {
             var mongoUser = FindByIdOrThrow(_users, id.ToMongoIdentity());
 
-            return new ReadResult<BasicUser>(
-                true, 
-                new BasicUser(mongoUser.Id.ToDomainIdentity(), mongoUser.DisplayName));
+            return new BasicUser(mongoUser.Id.ToDomainIdentity(), mongoUser.DisplayName);
         }
 
-        public UpdateResult<User> UpdateUser(User user, bool updateProjects)
+        public bool UpdateUser(User user, bool updateProjects)
         {
             var filter = Builders<MongoUser>.Filter.Eq(x => x.Id, user.Id.ToMongoIdentity());
 
@@ -84,10 +81,10 @@ namespace ReqTrack.Persistence.Concrete.MongoDB.Repositories
 
             var mongoUser = _users.FindOneAndUpdate(filter, updateDefinition, options);
 
-            return new UpdateResult<User>(true, mongoUser.ToDomainEntity());
+            return true;
         }
 
-        public UpdateResult<BasicUser> UpdateUserInfo(BasicUser user)
+        public bool UpdateUserInfo(BasicUser user)
         {
             var projection = Builders<MongoUser>.Projection
                 .Include(x => x.Id).Include(x => x.DisplayName);
@@ -105,10 +102,10 @@ namespace ReqTrack.Persistence.Concrete.MongoDB.Repositories
 
             var mongoUser = _users.FindOneAndUpdate(filter, updateDefinition, options);
 
-            return new UpdateResult<BasicUser>(true, mongoUser.ToDomainEntity());
+            return true;
         }
 
-        public DeleteResult<Identity> DeleteUser(Identity id)
+        public bool DeleteUser(Identity id)
         {
             var mongoIdentity = id.ToMongoIdentity();
 
@@ -127,7 +124,7 @@ namespace ReqTrack.Persistence.Concrete.MongoDB.Repositories
             var userFilter = Builders<MongoUser>.Filter.Eq(x => x.Id, mongoIdentity);
             var mongoUser = _users.FindOneAndDelete(userFilter);
 
-            return new DeleteResult<Identity>(true, mongoUser.Id.ToDomainIdentity());
+            return true;
         }
     }
 }

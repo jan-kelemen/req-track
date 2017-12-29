@@ -3,7 +3,6 @@ using MongoDB.Driver;
 using ReqTrack.Domain.Core.Entities;
 using ReqTrack.Domain.Core.Entities.Requirements;
 using ReqTrack.Domain.Core.Repositories;
-using ReqTrack.Domain.Core.Repositories.Results;
 using ReqTrack.Persistence.Concrete.MongoDB.Entities;
 using ReqTrack.Persistence.Concrete.MongoDB.Extensions.Mapping;
 
@@ -27,7 +26,7 @@ namespace ReqTrack.Persistence.Concrete.MongoDB.Repositories
             _users = users;
         }
 
-        public CreateResult<Requirement> CreateRequirement(Requirement requirement)
+        public Identity CreateRequirement(Requirement requirement)
         {
             var mongoRequirement = requirement.ToMongoEntity();
 
@@ -38,19 +37,19 @@ namespace ReqTrack.Persistence.Concrete.MongoDB.Repositories
 
             _requirements.InsertOne(mongoRequirement);
 
-            return new CreateResult<Requirement>(true, mongoRequirement.ToDomainEntity(user, project));
+            return mongoRequirement.Id.ToDomainIdentity();
         }
 
-        public ReadResult<Requirement> ReadRequirement(Identity id)
+        public Requirement ReadRequirement(Identity id)
         {
             var mongoRequirement = FindByIdOrThrow(_requirements, id.ToMongoIdentity());
             var mongoProject = FindByIdOrThrow(_projects, mongoRequirement.ProjectId);
             var mongoUser = FindByIdOrThrow(_users, mongoRequirement.AuthorId);
 
-            return new ReadResult<Requirement>(true, mongoRequirement.ToDomainEntity(mongoUser, mongoProject));
+            return mongoRequirement.ToDomainEntity(mongoUser, mongoProject);
         }
 
-        public UpdateResult<Requirement> UpdateRequirement(Requirement requirement)
+        public bool UpdateRequirement(Requirement requirement)
         {
             var mongoRequirement = requirement.ToMongoEntity();
 
@@ -72,14 +71,14 @@ namespace ReqTrack.Persistence.Concrete.MongoDB.Repositories
 
             var updated = _requirements.FindOneAndUpdate(requirementFilter, updateDefinition, options);
 
-            return new UpdateResult<Requirement>(true, updated.ToDomainEntity(mongoUser, mongoProject));
+            return true;
         }
 
-        public DeleteResult<Identity> DeleteRequirement(Identity id)
+        public bool DeleteRequirement(Identity id)
         {
             var filter = Builders<MongoRequirement>.Filter.Eq(x => x.Id, id.ToMongoIdentity());
             var entity = _requirements.FindOneAndDelete(filter);
-            return new DeleteResult<Identity>(true, entity.Id.ToDomainIdentity());
+            return true;
         }
 
         private int LastOrderMarker(ObjectId projectId, string type)
