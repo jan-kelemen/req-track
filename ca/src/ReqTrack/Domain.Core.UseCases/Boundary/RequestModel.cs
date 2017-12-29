@@ -1,12 +1,22 @@
-﻿namespace ReqTrack.Domain.Core.UseCases.Boundary.Interfaces
+﻿using System.Collections.Generic;
+using System.Linq;
+
+namespace ReqTrack.Domain.Core.UseCases.Boundary.Interfaces
 {
-    public class RequestModel
+    public abstract class RequestModel
     {
-        public RequestModel(string requestedBy) => RequestedBy = null;
+        protected RequestModel(string requestedBy) => RequestedBy = requestedBy;
 
         /// <summary>
         /// Identifier of the user who initiated the requiest
         /// </summary>
         public string RequestedBy { get; }
+
+        public virtual bool Validate(out Dictionary<string, string> errors)
+        {
+            errors = new Dictionary<string, string>();
+
+            return !errors.Any();
+        }
     }
 }
