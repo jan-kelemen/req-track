@@ -6,9 +6,9 @@ using ReqTrack.Domain.Core.Repositories;
 using ReqTrack.Persistence.Concrete.MongoDB.Entities;
 using ReqTrack.Persistence.Concrete.MongoDB.Extensions.Mapping;
 
-namespace ReqTrack.Persistence.Concrete.MongoDB.Repositories
+namespace ReqTrack.Persistence.Concrete.MongoDB.Repositories.Internal
 {
-    public class MongoUseCaseRepository : MongoBaseRepository, IUseCaseRepository
+    internal class MongoUseCaseRepository : MongoBaseRepository, IUseCaseRepository
     {
         private readonly IMongoCollection<MongoUseCase> _useCases;
 

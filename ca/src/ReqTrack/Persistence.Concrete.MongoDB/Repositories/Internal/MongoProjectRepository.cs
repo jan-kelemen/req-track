@@ -7,9 +7,9 @@ using ReqTrack.Domain.Core.Repositories;
 using ReqTrack.Persistence.Concrete.MongoDB.Entities;
 using ReqTrack.Persistence.Concrete.MongoDB.Extensions.Mapping;
 
-namespace ReqTrack.Persistence.Concrete.MongoDB.Repositories
+namespace ReqTrack.Persistence.Concrete.MongoDB.Repositories.Internal
 {
-    public class MongoProjectRepository : MongoBaseRepository, IProjectRepository
+    internal class MongoProjectRepository : MongoBaseRepository, IProjectRepository
     {
         private readonly IMongoCollection<MongoProject> _projects;
 

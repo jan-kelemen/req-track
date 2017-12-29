@@ -2,6 +2,7 @@
 using ReqTrack.Domain.Core.Repositories;
 using ReqTrack.Persistence.Concrete.MongoDB.Database;
 using ReqTrack.Persistence.Concrete.MongoDB.Repositories;
+using ReqTrack.Persistence.Concrete.MongoDB.Repositories.Internal;
 
 namespace ReqTrack.Persistence.Concrete.MongoDB.Factories
 {

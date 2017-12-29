@@ -6,9 +6,9 @@ using ReqTrack.Domain.Core.Repositories;
 using ReqTrack.Persistence.Concrete.MongoDB.Entities;
 using ReqTrack.Persistence.Concrete.MongoDB.Extensions.Mapping;
 
-namespace ReqTrack.Persistence.Concrete.MongoDB.Repositories
+namespace ReqTrack.Persistence.Concrete.MongoDB.Repositories.Internal
 {
-    public class MongoRequirementRepository : MongoBaseRepository, IRequirementRepository
+    internal class MongoRequirementRepository : MongoBaseRepository, IRequirementRepository
     {
         private readonly IMongoCollection<MongoRequirement> _requirements;
 

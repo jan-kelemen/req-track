@@ -4,9 +4,9 @@ using MongoDB.Driver;
 using ReqTrack.Domain.Core.Entities;
 using ReqTrack.Domain.Core.Repositories;
 
-namespace ReqTrack.Persistence.Concrete.MongoDB.Repositories
+namespace ReqTrack.Persistence.Concrete.MongoDB.Repositories.Internal
 {
-    public abstract class MongoBaseRepository : IRepository
+    internal abstract class MongoBaseRepository : IRepository
     {
         public Identity GenerateNewIdentity() => Identity.FromString(ObjectId.GenerateNewId().ToString());
 

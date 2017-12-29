@@ -8,9 +8,9 @@ using ReqTrack.Domain.Core.Repositories;
 using ReqTrack.Persistence.Concrete.MongoDB.Entities;
 using ReqTrack.Persistence.Concrete.MongoDB.Extensions.Mapping;
 
-namespace ReqTrack.Persistence.Concrete.MongoDB.Repositories
+namespace ReqTrack.Persistence.Concrete.MongoDB.Repositories.Internal
 {
-    public class MongoUserRepository : MongoBaseRepository, IUserRepository
+    internal class MongoUserRepository : MongoBaseRepository, IUserRepository
     {
         private readonly IMongoCollection<MongoUser> _users;
 
