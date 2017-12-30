@@ -30,13 +30,13 @@ namespace ReqTrack.Domain.Core.Entities.Users
             string userName,
             string displayName,
             string passwordHash,
-            UserProjects projects = null) 
+            IEnumerable<BasicProject> projects = null) 
             : base(id, displayName)
         {
             UserName = userName;
             DisplayName = displayName;
             PasswordHash = passwordHash;
-            _projects = projects;
+            _projects = projects == null ? null : new UserProjects(projects);
         }
 
         /// <summary>

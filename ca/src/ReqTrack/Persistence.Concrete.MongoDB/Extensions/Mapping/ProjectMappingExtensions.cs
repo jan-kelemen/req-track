@@ -21,7 +21,6 @@ namespace ReqTrack.Persistence.Concrete.MongoDB.Extensions.Mapping
             };
         }
 
-        //TODO: handle usecases
         public static Project ToDomainEntity(
             this MongoProject project, 
             MongoUser author, 
@@ -36,8 +35,6 @@ namespace ReqTrack.Persistence.Concrete.MongoDB.Extensions.Mapping
                     r.OrderMarker)
             );
 
-            var reqsObject = reqs == null ? null : new ProjectRequirements(reqs);
-
             var ucs = useCases?.Select(u =>
                 new Project.UseCase(
                     u.Id.ToDomainIdentity(),
@@ -45,15 +42,13 @@ namespace ReqTrack.Persistence.Concrete.MongoDB.Extensions.Mapping
                     u.OrderMarker)
             );
 
-            var ucsObject = ucs == null ? null : new ProjectUseCases(ucs);
-
             return new Project(
                 project.Id.ToDomainIdentity(),
                 new BasicUser(author.Id.ToDomainIdentity(), author.DisplayName), 
                 project.Name,
                 project.Description,
-                reqsObject,
-                ucsObject);
+                reqs,
+                ucs);
         }
     }
 }

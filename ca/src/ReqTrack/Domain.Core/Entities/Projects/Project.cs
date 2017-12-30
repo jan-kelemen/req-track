@@ -66,15 +66,15 @@ namespace ReqTrack.Domain.Core.Entities.Projects
             BasicUser author, 
             string name, 
             string description = null,
-            ProjectRequirements requirements = null, 
-            ProjectUseCases useCases = null) 
+            IEnumerable<Requirement> requirements = null, 
+            IEnumerable<UseCase> useCases = null) 
             : base(id, name)
         {
             Author = author;
             Description = description;
 
-            _requirements = requirements;
-            _useCases = useCases;
+            _requirements = requirements == null ? null : new ProjectRequirements(requirements);
+            _useCases = useCases == null ? null : new ProjectUseCases(useCases);
         }
 
         public BasicUser Author

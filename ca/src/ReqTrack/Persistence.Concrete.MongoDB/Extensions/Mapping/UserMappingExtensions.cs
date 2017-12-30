@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using ReqTrack.Domain.Core.Entities.Projects;
 using ReqTrack.Domain.Core.Entities.Users;
 using ReqTrack.Persistence.Concrete.MongoDB.Entities;
@@ -24,14 +22,13 @@ namespace ReqTrack.Persistence.Concrete.MongoDB.Extensions.Mapping
         public static User ToDomainEntity(this MongoUser user, IEnumerable<MongoProject> projects = null)
         {
             var projs = projects?.Select(p => new BasicProject(p.Id.ToDomainIdentity(), p.Name));
-            var projsObject = projs == null ? null : new UserProjects(projs);
 
             return new User(
                 user.Id.ToDomainIdentity(),
                 user.Username,
                 user.DisplayName,
                 user.Password,
-                projsObject);
+                projs);
         }
     }
 }
