@@ -6,7 +6,7 @@ using ReqTrack.Persistence.Concrete.MongoDB.Entities;
 
 namespace ReqTrack.Persistence.Concrete.MongoDB.Extensions.Mapping
 {
-    public static class RequirementMapingExtensions
+    internal static class RequirementMapingExtensions
     {
         public static MongoRequirement ToMongoEntity(this Requirement requirement, int orderMarker = int.MaxValue)
         {

@@ -1,17 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using MongoDB.Bson;
+﻿using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
 namespace ReqTrack.Persistence.Concrete.MongoDB.Entities
 {
-    public class MongoRequirement
+    internal class MongoRequirement : MongoBaseEntity
     {
         public static readonly string CollectionName = "Requirements";
-
-        [BsonId]
-        public ObjectId Id { get; set; }
 
         [BsonElement("type")]
         public string Type { get; set; }

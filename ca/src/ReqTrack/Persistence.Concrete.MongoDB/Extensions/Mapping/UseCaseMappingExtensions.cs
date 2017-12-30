@@ -6,7 +6,7 @@ using ReqTrack.Persistence.Concrete.MongoDB.Entities;
 
 namespace ReqTrack.Persistence.Concrete.MongoDB.Extensions.Mapping
 {
-    public static class UseCaseMappingExtensions
+    internal static class UseCaseMappingExtensions
     {
         public static MongoUseCase ToMongoEntity(this UseCase useCase)
         {

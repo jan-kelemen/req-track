@@ -8,7 +8,7 @@ using ReqTrack.Persistence.Concrete.MongoDB.Entities;
 
 namespace ReqTrack.Persistence.Concrete.MongoDB.Extensions.Mapping
 {
-    public static class ProjectMappingExtensions
+    internal static class ProjectMappingExtensions
     {
         public static MongoProject ToMongoEntity(this Project project)
         {
@@ -25,7 +25,8 @@ namespace ReqTrack.Persistence.Concrete.MongoDB.Extensions.Mapping
         public static Project ToDomainEntity(
             this MongoProject project, 
             MongoUser author, 
-            IEnumerable<MongoRequirement> requirements = null)
+            IEnumerable<MongoRequirement> requirements = null,
+            IEnumerable<MongoUseCase> useCases = null)
         {
             var reqs = requirements?.Select(r =>
                 new Project.Requirement(
@@ -37,12 +38,22 @@ namespace ReqTrack.Persistence.Concrete.MongoDB.Extensions.Mapping
 
             var reqsObject = reqs == null ? null : new ProjectRequirements(reqs);
 
+            var ucs = useCases?.Select(u =>
+                new Project.UseCase(
+                    u.Id.ToDomainIdentity(),
+                    u.Title,
+                    u.OrderMarker)
+            );
+
+            var ucsObject = ucs == null ? null : new ProjectUseCases(ucs);
+
             return new Project(
                 project.Id.ToDomainIdentity(),
                 new BasicUser(author.Id.ToDomainIdentity(), author.DisplayName), 
                 project.Name,
                 project.Description,
-                reqsObject);
+                reqsObject,
+                ucsObject);
         }
     }
 }

@@ -4,12 +4,9 @@ using MongoDB.Bson.Serialization.Attributes;
 
 namespace ReqTrack.Persistence.Concrete.MongoDB.Entities
 {
-    public class MongoUser
+    internal class MongoUser : MongoBaseEntity
     {
         public static readonly string CollectionName = "Users";
-
-        [BsonId]
-        public ObjectId Id { get; set; }
 
         [BsonElement("username")]
         public string Username { get; set; }

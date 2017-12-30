@@ -5,7 +5,7 @@ using ReqTrack.Persistence.Concrete.MongoDB.Database;
 
 namespace ReqTrack.Persistence.Concrete.MongoDB.Factories
 {
-    public class MongoSecurityGatewayFactory : ISecurityGatewayFactory
+    internal class MongoSecurityGatewayFactory : ISecurityGatewayFactory
     {
         private readonly MongoReqTrackDatabase _database;
 

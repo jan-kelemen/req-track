@@ -12,7 +12,7 @@ namespace ReqTrack.Domain.Core.Repositories
 
         Project ReadProjectRequirements(Identity id, RequirementType type);
 
-        bool UpdateProject(Project id, bool updateUseCases);
+        bool UpdateProject(Project project, bool updateUseCases);
 
         bool UpdateProjectRequirements(Project project, RequirementType type);
 

@@ -8,7 +8,7 @@ using ReqTrack.Persistence.Concrete.MongoDB.Entities;
 
 namespace ReqTrack.Persistence.Concrete.MongoDB.Extensions.Mapping
 {
-    public static class UserMappingExtensions
+    internal static class UserMappingExtensions
     {
         public static MongoUser ToMongoEntity(this User user)
         {
