@@ -2,6 +2,6 @@
 {
     public enum ExecutionStatus
     {
-        TechnicalError, ValidationError, Failure, Success
+        Failure, Success
     }
 }

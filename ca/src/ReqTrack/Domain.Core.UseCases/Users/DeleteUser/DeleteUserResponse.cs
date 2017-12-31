@@ -7,5 +7,7 @@ namespace ReqTrack.Domain.Core.UseCases.Users.DeleteUser
         internal DeleteUserResponse(ExecutionStatus status) : base(status)
         {
         }
+
+        public string UserId { get; set; }
     }
 }

@@ -2,10 +2,13 @@
 using ReqTrack.Domain.Core.Entities;
 using ReqTrack.Domain.Core.Entities.Users;
 using ReqTrack.Domain.Core.Entities.ValidationHelpers;
+using ReqTrack.Domain.Core.Exceptions;
 using ReqTrack.Domain.Core.Repositories;
 using ReqTrack.Domain.Core.Security;
 using ReqTrack.Domain.Core.UseCases.Boundary;
 using ReqTrack.Domain.Core.UseCases.Boundary.Interfaces;
+using ReqTrack.Domain.Core.UseCases.Exceptions;
+using ReqTrack.Domain.Core.UseCases.Users.ChangePassword;
 
 namespace ReqTrack.Domain.Core.UseCases.Users.RegisterUser
 {
@@ -28,7 +31,11 @@ namespace ReqTrack.Domain.Core.UseCases.Users.RegisterUser
                 var passwordHash = UserValidationHelper.HashPassword(request.Password);
                 var user = new User(Identity.BlankIdentity, request.UserName, request.DisplayName, passwordHash);
 
-                var result = _userRepository.CreateUser(user);
+                var id = _userRepository.CreateUser(user);
+                if (id == null)
+                {
+                    throw new Exception("Couldn't register user");
+                }
 
                 output.Response =  new RegisterUserResponse(ExecutionStatus.Success)
                 {
@@ -39,12 +46,26 @@ namespace ReqTrack.Domain.Core.UseCases.Users.RegisterUser
                     Message = $"User {user.UserName} successfuly created",
                 };
             }
+            catch (RequestValidationException e)
+            {
+                output.Response = new RegisterUserResponse(ExecutionStatus.Failure)
+                {
+                    Message = $"Invalid request: {e.Message}",
+                    ValidationErrors = e.ValidationErrors,
+                };
+            }
+            catch (ValidationException e)
+            {
+                output.Response = new RegisterUserResponse(ExecutionStatus.Failure)
+                {
+                    Message = $"Invalid data for {e.PropertyKey}: {e.Message}",
+                };
+            }
             catch (Exception e)
             {
-                //TODO: implement proper exception handling once exception model is defined.
-                output.Response = new RegisterUserResponse(ExecutionStatus.TechnicalError)
+                output.Response = new RegisterUserResponse(ExecutionStatus.Failure)
                 {
-                    Message = "Technical error occured",
+                    Message = $"Tehnical error happend: {e.Message}",
                 };
             }
         }

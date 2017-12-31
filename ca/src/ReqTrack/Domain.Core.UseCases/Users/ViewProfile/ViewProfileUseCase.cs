@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Linq;
+using ReqTrack.Domain.Core.Exceptions;
 using ReqTrack.Domain.Core.Repositories;
 using ReqTrack.Domain.Core.Security;
 using ReqTrack.Domain.Core.UseCases.Boundary;
 using ReqTrack.Domain.Core.UseCases.Boundary.Interfaces;
+using ReqTrack.Domain.Core.UseCases.Exceptions;
 
 namespace ReqTrack.Domain.Core.UseCases.Users.ViewProfile
 {
@@ -37,9 +39,30 @@ namespace ReqTrack.Domain.Core.UseCases.Users.ViewProfile
                     }),
                 };
             }
+            catch (RequestValidationException e)
+            {
+                output.Response = new ViewProfileResponse(ExecutionStatus.Failure)
+                {
+                    UserId = request.UserId,
+                    Message = $"Invalid request: {e.Message}",
+                    ValidationErrors = e.ValidationErrors,
+                };
+            }
+            catch (EntityNotFoundException e)
+            {
+                output.Response = new ViewProfileResponse(ExecutionStatus.Failure)
+                {
+                    UserId = request.UserId,
+                    Message = $"User not found: {e.Message}",
+                };
+            }
             catch (Exception e)
             {
-                output.Response = new ViewProfileResponse(ExecutionStatus.TechnicalError);
+                output.Response = new ViewProfileResponse(ExecutionStatus.Failure)
+                {
+                    UserId = request.UserId,
+                    Message = $"Tehnical error happend: {e.Message}",
+                };
             }
         }
     }
