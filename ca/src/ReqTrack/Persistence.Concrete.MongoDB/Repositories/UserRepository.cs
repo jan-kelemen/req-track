@@ -35,7 +35,10 @@ namespace ReqTrack.Persistence.Concrete.MongoDB.Repositories
             var mongoUser = _userRepository.Read(id.ToMongoIdentity());
             if(mongoUser == null) { throw new EntityNotFoundException($"ID={id}"); }
 
-            var projects = loadProjects ? _projectRepository.Read(mongoUser.AssociatedProjects) : null;
+            var filter = Builders<MongoSecurityRights>.Filter.Eq(x => x.UserId, mongoUser.Id);
+            var associatedProjects = _securityRightsRepository.Find(filter).Select(x => x.ProjectId);
+
+            var projects = loadProjects ? _projectRepository.Read(associatedProjects) : null;
 
             return mongoUser.ToDomainEntity(projects);
         }
@@ -48,7 +51,7 @@ namespace ReqTrack.Persistence.Concrete.MongoDB.Repositories
             return new BasicUser(mongoUser.Id.ToDomainIdentity(), mongoUser.DisplayName);
         }
 
-        public bool UpdateUser(User user, bool updateProjects)
+        public bool UpdateUser(User user)
         {
             var filter = _userRepository.IdFilter(user.Id.ToMongoIdentity());
             if(_userRepository.Count(filter) == 0) { throw new EntityNotFoundException($"ID={user.Id}"); }
@@ -56,12 +59,6 @@ namespace ReqTrack.Persistence.Concrete.MongoDB.Repositories
             var updateDefinition = Builders<MongoUser>.Update
                 .Set(x => x.DisplayName, user.DisplayName)
                 .Set(x => x.Password, user.PasswordHash);
-
-            if (updateProjects)
-            {
-                var projects = user.Projects.Select(x => x.Id.ToMongoIdentity());
-                updateDefinition.Set(x => x.AssociatedProjects, projects);
-            }
 
             return _userRepository.Update(filter, updateDefinition);
         }
@@ -86,6 +83,9 @@ namespace ReqTrack.Persistence.Concrete.MongoDB.Repositories
             }
 
             if (!_userRepository.Delete(_userRepository.IdFilter(mongoIdentity))) { return false; }
+
+            var rightsFilter = Builders<MongoSecurityRights>.Filter.Eq(x => x.UserId, mongoIdentity);
+            _securityRightsRepository.Delete(rightsFilter);
 
             //Delete projects where user is the author.
             var projectFilter = Builders<MongoProject>.Filter.Eq(x => x.AuthorId, mongoIdentity);

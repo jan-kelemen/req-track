@@ -16,8 +16,5 @@ namespace ReqTrack.Persistence.Concrete.MongoDB.Entities
 
         [BsonElement("password")]
         public string Password { get; set; }
-
-        [BsonElement("associatedProjects")]
-        public IEnumerable<ObjectId> AssociatedProjects { get; set; }
     }
 }

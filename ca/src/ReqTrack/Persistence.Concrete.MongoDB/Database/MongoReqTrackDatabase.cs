@@ -26,5 +26,8 @@ namespace ReqTrack.Persistence.Concrete.MongoDB.Database
 
         public IMongoCollection<MongoUseCase> UseCaseCollection =>
             _database.GetCollection<MongoUseCase>(MongoUseCase.CollectionName);
+
+        public IMongoCollection<MongoSecurityRights> SecurityRightsCollection =>
+            _database.GetCollection<MongoSecurityRights>(MongoSecurityRights.CollectionName);
     }
 }

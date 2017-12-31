@@ -19,12 +19,15 @@ namespace ReqTrack.Persistence.Concrete.MongoDB.Repositories
 
         protected readonly MongoRepository<MongoUseCase> _useCaseRepository;
 
+        protected readonly MongoRepository<MongoSecurityRights> _securityRightsRepository;
+
         public BaseRepository(MongoReqTrackDatabase database)
         {
             _userRepository = new MongoRepository<MongoUser>(database.UserCollection);
             _projectRepository = new MongoRepository<MongoProject>(database.ProjectCollection);
             _requirementRepository = new MongoRepository<MongoRequirement>(database.RequirementCollection);
             _useCaseRepository = new MongoRepository<MongoUseCase>(database.UseCaseCollection);
+            _securityRightsRepository = new MongoRepository<MongoSecurityRights>(database.SecurityRightsCollection);
         }
 
         public Identity GenerateNewIdentity() => Identity.FromString(ObjectId.GenerateNewId().ToString());

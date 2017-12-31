@@ -21,6 +21,9 @@ namespace ReqTrack.Persistence.Concrete.MongoDB.Repositories
         {
             var mongoProject = project.ToMongoEntity();
 
+            var user = _userRepository.Read(mongoProject.AuthorId);
+            if (user == null) { throw new EntityNotFoundException($"ID={project.Author.Id}"); }
+
             var projectWithSameNameOfAuthor = Builders<MongoProject>.Filter
                 .Where(x => x.Name == mongoProject.Name && x.AuthorId == mongoProject.AuthorId);
 
@@ -31,14 +34,16 @@ namespace ReqTrack.Persistence.Concrete.MongoDB.Repositories
 
             var id = _projectRepository.Create(mongoProject);
 
-            var userFilter = _userRepository.IdFilter(mongoProject.AuthorId);
-            var updateDefinition = Builders<MongoUser>.Update.Push(x => x.AssociatedProjects, id);
-            if (!_userRepository.Update(userFilter, updateDefinition))
+            _securityRightsRepository.Create(new MongoSecurityRights
             {
-                //user couldn't be found or updated 
-                _projectRepository.Delete(_projectRepository.IdFilter(id));
-                throw new EntityNotFoundException($"ID={mongoProject.AuthorId.ToDomainIdentity()}");
-            }
+                CanChangeProjectRights = true,
+                CanChangeRequirements = true,
+                CanChangeUseCases = true,
+                CanViewProject = true,
+                IsAdministrator = true,
+                ProjectId = id,
+                UserId = user.Id,
+            });
 
             return id.ToDomainIdentity();
         }
@@ -153,12 +158,12 @@ namespace ReqTrack.Persistence.Concrete.MongoDB.Repositories
 
             var filter = _projectRepository.IdFilter(projectId);
             if (_projectRepository.Count(filter) == 0) { throw new EntityNotFoundException($"ID={id}"); }
+
             if (!_projectRepository.Delete(filter)) { return false; }
 
-            //remove the project from the user
-            var userFilter = Builders<MongoUser>.Filter.Eq(x => x.Id, projectId);
-            var userUpdateDefinition = Builders<MongoUser>.Update.Pull(x => x.AssociatedProjects, projectId);
-            _userRepository.Update(userFilter, userUpdateDefinition);
+            //remove the project from the users
+            var securityRightsFilter = Builders<MongoSecurityRights>.Filter.Eq(x => x.ProjectId, projectId);
+            _securityRightsRepository.Delete(securityRightsFilter);
 
             //remove requirements
             var requirementFilter = Builders<MongoRequirement>.Filter.Eq(x => x.ProjectId, projectId);
