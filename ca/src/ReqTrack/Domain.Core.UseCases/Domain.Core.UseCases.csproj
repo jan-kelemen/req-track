@@ -13,7 +13,6 @@
   <ItemGroup>
     <Folder Include="UseCases\" />
     <Folder Include="Requirements\" />
-    <Folder Include="Projects\" />
   </ItemGroup>
 
 </Project>

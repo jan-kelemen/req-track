@@ -3,23 +3,23 @@ using System.Linq;
 using ReqTrack.Domain.Core.UseCases.Boundary;
 using ReqTrack.Domain.Core.UseCases.Boundary.Interfaces;
 
-namespace ReqTrack.Domain.Core.UseCases.Users.DeleteUser
+namespace ReqTrack.Domain.Core.UseCases.Projects.DeleteProject
 {
-    public class DeleteUserRequest : RequestModel
+    public class DeleteProjectRequest : RequestModel
     {
-        public DeleteUserRequest(string requestedBy) : base(requestedBy)
+        public DeleteProjectRequest(string requestedBy) : base(requestedBy)
         {
         }
 
-        public string UserId { get; set; }
+        public string ProjectId { get; set; }
 
         public override bool Validate(out Dictionary<string, string> errors)
         {
             base.Validate(out errors);
 
-            if (string.IsNullOrWhiteSpace(UserId))
+            if (string.IsNullOrWhiteSpace(ProjectId))
             {
-                errors.Add(nameof(UserId), "User identifier is invalid");
+                errors.Add(nameof(ProjectId), "Project identifier is invalid");
             }
 
             return !errors.Any();

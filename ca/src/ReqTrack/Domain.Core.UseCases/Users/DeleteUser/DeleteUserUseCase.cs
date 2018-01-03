@@ -5,7 +5,6 @@ using ReqTrack.Domain.Core.Security;
 using ReqTrack.Domain.Core.UseCases.Boundary;
 using ReqTrack.Domain.Core.UseCases.Boundary.Interfaces;
 using ReqTrack.Domain.Core.UseCases.Exceptions;
-using ReqTrack.Domain.Core.UseCases.Users.ChangeInformation;
 
 namespace ReqTrack.Domain.Core.UseCases.Users.DeleteUser
 {
