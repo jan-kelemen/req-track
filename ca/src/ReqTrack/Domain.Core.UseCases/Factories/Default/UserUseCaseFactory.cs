@@ -11,29 +11,23 @@ namespace ReqTrack.Domain.Core.UseCases.Factories.Default
 {
     internal class UserUseCaseFactory : IUserUseCaseFactory
     {
-        private readonly ISecurityGateway _securityGateway;
-
-        private readonly IRepositoryFactory _repositoryFactory;
-
         internal UserUseCaseFactory(ISecurityGateway securityGateway, IRepositoryFactory repositoryFactory)
         {
-            _securityGateway = securityGateway;
-            _repositoryFactory = repositoryFactory;
+            ChangeInformation = new ChangeInformationUseCase(securityGateway, repositoryFactory.UserRepository);
+            ChangePassword = new ChangePasswordUseCase(securityGateway, repositoryFactory.UserRepository);
+            DeleteUser = new DeleteUserUseCase(securityGateway, repositoryFactory.UserRepository);
+            RegisterUser = new RegisterUserUseCase(securityGateway, repositoryFactory.UserRepository);
+            ViewProfile = new ViewProfileUseCase(securityGateway, repositoryFactory.UserRepository);
         }
 
-        public IUseCase<ChangeInformationInitialRequest, ChangeInformationRequest, ChangeInformationResponse>
-            ChangeInformation => new ChangeInformationUseCase(_securityGateway, _repositoryFactory.UserRepository);
+        public IUseCase<ChangeInformationInitialRequest, ChangeInformationRequest, ChangeInformationResponse> ChangeInformation { get; }
 
-        public IUseCase<ChangePasswordInitialRequest, ChangePasswordRequest, ChangePasswordResponse> 
-            ChangePassword => new ChangePasswordUseCase(_securityGateway, _repositoryFactory.UserRepository);
+        public IUseCase<ChangePasswordInitialRequest, ChangePasswordRequest, ChangePasswordResponse> ChangePassword { get; }
 
-        public IUseCase<DeleteUserRequest, DeleteUserResponse> DeleteUser => 
-            new DeleteUserUseCase(_securityGateway, _repositoryFactory.UserRepository);
+        public IUseCase<DeleteUserRequest, DeleteUserResponse> DeleteUser { get; }
 
-        public IUseCase<RegisterUserRequest, RegisterUserResponse> RegisterUser => 
-            new RegisterUserUseCase(_securityGateway, _repositoryFactory.UserRepository);
+        public IUseCase<RegisterUserRequest, RegisterUserResponse> RegisterUser { get; }
 
-        public IUseCase<ViewProfileRequest, ViewProfileResponse> ViewProfile => 
-            new ViewProfileUseCase(_securityGateway, _repositoryFactory.UserRepository);
+        public IUseCase<ViewProfileRequest, ViewProfileResponse> ViewProfile { get; }
     }
 }
