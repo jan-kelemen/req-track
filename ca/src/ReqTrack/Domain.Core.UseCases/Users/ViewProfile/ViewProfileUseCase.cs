@@ -1,10 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using ReqTrack.Domain.Core.Exceptions;
 using ReqTrack.Domain.Core.Repositories;
 using ReqTrack.Domain.Core.Security;
 using ReqTrack.Domain.Core.UseCases.Boundary;
+using ReqTrack.Domain.Core.UseCases.Boundary.Extensions;
 using ReqTrack.Domain.Core.UseCases.Boundary.Interfaces;
 using ReqTrack.Domain.Core.UseCases.Boundary.Responses;
 using ReqTrack.Domain.Core.UseCases.Exceptions;
@@ -27,6 +27,8 @@ namespace ReqTrack.Domain.Core.UseCases.Users.ViewProfile
         {
             try
             {
+                request.ValidateAndThrowOnInvalid();
+
                 var user = _userRepository.ReadUser(request.UserId, true);
 
                 output.Accept(new ViewProfileResponse(ExecutionStatus.Success)

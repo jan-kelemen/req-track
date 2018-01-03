@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace ReqTrack.Domain.Core.UseCases.Projects.ChangeRights
 {

@@ -2,6 +2,7 @@
 using ReqTrack.Domain.Core.Exceptions;
 using ReqTrack.Domain.Core.Repositories;
 using ReqTrack.Domain.Core.Security;
+using ReqTrack.Domain.Core.UseCases.Boundary.Extensions;
 using ReqTrack.Domain.Core.UseCases.Boundary.Interfaces;
 using ReqTrack.Domain.Core.UseCases.Boundary.Responses;
 using ReqTrack.Domain.Core.UseCases.Exceptions;
@@ -25,6 +26,8 @@ namespace ReqTrack.Domain.Core.UseCases.Projects.DeleteProject
         {
             try
             {
+                request.ValidateAndThrowOnInvalid();
+
                 var rights = _securityGateway.GetProjectRights(request.ProjectId, request.RequestedBy);
 
                 if (!rights.IsAdministrator)

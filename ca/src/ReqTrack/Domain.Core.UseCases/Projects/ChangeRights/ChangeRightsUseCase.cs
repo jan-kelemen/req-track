@@ -4,7 +4,6 @@ using System.Linq;
 using ReqTrack.Domain.Core.Exceptions;
 using ReqTrack.Domain.Core.Repositories;
 using ReqTrack.Domain.Core.Security;
-using ReqTrack.Domain.Core.UseCases.Boundary;
 using ReqTrack.Domain.Core.UseCases.Boundary.Extensions;
 using ReqTrack.Domain.Core.UseCases.Boundary.Interfaces;
 using ReqTrack.Domain.Core.UseCases.Boundary.Responses;
@@ -40,9 +39,12 @@ namespace ReqTrack.Domain.Core.UseCases.Projects.ChangeRights
 
                 var rights = _securityGateway.GetProjectRights(request.ProjectId);
 
+                var project = _projectRepository.ReadProject(request.ProjectId, false, false);
+
                 output.Accept(new ChangeRightsResponse
                 {
                     ProjectId = request.ProjectId,
+                    Name =  project.Name,
                     Rights = rights.Select(r => new ProjectRights
                     {
                         UserId = r.UserId,

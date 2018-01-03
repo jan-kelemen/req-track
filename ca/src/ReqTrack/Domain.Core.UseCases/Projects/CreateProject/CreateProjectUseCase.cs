@@ -6,6 +6,7 @@ using ReqTrack.Domain.Core.Exceptions;
 using ReqTrack.Domain.Core.Repositories;
 using ReqTrack.Domain.Core.Security;
 using ReqTrack.Domain.Core.UseCases.Boundary;
+using ReqTrack.Domain.Core.UseCases.Boundary.Extensions;
 using ReqTrack.Domain.Core.UseCases.Boundary.Interfaces;
 using ReqTrack.Domain.Core.UseCases.Boundary.Responses;
 using ReqTrack.Domain.Core.UseCases.Exceptions;
@@ -34,6 +35,8 @@ namespace ReqTrack.Domain.Core.UseCases.Projects.CreateProject
         {
             try
             {
+                request.ValidateAndThrowOnInvalid();
+
                 var user = _userRepository.ReadUserInfo(request.RequestedBy);
                 var project = new Project(Identity.BlankIdentity, user, request.Name, request.Description);
                 var id = _projectRepository.CreateProject(project);
