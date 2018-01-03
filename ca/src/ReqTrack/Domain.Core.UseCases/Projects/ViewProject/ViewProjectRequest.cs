@@ -12,6 +12,10 @@ namespace ReqTrack.Domain.Core.UseCases.Projects.ViewProject
 
         public string ProjectId { get; set; }
 
+        public bool ShowRequirements { get; set; }
+        
+        public bool ShowUseCases { get; set; }
+
         public override bool Validate(out Dictionary<string, string> errors)
         {
             base.Validate(out errors);

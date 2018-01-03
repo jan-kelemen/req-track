@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using ReqTrack.Domain.Core.Exceptions;
 using ReqTrack.Domain.Core.Repositories;
@@ -36,7 +37,7 @@ namespace ReqTrack.Domain.Core.UseCases.Projects.ViewProject
                     throw new AccessViolationException("Project doesn't exist or user has insufficient rights");
                 }
 
-                var project = _projectRepository.ReadProject(request.ProjectId, true, true);
+                var project = _projectRepository.ReadProject(request.ProjectId, request.ShowRequirements, request.ShowUseCases);
 
                 output.Accept(new ViewProjectResponse(ExecutionStatus.Success)
                 {
@@ -52,16 +53,16 @@ namespace ReqTrack.Domain.Core.UseCases.Projects.ViewProject
                         CanChangeProjectRights = rights.CanChangeProjectRights,
                         IsAdministrator = rights.IsAdministrator,
                     },
-                    Requirements = project.Requirements.Select(r => new Requirement
+                    Requirements = project.Requirements?.Select(r => new Requirement
                     {
                         Id = r.Id,
                         Title = r.Title,
-                    }),
-                    UseCases = project.UseCases.Select(r => new UseCase
+                    }) ?? new List<Requirement>(),
+                    UseCases = project.UseCases?.Select(r => new UseCase
                     {
                         Id = r.Id,
                         Title = r.Title,
-                    }),
+                    }) ?? new List<UseCase>(),
                 });
             }
             catch (RequestValidationException e)
