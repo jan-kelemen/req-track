@@ -2,8 +2,8 @@
 using ReqTrack.Domain.Core.Exceptions;
 using ReqTrack.Domain.Core.Repositories;
 using ReqTrack.Domain.Core.Security;
-using ReqTrack.Domain.Core.UseCases.Boundary;
 using ReqTrack.Domain.Core.UseCases.Boundary.Interfaces;
+using ReqTrack.Domain.Core.UseCases.Boundary.Responses;
 using ReqTrack.Domain.Core.UseCases.Exceptions;
 using AccessViolationException = ReqTrack.Domain.Core.Exceptions.AccessViolationException;
 
@@ -37,43 +37,39 @@ namespace ReqTrack.Domain.Core.UseCases.Projects.DeleteProject
                     throw new Exception("Couldn't delete project");
                 }
 
-                output.Response = new DeleteProjectResponse(ExecutionStatus.Success)
+                output.Accept(new DeleteProjectResponse
                 {
                     Message = "Project deleted successfully",
-                };
+                });
             }
             catch (RequestValidationException e)
             {
-                output.Response = new DeleteProjectResponse(ExecutionStatus.Failure)
+                output.Accept(new ValidationErrorResponse
                 {
-                    ProjectId = request.ProjectId,
-                    Message = $"Invalid request: {e.Message}",
+                    Message = $"Invalid request. {e.Message}",
                     ValidationErrors = e.ValidationErrors,
-                };
+                });
             }
             catch (AccessViolationException e)
             {
-                output.Response = new DeleteProjectResponse(ExecutionStatus.Failure)
+                output.Accept(new FailureResponse
                 {
-                    ProjectId = request.ProjectId,
-                    Message = e.Message,
-                };
+                    Message = $"Insufficient rights. {e.Message}",
+                });
             }
             catch (EntityNotFoundException e)
             {
-                output.Response = new DeleteProjectResponse(ExecutionStatus.Failure)
+                output.Accept(new FailureResponse
                 {
-                    ProjectId = request.ProjectId,
-                    Message = $"Project not found: {e.Message}",
-                };
+                    Message = $"Project not found. {e.Message}",
+                });
             }
             catch (Exception e)
             {
-                output.Response = new DeleteProjectResponse(ExecutionStatus.Failure)
+                output.Accept(new FailureResponse
                 {
-                    ProjectId = request.ProjectId,
-                    Message = $"Tehnical error happend: {e.Message}",
-                };
+                    Message = $"Tehnical error happend. {e.Message}",
+                });
             }
         }
     }

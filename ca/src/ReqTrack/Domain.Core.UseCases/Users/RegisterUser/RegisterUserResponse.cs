@@ -1,4 +1,5 @@
 ﻿using ReqTrack.Domain.Core.UseCases.Boundary;
+using ReqTrack.Domain.Core.UseCases.Boundary.Responses;
 
 namespace ReqTrack.Domain.Core.UseCases.Users.RegisterUser
 {
@@ -9,11 +10,5 @@ namespace ReqTrack.Domain.Core.UseCases.Users.RegisterUser
         }
 
         public string GivenId { get; set; }
-
-        public string UserName { get; set; }
-
-        public string DisplayName { get; set; }
-
-        //Password is cleared on response.
     }
 }

@@ -1,10 +1,11 @@
 ﻿using ReqTrack.Domain.Core.UseCases.Boundary;
+using ReqTrack.Domain.Core.UseCases.Boundary.Responses;
 
 namespace ReqTrack.Domain.Core.UseCases.Users.ChangeInformation
 {
     public class ChangeInformationResponse : ResponseModel
     {
-        internal ChangeInformationResponse(ExecutionStatus status) : base(status)
+        internal ChangeInformationResponse() : base(ExecutionStatus.Success)
         {
         }
 

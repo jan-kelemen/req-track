@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using ReqTrack.Domain.Core.Entities.ValidationHelpers;
 using ReqTrack.Domain.Core.Exceptions;
 using ReqTrack.Domain.Core.Repositories;
@@ -6,8 +7,8 @@ using ReqTrack.Domain.Core.Security;
 using ReqTrack.Domain.Core.UseCases.Boundary;
 using ReqTrack.Domain.Core.UseCases.Boundary.Extensions;
 using ReqTrack.Domain.Core.UseCases.Boundary.Interfaces;
+using ReqTrack.Domain.Core.UseCases.Boundary.Responses;
 using ReqTrack.Domain.Core.UseCases.Exceptions;
-using ReqTrack.Domain.Core.UseCases.Users.ChangeInformation;
 
 namespace ReqTrack.Domain.Core.UseCases.Users.ChangePassword
 {
@@ -31,35 +32,33 @@ namespace ReqTrack.Domain.Core.UseCases.Users.ChangePassword
                 request.ValidateAndThrowOnInvalid();
 
                 var user = _userRepository.ReadUserInfo(request.UserId);
-                output.Response = new ChangePasswordResponse(ExecutionStatus.Success)
+                output.Accept(new ChangePasswordResponse
                 {
-                    UserId = request.UserId,
-                };
+                    UserId = user.Id,
+                    DisplayName = user.DisplayName,
+                });
             }
             catch (RequestValidationException e)
             {
-                output.Response = new ChangePasswordResponse(ExecutionStatus.Failure)
+                output.Accept(new ValidationErrorResponse
                 {
-                    UserId = request.UserId,
-                    Message = $"Invalid request: {e.Message}",
-                    ValidationErrors =  e.ValidationErrors,
-                };
+                    Message = $"Invalid request. {e.Message}",
+                    ValidationErrors = e.ValidationErrors,
+                });
             }
             catch (EntityNotFoundException e)
             {
-                output.Response = new ChangePasswordResponse(ExecutionStatus.Failure)
+                output.Accept(new FailureResponse
                 {
-                    UserId = request.UserId,
-                    Message = $"User not found: {e.Message}",
-                };
+                    Message = $"User not found. {e.Message}",
+                });
             }
             catch (Exception e)
             {
-                output.Response = new ChangePasswordResponse(ExecutionStatus.Failure)
+                output.Accept(new FailureResponse
                 {
-                    UserId = request.UserId,
-                    Message = $"Tehnical error happend: {e.Message}",
-                };
+                    Message = $"Tehnical error happend. {e.Message}",
+                });
             }
         }
 
@@ -76,44 +75,45 @@ namespace ReqTrack.Domain.Core.UseCases.Users.ChangePassword
                     throw new Exception("Couldn't update user password");
                 }
 
-                output.Response = new ChangePasswordResponse(ExecutionStatus.Success)
+                output.Accept(new ChangePasswordResponse
                 {
                     UserId = user.Id,
                     Message = "Password changed successfully",
-                };
+                });
+
             }
             catch (RequestValidationException e)
             {
-                output.Response = new ChangePasswordResponse(ExecutionStatus.Failure)
+                output.Accept(new ValidationErrorResponse
                 {
-                    UserId = request.UserId,
-                    Message = $"Invalid request: {e.Message}",
+                    Message = $"Invalid request. {e.Message}",
                     ValidationErrors = e.ValidationErrors,
-                };
-            }
-            catch (EntityNotFoundException e)
-            {
-                output.Response = new ChangePasswordResponse(ExecutionStatus.Failure)
-                {
-                    UserId = request.UserId,
-                    Message = $"User not found: {e.Message}",
-                };
+                });
             }
             catch (ValidationException e)
             {
-                output.Response = new ChangePasswordResponse(ExecutionStatus.Failure)
+                output.Accept(new ValidationErrorResponse
                 {
-                    UserId = request.UserId,
-                    Message = $"Invalid data for {e.PropertyKey}: {e.Message}",
-                };
+                    Message = $"Invalid data for {e.PropertyKey}.",
+                    ValidationErrors = new Dictionary<string, string>
+                    {
+                        { e.PropertyKey, e.Message }
+                    },
+                });
+            }
+            catch (EntityNotFoundException e)
+            {
+                output.Accept(new FailureResponse
+                {
+                    Message = $"User not found. {e.Message}",
+                });
             }
             catch (Exception e)
             {
-                output.Response = new ChangePasswordResponse(ExecutionStatus.Failure)
+                output.Accept(new FailureResponse
                 {
-                    UserId = request.UserId,
-                    Message = $"Tehnical error happend: {e.Message}",
-                };
+                    Message = $"Tehnical error happend. {e.Message}",
+                });
             }
         }
     }

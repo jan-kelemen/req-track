@@ -1,9 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using ReqTrack.Domain.Core.Exceptions;
 using ReqTrack.Domain.Core.Repositories;
 using ReqTrack.Domain.Core.Security;
-using ReqTrack.Domain.Core.UseCases.Boundary;
 using ReqTrack.Domain.Core.UseCases.Boundary.Interfaces;
+using ReqTrack.Domain.Core.UseCases.Boundary.Responses;
 using ReqTrack.Domain.Core.UseCases.Exceptions;
 
 namespace ReqTrack.Domain.Core.UseCases.Users.DeleteUser
@@ -29,35 +30,32 @@ namespace ReqTrack.Domain.Core.UseCases.Users.DeleteUser
                     throw new Exception("Couldn't delete user");
                 }
 
-                output.Response = new DeleteUserResponse(ExecutionStatus.Success)
+                output.Accept(new DeleteUserResponse
                 {
-                    Message = "User deleted successfully",
-                };
+                    Message = "User deleted successfully.",
+                });
             }
             catch (RequestValidationException e)
             {
-                output.Response = new DeleteUserResponse(ExecutionStatus.Failure)
+                output.Accept(new ValidationErrorResponse
                 {
-                    UserId = request.UserId,
-                    Message = $"Invalid request: {e.Message}",
+                    Message = $"Invalid request. {e.Message}",
                     ValidationErrors = e.ValidationErrors,
-                };
+                });
             }
             catch (EntityNotFoundException e)
             {
-                output.Response = new DeleteUserResponse(ExecutionStatus.Failure)
+                output.Accept(new FailureResponse
                 {
-                    UserId = request.UserId,
-                    Message = $"User not found: {e.Message}",
-                };
+                    Message = $"User not found. {e.Message}",
+                });
             }
             catch (Exception e)
             {
-                output.Response = new DeleteUserResponse(ExecutionStatus.Failure)
+                output.Accept(new FailureResponse
                 {
-                    UserId = request.UserId,
-                    Message = $"Tehnical error happend: {e.Message}",
-                };
+                    Message = $"Tehnical error happend. {e.Message}",
+                });
             }
         }
     }

@@ -6,6 +6,7 @@ using ReqTrack.Domain.Core.Security;
 using ReqTrack.Domain.Core.UseCases.Boundary;
 using ReqTrack.Domain.Core.UseCases.Boundary.Extensions;
 using ReqTrack.Domain.Core.UseCases.Boundary.Interfaces;
+using ReqTrack.Domain.Core.UseCases.Boundary.Responses;
 using ReqTrack.Domain.Core.UseCases.Exceptions;
 using AccessViolationException = System.AccessViolationException;
 
@@ -37,7 +38,7 @@ namespace ReqTrack.Domain.Core.UseCases.Projects.ViewProject
 
                 var project = _projectRepository.ReadProject(request.ProjectId, true, true);
 
-                output.Response = new ViewProjectResponse(ExecutionStatus.Success)
+                output.Accept(new ViewProjectResponse(ExecutionStatus.Success)
                 {
                     Name = project.Name,
                     Description = project.Description,
@@ -61,32 +62,36 @@ namespace ReqTrack.Domain.Core.UseCases.Projects.ViewProject
                         Id = r.Id,
                         Title = r.Title,
                     }),
-                };
+                });
             }
             catch (RequestValidationException e)
             {
-                output.Response = new ViewProjectResponse(ExecutionStatus.Failure)
+                output.Accept(new ValidationErrorResponse
                 {
-                    ProjectId = request.ProjectId,
-                    Message = $"Invalid request: {e.Message}",
+                    Message = $"Invalid request. {e.Message}",
                     ValidationErrors = e.ValidationErrors,
-                };
+                });
+            }
+            catch (AccessViolationException e)
+            {
+                output.Accept(new FailureResponse
+                {
+                    Message = $"Insufficient rights. {e.Message}",
+                });
             }
             catch (EntityNotFoundException e)
             {
-                output.Response = new ViewProjectResponse(ExecutionStatus.Failure)
+                output.Accept(new FailureResponse
                 {
-                    ProjectId = request.ProjectId,
-                    Message = $"Project not found: {e.Message}",
-                };
+                    Message = $"Project not found. {e.Message}",
+                });
             }
             catch (Exception e)
             {
-                output.Response = new ViewProjectResponse(ExecutionStatus.Failure)
+                output.Accept(new FailureResponse
                 {
-                    ProjectId = request.ProjectId,
-                    Message = $"Tehnical error happend: {e.Message}",
-                };
+                    Message = $"Tehnical error happend. {e.Message}",
+                });
             }
         }
     }

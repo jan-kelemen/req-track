@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using ReqTrack.Domain.Core.UseCases.Boundary;
+using ReqTrack.Domain.Core.UseCases.Boundary.Responses;
 
 namespace ReqTrack.Domain.Core.UseCases.Projects.ViewProject
 {

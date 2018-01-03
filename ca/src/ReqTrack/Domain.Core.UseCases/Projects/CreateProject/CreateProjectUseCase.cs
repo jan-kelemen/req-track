@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using ReqTrack.Domain.Core.Entities;
 using ReqTrack.Domain.Core.Entities.Projects;
 using ReqTrack.Domain.Core.Exceptions;
@@ -6,6 +7,7 @@ using ReqTrack.Domain.Core.Repositories;
 using ReqTrack.Domain.Core.Security;
 using ReqTrack.Domain.Core.UseCases.Boundary;
 using ReqTrack.Domain.Core.UseCases.Boundary.Interfaces;
+using ReqTrack.Domain.Core.UseCases.Boundary.Responses;
 using ReqTrack.Domain.Core.UseCases.Exceptions;
 
 namespace ReqTrack.Domain.Core.UseCases.Projects.CreateProject
@@ -41,33 +43,37 @@ namespace ReqTrack.Domain.Core.UseCases.Projects.CreateProject
                     throw new Exception("Couldn't create project");
                 }
 
-                output.Response = new CreateProjectResponse(ExecutionStatus.Success)
+                output.Accept(new CreateProjectResponse(ExecutionStatus.Success)
                 {
                     GivenId = id,
-                    Message = $"Proejct {project.Name} successfuly created",
-                };
+                    Message = $"Project {project.Name} successfuly created",
+                });
             }
             catch (RequestValidationException e)
             {
-                output.Response = new CreateProjectResponse(ExecutionStatus.Failure)
+                output.Accept(new ValidationErrorResponse
                 {
-                    Message = $"Invalid request: {e.Message}",
+                    Message = $"Invalid request. {e.Message}",
                     ValidationErrors = e.ValidationErrors,
-                };
+                });
             }
             catch (ValidationException e)
             {
-                output.Response = new CreateProjectResponse(ExecutionStatus.Failure)
+                output.Accept(new ValidationErrorResponse
                 {
-                    Message = $"Invalid data for {e.PropertyKey}: {e.Message}",
-                };
+                    Message = $"Invalid data for {e.PropertyKey}.",
+                    ValidationErrors = new Dictionary<string, string>
+                    {
+                        { e.PropertyKey, e.Message }
+                    },
+                });
             }
             catch (Exception e)
             {
-                output.Response = new CreateProjectResponse(ExecutionStatus.Failure)
+                output.Accept(new FailureResponse
                 {
-                    Message = $"Tehnical error happend: {e.Message}",
-                };
+                    Message = $"Tehnical error happend. {e.Message}",
+                });
             }
         }
     }

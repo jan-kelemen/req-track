@@ -1,13 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 using ReqTrack.Domain.Core.UseCases.Boundary;
+using ReqTrack.Domain.Core.UseCases.Boundary.Responses;
 
 namespace ReqTrack.Domain.Core.UseCases.Projects.ChangeRights
 {
     public class ChangeRightsResponse : ResponseModel
     {
-        internal ChangeRightsResponse(ExecutionStatus status) : base(status)
+        internal ChangeRightsResponse() : base(ExecutionStatus.Success)
         {
         }
 

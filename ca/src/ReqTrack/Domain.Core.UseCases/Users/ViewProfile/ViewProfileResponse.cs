@@ -1,19 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 using ReqTrack.Domain.Core.UseCases.Boundary;
+using ReqTrack.Domain.Core.UseCases.Boundary.Responses;
 
 namespace ReqTrack.Domain.Core.UseCases.Users.ViewProfile
 {
     public class ViewProfileResponse : ResponseModel
     {
-        public class Project
-        {
-            public string Identifier { get; set; }
-
-            public string Name { get; set; }
-        }
-
         internal ViewProfileResponse(ExecutionStatus status) : base(status)
         {
         }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using ReqTrack.Domain.Core.Entities;
 using ReqTrack.Domain.Core.Entities.Users;
 using ReqTrack.Domain.Core.Entities.ValidationHelpers;
@@ -7,8 +8,8 @@ using ReqTrack.Domain.Core.Repositories;
 using ReqTrack.Domain.Core.Security;
 using ReqTrack.Domain.Core.UseCases.Boundary;
 using ReqTrack.Domain.Core.UseCases.Boundary.Interfaces;
+using ReqTrack.Domain.Core.UseCases.Boundary.Responses;
 using ReqTrack.Domain.Core.UseCases.Exceptions;
-using ReqTrack.Domain.Core.UseCases.Users.ChangePassword;
 
 namespace ReqTrack.Domain.Core.UseCases.Users.RegisterUser
 {
@@ -37,36 +38,37 @@ namespace ReqTrack.Domain.Core.UseCases.Users.RegisterUser
                     throw new Exception("Couldn't register user");
                 }
 
-                output.Response =  new RegisterUserResponse(ExecutionStatus.Success)
+                output.Accept(new RegisterUserResponse(ExecutionStatus.Success)
                 {
                     GivenId = user.Id,
-                    UserName = user.UserName,
-                    DisplayName = user.DisplayName,
-
                     Message = $"User {user.UserName} successfuly created",
-                };
+                });
             }
             catch (RequestValidationException e)
             {
-                output.Response = new RegisterUserResponse(ExecutionStatus.Failure)
+                output.Accept(new ValidationErrorResponse
                 {
-                    Message = $"Invalid request: {e.Message}",
+                    Message = $"Invalid request. {e.Message}",
                     ValidationErrors = e.ValidationErrors,
-                };
+                });
             }
             catch (ValidationException e)
             {
-                output.Response = new RegisterUserResponse(ExecutionStatus.Failure)
+                output.Accept(new ValidationErrorResponse
                 {
-                    Message = $"Invalid data for {e.PropertyKey}: {e.Message}",
-                };
+                    Message = $"Invalid data for {e.PropertyKey}.",
+                    ValidationErrors = new Dictionary<string, string>
+                    {
+                        { e.PropertyKey, e.Message }
+                    },
+                });
             }
             catch (Exception e)
             {
-                output.Response = new RegisterUserResponse(ExecutionStatus.Failure)
+                output.Accept(new FailureResponse
                 {
-                    Message = $"Tehnical error happend: {e.Message}",
-                };
+                    Message = $"Tehnical error happend. {e.Message}",
+                });
             }
         }
     }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using ReqTrack.Domain.Core.Exceptions;
 using ReqTrack.Domain.Core.Repositories;
@@ -6,6 +7,7 @@ using ReqTrack.Domain.Core.Security;
 using ReqTrack.Domain.Core.UseCases.Boundary;
 using ReqTrack.Domain.Core.UseCases.Boundary.Extensions;
 using ReqTrack.Domain.Core.UseCases.Boundary.Interfaces;
+using ReqTrack.Domain.Core.UseCases.Boundary.Responses;
 using ReqTrack.Domain.Core.UseCases.Exceptions;
 using AccessViolationException = ReqTrack.Domain.Core.Exceptions.AccessViolationException;
 
@@ -38,7 +40,7 @@ namespace ReqTrack.Domain.Core.UseCases.Projects.ChangeRights
 
                 var rights = _securityGateway.GetProjectRights(request.ProjectId);
 
-                output.Response = new ChangeRightsResponse(ExecutionStatus.Success)
+                output.Accept(new ChangeRightsResponse
                 {
                     ProjectId = request.ProjectId,
                     Rights = rights.Select(r => new ProjectRights
@@ -50,39 +52,47 @@ namespace ReqTrack.Domain.Core.UseCases.Projects.ChangeRights
                         CanChangeProjectRights = r.CanChangeProjectRights,
                         IsAdministrator = r.IsAdministrator,
                     }),
-                };
+                });
             }
             catch (RequestValidationException e)
             {
-                output.Response = new ChangeRightsResponse(ExecutionStatus.Failure)
+                output.Accept(new ValidationErrorResponse
                 {
-                    ProjectId = request.ProjectId,
-                    Message = $"Invalid request: {e.Message}",
+                    Message = $"Invalid request. {e.Message}",
                     ValidationErrors = e.ValidationErrors,
-                };
+                });
+            }
+            catch (ValidationException e)
+            {
+                output.Accept(new ValidationErrorResponse
+                {
+                    Message = $"Invalid data for {e.PropertyKey}.",
+                    ValidationErrors = new Dictionary<string, string>
+                    {
+                        { e.PropertyKey, e.Message }
+                    },
+                });
             }
             catch (AccessViolationException e)
             {
-                output.Response = new ChangeRightsResponse(ExecutionStatus.Failure)
+                output.Accept(new FailureResponse
                 {
-                    Message = e.Message,
-                };
+                    Message = $"Insufficient rights. {e.Message}",
+                });
             }
             catch (EntityNotFoundException e)
             {
-                output.Response = new ChangeRightsResponse(ExecutionStatus.Failure)
+                output.Accept(new FailureResponse
                 {
-                    ProjectId = request.ProjectId,
-                    Message = $"Project not found: {e.Message}",
-                };
+                    Message = $"Project not found. {e.Message}",
+                });
             }
             catch (Exception e)
             {
-                output.Response = new ChangeRightsResponse(ExecutionStatus.Failure)
+                output.Accept(new FailureResponse
                 {
-                    ProjectId = request.ProjectId,
-                    Message = $"Tehnical error happend: {e.Message}",
-                };
+                    Message = $"Tehnical error happend. {e.Message}",
+                });
             }
         }
 
@@ -128,55 +138,56 @@ namespace ReqTrack.Domain.Core.UseCases.Projects.ChangeRights
                     )
                 );
 
-                if (result)
+                if (!result)
                 {
-                    output.Response = new ChangeRightsResponse(ExecutionStatus.Success)
-                    {
-                        ProjectId = request.ProjectId,
-                        Message = "Project rights successfully updated"
-                    };
+                    throw new Exception("Project rights couldn't be updated.");
                 }
-                else
+
+                output.Accept(new ChangeRightsResponse
                 {
-                    output.Response = new ChangeRightsResponse(ExecutionStatus.Failure)
-                    {
-                        ProjectId = request.ProjectId,
-                        Rights = request.Rights,
-                        Message = "Project rights couldn't be updated",
-                    };
-                }
+                    ProjectId = request.ProjectId,
+                    Message = "Project rights successfully updated"
+                });
             }
             catch (RequestValidationException e)
             {
-                output.Response = new ChangeRightsResponse(ExecutionStatus.Failure)
+                output.Accept(new ValidationErrorResponse
                 {
-                    ProjectId = request.ProjectId,
-                    Message = $"Invalid request: {e.Message}",
+                    Message = $"Invalid request. {e.Message}",
                     ValidationErrors = e.ValidationErrors,
-                };
+                });
+            }
+            catch (ValidationException e)
+            {
+                output.Accept(new ValidationErrorResponse
+                {
+                    Message = $"Invalid data for {e.PropertyKey}.",
+                    ValidationErrors = new Dictionary<string, string>
+                    {
+                        { e.PropertyKey, e.Message }
+                    },
+                });
             }
             catch (AccessViolationException e)
             {
-                output.Response = new ChangeRightsResponse(ExecutionStatus.Failure)
+                output.Accept(new FailureResponse
                 {
-                    Message = e.Message,
-                };
+                    Message = $"Insufficient rights. {e.Message}",
+                });
             }
             catch (EntityNotFoundException e)
             {
-                output.Response = new ChangeRightsResponse(ExecutionStatus.Failure)
+                output.Accept(new FailureResponse
                 {
-                    ProjectId = request.ProjectId,
-                    Message = $"Project not found: {e.Message}",
-                };
+                    Message = $"Project not found. {e.Message}",
+                });
             }
             catch (Exception e)
             {
-                output.Response = new ChangeRightsResponse(ExecutionStatus.Failure)
+                output.Accept(new FailureResponse
                 {
-                    ProjectId = request.ProjectId,
-                    Message = $"Tehnical error happend: {e.Message}",
-                };
+                    Message = $"Tehnical error happend. {e.Message}",
+                });
             }
         }
     }

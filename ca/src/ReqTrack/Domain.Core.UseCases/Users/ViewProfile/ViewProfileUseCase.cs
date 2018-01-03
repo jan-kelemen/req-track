@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using ReqTrack.Domain.Core.Exceptions;
 using ReqTrack.Domain.Core.Repositories;
 using ReqTrack.Domain.Core.Security;
 using ReqTrack.Domain.Core.UseCases.Boundary;
 using ReqTrack.Domain.Core.UseCases.Boundary.Interfaces;
+using ReqTrack.Domain.Core.UseCases.Boundary.Responses;
 using ReqTrack.Domain.Core.UseCases.Exceptions;
 
 namespace ReqTrack.Domain.Core.UseCases.Users.ViewProfile
@@ -27,42 +29,39 @@ namespace ReqTrack.Domain.Core.UseCases.Users.ViewProfile
             {
                 var user = _userRepository.ReadUser(request.UserId, true);
 
-                output.Response = new ViewProfileResponse(ExecutionStatus.Success)
+                output.Accept(new ViewProfileResponse(ExecutionStatus.Success)
                 {
                     UserId = user.Id,
                     UserName = user.UserName,
                     DisplayName = user.DisplayName,
-                    Projects = user.Projects.Select(x => new ViewProfileResponse.Project()
+                    Projects = user.Projects.Select(x => new Project
                     {
                         Identifier = x.Id,
                         Name = x.Name,
                     }),
-                };
+                });
             }
             catch (RequestValidationException e)
             {
-                output.Response = new ViewProfileResponse(ExecutionStatus.Failure)
+                output.Accept(new ValidationErrorResponse
                 {
-                    UserId = request.UserId,
-                    Message = $"Invalid request: {e.Message}",
+                    Message = $"Invalid request. {e.Message}",
                     ValidationErrors = e.ValidationErrors,
-                };
+                });
             }
             catch (EntityNotFoundException e)
             {
-                output.Response = new ViewProfileResponse(ExecutionStatus.Failure)
+                output.Accept(new FailureResponse
                 {
-                    UserId = request.UserId,
-                    Message = $"User not found: {e.Message}",
-                };
+                    Message = $"User not found. {e.Message}",
+                });
             }
             catch (Exception e)
             {
-                output.Response = new ViewProfileResponse(ExecutionStatus.Failure)
+                output.Accept(new FailureResponse
                 {
-                    UserId = request.UserId,
-                    Message = $"Tehnical error happend: {e.Message}",
-                };
+                    Message = $"Tehnical error happend. {e.Message}",
+                });
             }
         }
     }

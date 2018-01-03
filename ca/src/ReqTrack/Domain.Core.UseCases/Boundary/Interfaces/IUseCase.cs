@@ -1,4 +1,7 @@
-﻿namespace ReqTrack.Domain.Core.UseCases.Boundary.Interfaces
+﻿using ReqTrack.Domain.Core.UseCases.Boundary.Requests;
+using ReqTrack.Domain.Core.UseCases.Boundary.Responses;
+
+namespace ReqTrack.Domain.Core.UseCases.Boundary.Interfaces
 {
     public interface IUseCase<in TRequest, out TResponse>
         where TRequest : RequestModel 

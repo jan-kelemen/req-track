@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using ReqTrack.Domain.Core.Exceptions;
 using ReqTrack.Domain.Core.Repositories;
 using ReqTrack.Domain.Core.Security;
 using ReqTrack.Domain.Core.UseCases.Boundary;
 using ReqTrack.Domain.Core.UseCases.Boundary.Extensions;
 using ReqTrack.Domain.Core.UseCases.Boundary.Interfaces;
+using ReqTrack.Domain.Core.UseCases.Boundary.Responses;
 using ReqTrack.Domain.Core.UseCases.Exceptions;
 
 namespace ReqTrack.Domain.Core.UseCases.Users.ChangeInformation
@@ -30,36 +32,33 @@ namespace ReqTrack.Domain.Core.UseCases.Users.ChangeInformation
 
                 var user = _userRepository.ReadUserInfo(request.UserId);
 
-                output.Response = new ChangeInformationResponse(ExecutionStatus.Success)
+                output.Accept(new ChangeInformationResponse
                 {
                     UserId = user.Id,
                     DisplayName = user.DisplayName,
-                };
+                });
             }
             catch (RequestValidationException e)
             {
-                output.Response = new ChangeInformationResponse(ExecutionStatus.Failure)
+                output.Accept(new ValidationErrorResponse
                 {
-                    UserId = request.UserId,
-                    Message = $"Invalid request: {e.Message}",
+                    Message = $"Invalid request. {e.Message}",
                     ValidationErrors = e.ValidationErrors,
-                };
+                });
             }
             catch (EntityNotFoundException e)
             {
-                output.Response = new ChangeInformationResponse(ExecutionStatus.Failure)
+                output.Accept(new FailureResponse
                 {
-                    UserId = request.UserId,
-                    Message = $"User not found: {e.Message}",
-                };
+                    Message = $"User not found. {e.Message}",
+                });
             }
             catch (Exception e)
             {
-                output.Response = new ChangeInformationResponse(ExecutionStatus.Failure)
+                output.Accept(new FailureResponse
                 {
-                    UserId = request.UserId,
-                    Message = $"Tehnical error happend: {e.Message}",
-                };
+                    Message = $"Tehnical error happend. {e.Message}",
+                });
             }
         }
 
@@ -67,6 +66,8 @@ namespace ReqTrack.Domain.Core.UseCases.Users.ChangeInformation
         {
             try
             {
+                request.ValidateAndThrowOnInvalid();
+
                 var user = _userRepository.ReadUserInfo(request.UserId);
                 user.DisplayName = request.DisplayName;
 
@@ -75,45 +76,44 @@ namespace ReqTrack.Domain.Core.UseCases.Users.ChangeInformation
                     throw new Exception("Couldn't update user information");
                 }
 
-                output.Response = new ChangeInformationResponse(ExecutionStatus.Success)
+                output.Accept(new ChangeInformationResponse
                 {
-                    UserId = request.UserId,
+                    UserId = user.Id,
                     Message = "Username changed successfully",
-
-                };
+                });
             }
             catch (RequestValidationException e)
             {
-                output.Response = new ChangeInformationResponse(ExecutionStatus.Failure)
+                output.Accept(new ValidationErrorResponse
                 {
-                    UserId = request.UserId,
-                    Message = $"Invalid request: {e.Message}",
+                    Message = $"Invalid request. {e.Message}",
                     ValidationErrors = e.ValidationErrors,
-                };
+                });
             }
             catch (ValidationException e)
             {
-                output.Response = new ChangeInformationResponse(ExecutionStatus.Failure)
+                output.Accept(new ValidationErrorResponse
                 {
-                    UserId = request.UserId,
-                    Message = $"Invalid data for {e.PropertyKey}: {e.Message}",
-                };
+                    Message = $"Invalid data for {e.PropertyKey}.",
+                    ValidationErrors = new Dictionary<string, string>
+                    {
+                        { e.PropertyKey, e.Message }
+                    },
+                });
             }
             catch (EntityNotFoundException e)
             {
-                output.Response = new ChangeInformationResponse(ExecutionStatus.Failure)
+                output.Accept(new FailureResponse
                 {
-                    UserId = request.UserId,
-                    Message = $"User not found: {e.Message}",
-                };
+                    Message = $"User not found. {e.Message}",
+                });
             }
             catch (Exception e)
             {
-                output.Response = new ChangeInformationResponse(ExecutionStatus.Failure)
+                output.Accept(new FailureResponse
                 {
-                    UserId = request.UserId,
-                    Message = $"Tehnical error happend: {e.Message}",
-                };
+                    Message = $"Tehnical error happend. {e.Message}",
+                });
             }
         }
     }

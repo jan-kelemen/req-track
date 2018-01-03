@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using ReqTrack.Domain.Core.UseCases.Boundary;
 using ReqTrack.Domain.Core.UseCases.Boundary.Interfaces;
+using ReqTrack.Domain.Core.UseCases.Boundary.Requests;
 
 namespace ReqTrack.Domain.Core.UseCases.Users.ViewProfile
 {

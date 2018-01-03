@@ -3,6 +3,7 @@ using System.Linq;
 using ReqTrack.Domain.Core.Entities.ValidationHelpers;
 using ReqTrack.Domain.Core.UseCases.Boundary;
 using ReqTrack.Domain.Core.UseCases.Boundary.Interfaces;
+using ReqTrack.Domain.Core.UseCases.Boundary.Requests;
 
 namespace ReqTrack.Domain.Core.UseCases.Users.RegisterUser
 {

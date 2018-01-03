@@ -1,10 +1,11 @@
 ﻿using ReqTrack.Domain.Core.UseCases.Boundary;
+using ReqTrack.Domain.Core.UseCases.Boundary.Responses;
 
 namespace ReqTrack.Domain.Core.UseCases.Projects.DeleteProject
 {
     public class DeleteProjectResponse : ResponseModel
     {
-        internal DeleteProjectResponse(ExecutionStatus status) : base(status)
+        internal DeleteProjectResponse() : base(ExecutionStatus.Success)
         {
         }
 
