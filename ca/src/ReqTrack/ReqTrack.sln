@@ -1,19 +1,21 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27004.2005
+VisualStudioVersion = 15.0.27130.2010
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain.Core", "Domain.Core\Domain.Core.csproj", "{7878CCBC-131D-4C9F-B8DD-CD54ADDBF124}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain.Core.Test.Unit", "Domain.Core.Test.Unit\Domain.Core.Test.Unit.csproj", "{9A9C656F-9914-438D-A230-B7B4A3DED8BE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Persistence.Concrete.MongoDB", "Persistence.Concrete.MongoDB\Persistence.Concrete.MongoDB.csproj", "{381043E1-C712-497A-B7D8-976849E869E6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Persistence.Concrete.MongoDB", "Persistence.Concrete.MongoDB\Persistence.Concrete.MongoDB.csproj", "{381043E1-C712-497A-B7D8-976849E869E6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Persistence.Concrete.MongoDB.Test.Unit", "Persistence.Concrete.MongoDB.Test.Unit\Persistence.Concrete.MongoDB.Test.Unit.csproj", "{6CD48E37-8763-4D94-9B6B-4EABD6B11283}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Persistence.Concrete.MongoDB.Test.Unit", "Persistence.Concrete.MongoDB.Test.Unit\Persistence.Concrete.MongoDB.Test.Unit.csproj", "{6CD48E37-8763-4D94-9B6B-4EABD6B11283}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain.Core.UseCases", "Domain.Core.UseCases\Domain.Core.UseCases.csproj", "{71044882-0AD6-4585-A00B-FA75D70AB264}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain.Core.UseCases", "Domain.Core.UseCases\Domain.Core.UseCases.csproj", "{71044882-0AD6-4585-A00B-FA75D70AB264}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain.Core.UseCases.Test.Unit", "Domain.Core.UseCases.Test.Unit\Domain.Core.UseCases.Test.Unit.csproj", "{EDC86C6F-38EE-403E-908E-65603BBBD95A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain.Core.UseCases.Test.Unit", "Domain.Core.UseCases.Test.Unit\Domain.Core.UseCases.Test.Unit.csproj", "{EDC86C6F-38EE-403E-908E-65603BBBD95A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Runtime.Core", "Runtime.Core\Runtime.Core.csproj", "{FEB2C10C-557F-4347-AAD4-7806534CB345}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +47,10 @@ Global
 		{EDC86C6F-38EE-403E-908E-65603BBBD95A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EDC86C6F-38EE-403E-908E-65603BBBD95A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EDC86C6F-38EE-403E-908E-65603BBBD95A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FEB2C10C-557F-4347-AAD4-7806534CB345}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FEB2C10C-557F-4347-AAD4-7806534CB345}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FEB2C10C-557F-4347-AAD4-7806534CB345}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FEB2C10C-557F-4347-AAD4-7806534CB345}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
