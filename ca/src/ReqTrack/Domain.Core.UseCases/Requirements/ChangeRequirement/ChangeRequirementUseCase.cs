@@ -88,7 +88,7 @@ namespace ReqTrack.Domain.Core.UseCases.Requirements.ChangeRequirement
                 var requirement = _requirementRepository.ReadRequirement(request.RequirementId);
                 requirement.Title = request.Title;
                 requirement.Type = Enum.Parse<RequirementType>(request.Type);
-                requirement.Note = requirement.Note;
+                requirement.Note = request.Note;
 
                 if (_requirementRepository.UpdateRequirement(requirement))
                 {

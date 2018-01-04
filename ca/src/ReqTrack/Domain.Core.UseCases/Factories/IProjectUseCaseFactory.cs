@@ -2,6 +2,7 @@
 using ReqTrack.Domain.Core.UseCases.Projects.ChangeInformation;
 using ReqTrack.Domain.Core.UseCases.Projects.ChangeRequirementOrder;
 using ReqTrack.Domain.Core.UseCases.Projects.ChangeRights;
+using ReqTrack.Domain.Core.UseCases.Projects.ChangeUseCaseOrder;
 using ReqTrack.Domain.Core.UseCases.Projects.CreateProject;
 using ReqTrack.Domain.Core.UseCases.Projects.DeleteProject;
 using ReqTrack.Domain.Core.UseCases.Projects.ViewProject;
@@ -21,5 +22,7 @@ namespace ReqTrack.Domain.Core.UseCases.Factories
         IUseCase<DeleteProjectRequest, DeleteProjectResponse> DeleteProject { get; }
 
         IUseCase<ChangeRequirementOrderInitialRequest, ChangeRequirementOrderRequest, ChangeRequirementOrderResponse> ChangeRequirementOrder { get; }
+
+        IUseCase<ChangeUseCaseOrderInitialRequest, ChangeUseCaseOrderRequest, ChangeUseCaseOrderResponse> ChangeUseCaseOrder { get; }
     }
 }

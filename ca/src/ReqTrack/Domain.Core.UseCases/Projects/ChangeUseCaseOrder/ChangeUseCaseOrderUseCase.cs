@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using ReqTrack.Domain.Core.Entities.Projects;
-using ReqTrack.Domain.Core.Entities.Requirements;
 using ReqTrack.Domain.Core.Exceptions;
 using ReqTrack.Domain.Core.Repositories;
 using ReqTrack.Domain.Core.Security;
@@ -12,42 +11,41 @@ using ReqTrack.Domain.Core.UseCases.Boundary.Responses;
 using ReqTrack.Domain.Core.UseCases.Exceptions;
 using AccessViolationException = ReqTrack.Domain.Core.Exceptions.AccessViolationException;
 
-namespace ReqTrack.Domain.Core.UseCases.Projects.ChangeRequirementOrder
+namespace ReqTrack.Domain.Core.UseCases.Projects.ChangeUseCaseOrder
 {
-    public class ChangeRequirementOrderUseCase 
-        : IUseCase<ChangeRequirementOrderInitialRequest, ChangeRequirementOrderRequest, ChangeRequirementOrderResponse>
+    public class ChangeUseCaseOrderUseCase 
+        : IUseCase<ChangeUseCaseOrderInitialRequest, ChangeUseCaseOrderRequest, ChangeUseCaseOrderResponse>
     {
         private readonly ISecurityGateway _securityGateway;
 
         private readonly IProjectRepository _projectRepository;
 
-        public ChangeRequirementOrderUseCase(ISecurityGateway securityGateway, IProjectRepository projectRepository)
+        public ChangeUseCaseOrderUseCase(ISecurityGateway securityGateway, IProjectRepository projectRepository)
         {
             _securityGateway = securityGateway;
             _projectRepository = projectRepository;
         }
 
 
-        public void Execute(IUseCaseOutput<ChangeRequirementOrderResponse> output, ChangeRequirementOrderInitialRequest request)
+        public void Execute(IUseCaseOutput<ChangeUseCaseOrderResponse> output, ChangeUseCaseOrderInitialRequest request)
         {
             try
             {
                 request.ValidateAndThrowOnInvalid();
 
                 var rights = _securityGateway.GetProjectRights(request.ProjectId, request.RequestedBy);
-                if (!rights.CanChangeRequirements)
+                if (!rights.CanChangeUseCases)
                 {
                     throw new AccessViolationException("Project doesn't exist or user has insufficient rights");
                 }
 
-                var project = _projectRepository.ReadProjectRequirements(request.ProjectId, Enum.Parse<RequirementType>(request.Type));
+                var project = _projectRepository.ReadProject(request.ProjectId, false, true);
 
-                output.Accept(new ChangeRequirementOrderResponse
+                output.Accept(new ChangeUseCaseOrderResponse
                 {
                     Name = project.Name,
                     ProjectId = request.ProjectId,
-                    Type = request.Type,
-                    Requirements = project.Requirements.Select(r => new Requirement
+                    UseCases = project.UseCases.Select(r => new UseCase
                     {
                         Id = r.Id,
                         Title = r.Title,
@@ -85,39 +83,36 @@ namespace ReqTrack.Domain.Core.UseCases.Projects.ChangeRequirementOrder
             }
         }
 
-        public void Execute(IUseCaseOutput<ChangeRequirementOrderResponse> output, ChangeRequirementOrderRequest request)
+        public void Execute(IUseCaseOutput<ChangeUseCaseOrderResponse> output, ChangeUseCaseOrderRequest request)
         {
             try
             {
                 request.ValidateAndThrowOnInvalid();
 
                 var rights = _securityGateway.GetProjectRights(request.ProjectId, request.RequestedBy);
-                if (!rights.CanChangeRequirements)
+                if (!rights.CanChangeUseCases)
                 {
-                    throw new AccessViolationException("User can't change requirements of the project");
+                    throw new AccessViolationException("User can't change use cases of the project");
                 }
 
-                var type = Enum.Parse<RequirementType>(request.Type);
-
-                var project = _projectRepository.ReadProjectRequirements(request.ProjectId, type);
+                var project = _projectRepository.ReadProject(request.ProjectId, false, true);
 
                 var i = 0;
-                var updateList = new List<Project.Requirement>();
-                foreach (var requirement in request.Requirements)
+                var updateList = new List<Project.UseCase>();
+                foreach (var useCase in request.UseCases)
                 {
-                    updateList.Add(new Project.Requirement(
-                        requirement.Id,
-                        type,
-                        requirement.Title,
+                    updateList.Add(new Project.UseCase(
+                        useCase.Id,
+                        useCase.Title,
                         i++)
                     );
                 }
 
-                project.ChangeRequirements(new Project.Requirement[] {}, updateList, new Project.Requirement[] { });
+                project.ChangeUseCases(new Project.UseCase[] {}, updateList, new Project.UseCase[] { });
 
-                output.Accept(new ChangeRequirementOrderResponse
+                output.Accept(new ChangeUseCaseOrderResponse
                 {
-                    Message = $"Requirements of {project.Name} successfully updated.",
+                    Message = $"Use cases of {project.Name} successfully updated.",
                 });
             }
             catch (RequestValidationException e)

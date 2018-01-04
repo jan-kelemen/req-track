@@ -8,9 +8,5 @@ namespace ReqTrack.Domain.Core.UseCases.Requirements.DeleteRequirement
         internal DeleteRequirementResponse() : base(ExecutionStatus.Success)
         {
         }
-
-        public string ProjectId { get; set; }
-
-        public string RequirementId { get; set; }
     }
 }

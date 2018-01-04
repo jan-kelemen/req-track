@@ -10,12 +10,4 @@
     <ProjectReference Include="..\Domain.Core\Domain.Core.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Projects\ChangeUseCaseOrder\" />
-    <Folder Include="UseCases\AddUseCase\" />
-    <Folder Include="UseCases\ChangeUseCase\" />
-    <Folder Include="UseCases\DeleteUseCase\" />
-    <Folder Include="UseCases\ViewUseCase\" />
-  </ItemGroup>
-
 </Project>
