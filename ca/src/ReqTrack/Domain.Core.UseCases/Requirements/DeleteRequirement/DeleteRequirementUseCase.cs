@@ -1,54 +1,50 @@
 ﻿using System;
-using System.Linq;
-using ReqTrack.Domain.Core.Entities.Requirements;
 using ReqTrack.Domain.Core.Exceptions;
 using ReqTrack.Domain.Core.Repositories;
 using ReqTrack.Domain.Core.Security;
-using ReqTrack.Domain.Core.UseCases.Boundary;
 using ReqTrack.Domain.Core.UseCases.Boundary.Extensions;
 using ReqTrack.Domain.Core.UseCases.Boundary.Interfaces;
 using ReqTrack.Domain.Core.UseCases.Boundary.Responses;
 using ReqTrack.Domain.Core.UseCases.Exceptions;
 using AccessViolationException = ReqTrack.Domain.Core.Exceptions.AccessViolationException;
 
-namespace ReqTrack.Domain.Core.UseCases.Projects.ViewProjectRequirements
+namespace ReqTrack.Domain.Core.UseCases.Requirements.DeleteRequirement
 {
-    public class ViewProjectRequirementsUseCase : IUseCase<ViewProjectRequirementsRequest, ViewProjectRequirementsResponse>
+    public class DeleteRequirementUseCase : IUseCase<DeleteRequirementRequest, DeleteRequirementResponse>
     {
         private readonly ISecurityGateway _securityGateway;
 
-        private readonly IProjectRepository _projectRepository;
+        private readonly IRequirementRepository _requirementRepository;
 
-        public ViewProjectRequirementsUseCase(ISecurityGateway securityGateway, IProjectRepository projectRepository)
+        public DeleteRequirementUseCase(
+            ISecurityGateway securityGateway, 
+            IRequirementRepository requirementRepository)
         {
             _securityGateway = securityGateway;
-            _projectRepository = projectRepository;
+            _requirementRepository = requirementRepository;
         }
 
-        public void Execute(IUseCaseOutput<ViewProjectRequirementsResponse> output, ViewProjectRequirementsRequest request)
+        public void Execute(IUseCaseOutput<DeleteRequirementResponse> output, DeleteRequirementRequest request)
         {
             try
             {
                 request.ValidateAndThrowOnInvalid();
 
                 var rights = _securityGateway.GetProjectRights(request.ProjectId, request.RequestedBy);
-                if (!rights.CanViewProject)
+
+                if (!rights.CanChangeRequirements)
                 {
-                    throw new AccessViolationException("Project doesn't exist or user has insufficient rights");
+                    throw new AccessViolationException("User doesn't have sufficient rights to delete the requirement.");
                 }
 
-                var project = _projectRepository.ReadProjectRequirements(request.ProjectId, Enum.Parse<RequirementType>(request.Type));
-
-                output.Accept(new ViewProjectRequirementsResponse(ExecutionStatus.Success)
+                if (!_requirementRepository.DeleteRequirement(request.RequirementId))
                 {
-                    Name = project.Name,
-                    ProjectId = request.ProjectId,
-                    Type = request.Type,
-                    Requirements = project.Requirements.Select(r => new Requirement
-                    {
-                        Id = r.Id,
-                        Title = r.Title,
-                    }),
+                    throw new Exception("Couldn't delete requirement");
+                }
+
+                output.Accept(new DeleteRequirementResponse
+                {
+                    Message = "Requirement deleted successfully",
                 });
             }
             catch (RequestValidationException e)
@@ -70,7 +66,7 @@ namespace ReqTrack.Domain.Core.UseCases.Projects.ViewProjectRequirements
             {
                 output.Accept(new FailureResponse
                 {
-                    Message = $"Project not found. {e.Message}",
+                    Message = $"Entity not found. {e.Message}",
                 });
             }
             catch (Exception e)

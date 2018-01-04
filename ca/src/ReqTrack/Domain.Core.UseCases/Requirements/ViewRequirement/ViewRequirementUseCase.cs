@@ -1,54 +1,50 @@
 ﻿using System;
-using System.Linq;
-using ReqTrack.Domain.Core.Entities.Requirements;
+using System.Collections.Generic;
 using ReqTrack.Domain.Core.Exceptions;
 using ReqTrack.Domain.Core.Repositories;
 using ReqTrack.Domain.Core.Security;
-using ReqTrack.Domain.Core.UseCases.Boundary;
 using ReqTrack.Domain.Core.UseCases.Boundary.Extensions;
 using ReqTrack.Domain.Core.UseCases.Boundary.Interfaces;
 using ReqTrack.Domain.Core.UseCases.Boundary.Responses;
 using ReqTrack.Domain.Core.UseCases.Exceptions;
 using AccessViolationException = ReqTrack.Domain.Core.Exceptions.AccessViolationException;
 
-namespace ReqTrack.Domain.Core.UseCases.Projects.ViewProjectRequirements
+namespace ReqTrack.Domain.Core.UseCases.Requirements.ViewRequirement
 {
-    public class ViewProjectRequirementsUseCase : IUseCase<ViewProjectRequirementsRequest, ViewProjectRequirementsResponse>
+    public class ViewRequirementUseCase : IUseCase<ViewRequirementRequest, ViewRequirementResponse>
     {
         private readonly ISecurityGateway _securityGateway;
 
-        private readonly IProjectRepository _projectRepository;
+        private readonly IRequirementRepository _requirementRepository;
 
-        public ViewProjectRequirementsUseCase(ISecurityGateway securityGateway, IProjectRepository projectRepository)
+        public ViewRequirementUseCase(ISecurityGateway securityGateway, IRequirementRepository requirementRepository)
         {
             _securityGateway = securityGateway;
-            _projectRepository = projectRepository;
+            _requirementRepository = requirementRepository;
         }
 
-        public void Execute(IUseCaseOutput<ViewProjectRequirementsResponse> output, ViewProjectRequirementsRequest request)
+        public void Execute(IUseCaseOutput<ViewRequirementResponse> output, ViewRequirementRequest request)
         {
             try
             {
                 request.ValidateAndThrowOnInvalid();
 
                 var rights = _securityGateway.GetProjectRights(request.ProjectId, request.RequestedBy);
-                if (!rights.CanViewProject)
+                if (rights == null || !rights.CanViewProject)
                 {
-                    throw new AccessViolationException("Project doesn't exist or user has insufficient rights");
+                    throw new AccessViolationException("");
                 }
 
-                var project = _projectRepository.ReadProjectRequirements(request.ProjectId, Enum.Parse<RequirementType>(request.Type));
+                var requirement = _requirementRepository.ReadRequirement(request.RequirementId);
 
-                output.Accept(new ViewProjectRequirementsResponse(ExecutionStatus.Success)
+                output.Accept(new ViewRequirementResponse
                 {
-                    Name = project.Name,
-                    ProjectId = request.ProjectId,
-                    Type = request.Type,
-                    Requirements = project.Requirements.Select(r => new Requirement
-                    {
-                        Id = r.Id,
-                        Title = r.Title,
-                    }),
+                    Project = new Project {Id = requirement.Project.Id, Name = requirement.Project.Name},
+                    Author = new User {Id = requirement.Author.Id, Name = requirement.Author.DisplayName},
+                    RequirementId = requirement.Id,
+                    Title = requirement.Title,
+                    Type = requirement.Type.ToString(),
+                    Note = requirement.Note
                 });
             }
             catch (RequestValidationException e)
@@ -70,7 +66,7 @@ namespace ReqTrack.Domain.Core.UseCases.Projects.ViewProjectRequirements
             {
                 output.Accept(new FailureResponse
                 {
-                    Message = $"Project not found. {e.Message}",
+                    Message = $"Entity not found. {e.Message}",
                 });
             }
             catch (Exception e)

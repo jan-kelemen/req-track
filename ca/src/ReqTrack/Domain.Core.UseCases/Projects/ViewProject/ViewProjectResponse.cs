@@ -16,6 +16,8 @@ namespace ReqTrack.Domain.Core.UseCases.Projects.ViewProject
 
         public string Description { get; set; }
 
+        public User Author { get; set; }
+
         public ProjectRights Rights { get; set; }
 
         public IEnumerable<Requirement> Requirements { get; set; }

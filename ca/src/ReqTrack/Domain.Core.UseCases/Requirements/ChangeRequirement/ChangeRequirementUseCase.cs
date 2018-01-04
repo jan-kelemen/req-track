@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using ReqTrack.Domain.Core.Entities.Requirements;
 using ReqTrack.Domain.Core.Exceptions;
 using ReqTrack.Domain.Core.Repositories;
 using ReqTrack.Domain.Core.Security;
@@ -9,40 +10,39 @@ using ReqTrack.Domain.Core.UseCases.Boundary.Responses;
 using ReqTrack.Domain.Core.UseCases.Exceptions;
 using AccessViolationException = ReqTrack.Domain.Core.Exceptions.AccessViolationException;
 
-namespace ReqTrack.Domain.Core.UseCases.Projects.ChangeInformation
+namespace ReqTrack.Domain.Core.UseCases.Requirements.ChangeRequirement
 {
-    public class ChangeInformationUseCase 
-        : IUseCase<ChangeInformationInitialRequest, ChangeInformationRequest, ChangeInformationResponse>
+    public class ChangeRequirementUseCase 
+        : IUseCase<ChangeRequirementInitialRequest, ChangeRequirementRequest, ChangeRequirementResponse>
     {
         private readonly ISecurityGateway _securityGateway;
 
-        private readonly IProjectRepository _projectRepository;
+        private readonly IRequirementRepository _requirementRepository;
 
-        public ChangeInformationUseCase(ISecurityGateway securityGateway, IProjectRepository projectRepository)
+        public ChangeRequirementUseCase(ISecurityGateway securityGateway, IRequirementRepository requirementRepository)
         {
             _securityGateway = securityGateway;
-            _projectRepository = projectRepository;
+            _requirementRepository = requirementRepository;
         }
 
-        public void Execute(IUseCaseOutput<ChangeInformationResponse> output, ChangeInformationInitialRequest request)
+        public void Execute(IUseCaseOutput<ChangeRequirementResponse> output, ChangeRequirementInitialRequest request)
         {
             try
             {
                 request.ValidateAndThrowOnInvalid();
 
                 var rights = _securityGateway.GetProjectRights(request.ProjectId, request.RequestedBy);
-                if (!rights.IsAdministrator)
-                {
-                    throw new AccessViolationException("User can't change information of the project");
-                }
+                if (rights == null || !rights.CanChangeRequirements) { throw new AccessViolationException(""); }
 
-                var project = _projectRepository.ReadProject(request.ProjectId, false, false);
+                var requirement = _requirementRepository.ReadRequirement(request.RequirementId);
 
-                output.Accept(new ChangeInformationResponse
+                output.Accept(new ChangeRequirementResponse
                 {
-                    ProjectId = project.Id,
-                    Name = project.Name,
-                    Description = project.Description,
+                    ProjectId = requirement.Project.Id,
+                    RequirementId = requirement.Id,
+                    Type = requirement.Type.ToString(),
+                    Title = requirement.Title,
+                    Note = requirement.Note,
                 });
             }
             catch (RequestValidationException e)
@@ -64,7 +64,7 @@ namespace ReqTrack.Domain.Core.UseCases.Projects.ChangeInformation
             {
                 output.Accept(new FailureResponse
                 {
-                    Message = $"Project not found. {e.Message}",
+                    Message = $"Entity not found. {e.Message}",
                 });
             }
             catch (Exception e)
@@ -76,28 +76,28 @@ namespace ReqTrack.Domain.Core.UseCases.Projects.ChangeInformation
             }
         }
 
-        public void Execute(IUseCaseOutput<ChangeInformationResponse> output, ChangeInformationRequest request)
+        public void Execute(IUseCaseOutput<ChangeRequirementResponse> output, ChangeRequirementRequest request)
         {
             try
             {
                 request.ValidateAndThrowOnInvalid();
 
                 var rights = _securityGateway.GetProjectRights(request.ProjectId, request.RequestedBy);
-                if (!rights.IsAdministrator)
+                if (rights == null || !rights.CanChangeRequirements) { throw new AccessViolationException(""); }
+
+                var requirement = _requirementRepository.ReadRequirement(request.RequirementId);
+                requirement.Title = request.Title;
+                requirement.Type = Enum.Parse<RequirementType>(request.Type);
+                requirement.Note = requirement.Note;
+
+                if (_requirementRepository.UpdateRequirement(requirement))
                 {
-                    throw new AccessViolationException("User can't change information of the project");
+                    throw new Exception("Couldn't update the requirement");
                 }
 
-                var project = _projectRepository.ReadProject(request.ProjectId, false, false);
-
-                project.Name = request.Name;
-                project.Description = request.Description;
-
-                if (_projectRepository.UpdateProject(project, false)) { throw new Exception(); }
-
-                output.Accept(new ChangeInformationResponse
+                output.Accept(new ChangeRequirementResponse
                 {
-                    Message = $"Project {project.Name} successfully updated.",
+                    Message = "Requirement updated successfully",
                 });
             }
             catch (RequestValidationException e)
@@ -130,7 +130,7 @@ namespace ReqTrack.Domain.Core.UseCases.Projects.ChangeInformation
             {
                 output.Accept(new FailureResponse
                 {
-                    Message = $"Project not found. {e.Message}",
+                    Message = $"Entity not found. {e.Message}",
                 });
             }
             catch (Exception e)

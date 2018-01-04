@@ -2,6 +2,7 @@
 using ReqTrack.Domain.Core.Security;
 using ReqTrack.Domain.Core.UseCases.Boundary.Interfaces;
 using ReqTrack.Domain.Core.UseCases.Projects.ChangeInformation;
+using ReqTrack.Domain.Core.UseCases.Projects.ChangeRequirementOrder;
 using ReqTrack.Domain.Core.UseCases.Projects.ChangeRights;
 using ReqTrack.Domain.Core.UseCases.Projects.CreateProject;
 using ReqTrack.Domain.Core.UseCases.Projects.DeleteProject;
@@ -18,6 +19,7 @@ namespace ReqTrack.Domain.Core.UseCases.Factories.Default
             ChangeInformation = new ChangeInformationUseCase(securityGateway, repositoryFactory.ProjectRepository);
             ChangeRights = new ChangeRightsUseCase(securityGateway, repositoryFactory.ProjectRepository);
             DeleteProject = new DeleteProjectUseCase(securityGateway, repositoryFactory.ProjectRepository);
+            ChangeRequirementOrder = new ChangeRequirementOrderUseCase(securityGateway, repositoryFactory.ProjectRepository);
         }
 
         public IUseCase<CreateProjectRequest, CreateProjectResponse> CreateProject { get; }
@@ -29,5 +31,7 @@ namespace ReqTrack.Domain.Core.UseCases.Factories.Default
         public IUseCase<ChangeRightsInitialRequest, ChangeRightsRequest, ChangeRightsResponse> ChangeRights { get; }
 
         public IUseCase<DeleteProjectRequest, DeleteProjectResponse> DeleteProject { get; }
+
+        public IUseCase<ChangeRequirementOrderInitialRequest, ChangeRequirementOrderRequest, ChangeRequirementOrderResponse> ChangeRequirementOrder { get; }
     }
 }

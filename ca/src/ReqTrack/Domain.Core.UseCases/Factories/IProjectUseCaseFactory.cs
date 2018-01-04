@@ -1,5 +1,6 @@
 ﻿using ReqTrack.Domain.Core.UseCases.Boundary.Interfaces;
 using ReqTrack.Domain.Core.UseCases.Projects.ChangeInformation;
+using ReqTrack.Domain.Core.UseCases.Projects.ChangeRequirementOrder;
 using ReqTrack.Domain.Core.UseCases.Projects.ChangeRights;
 using ReqTrack.Domain.Core.UseCases.Projects.CreateProject;
 using ReqTrack.Domain.Core.UseCases.Projects.DeleteProject;
@@ -18,5 +19,7 @@ namespace ReqTrack.Domain.Core.UseCases.Factories
         IUseCase<ChangeRightsInitialRequest, ChangeRightsRequest, ChangeRightsResponse> ChangeRights { get; }
 
         IUseCase<DeleteProjectRequest, DeleteProjectResponse> DeleteProject { get; }
+
+        IUseCase<ChangeRequirementOrderInitialRequest, ChangeRequirementOrderRequest, ChangeRequirementOrderResponse> ChangeRequirementOrder { get; }
     }
 }

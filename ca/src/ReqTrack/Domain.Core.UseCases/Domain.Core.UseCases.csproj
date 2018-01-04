@@ -11,8 +11,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="UseCases\" />
-    <Folder Include="Requirements\" />
+    <Folder Include="Projects\ChangeUseCaseOrder\" />
+    <Folder Include="UseCases\AddUseCase\" />
+    <Folder Include="UseCases\ChangeUseCase\" />
+    <Folder Include="UseCases\DeleteUseCase\" />
+    <Folder Include="UseCases\ViewUseCase\" />
   </ItemGroup>
 
 </Project>

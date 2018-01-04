@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using ReqTrack.Domain.Core.Entities.Projects;
+using ReqTrack.Domain.Core.Entities.Requirements;
 using ReqTrack.Domain.Core.Exceptions;
 using ReqTrack.Domain.Core.Repositories;
 using ReqTrack.Domain.Core.Security;
@@ -9,40 +12,46 @@ using ReqTrack.Domain.Core.UseCases.Boundary.Responses;
 using ReqTrack.Domain.Core.UseCases.Exceptions;
 using AccessViolationException = ReqTrack.Domain.Core.Exceptions.AccessViolationException;
 
-namespace ReqTrack.Domain.Core.UseCases.Projects.ChangeInformation
+namespace ReqTrack.Domain.Core.UseCases.Projects.ChangeRequirementOrder
 {
-    public class ChangeInformationUseCase 
-        : IUseCase<ChangeInformationInitialRequest, ChangeInformationRequest, ChangeInformationResponse>
+    public class ChangeRequirementOrderUseCase 
+        : IUseCase<ChangeRequirementOrderInitialRequest, ChangeRequirementOrderRequest, ChangeRequirementOrderResponse>
     {
         private readonly ISecurityGateway _securityGateway;
 
         private readonly IProjectRepository _projectRepository;
 
-        public ChangeInformationUseCase(ISecurityGateway securityGateway, IProjectRepository projectRepository)
+        public ChangeRequirementOrderUseCase(ISecurityGateway securityGateway, IProjectRepository projectRepository)
         {
             _securityGateway = securityGateway;
             _projectRepository = projectRepository;
         }
 
-        public void Execute(IUseCaseOutput<ChangeInformationResponse> output, ChangeInformationInitialRequest request)
+
+        public void Execute(IUseCaseOutput<ChangeRequirementOrderResponse> output, ChangeRequirementOrderInitialRequest request)
         {
             try
             {
                 request.ValidateAndThrowOnInvalid();
 
                 var rights = _securityGateway.GetProjectRights(request.ProjectId, request.RequestedBy);
-                if (!rights.IsAdministrator)
+                if (!rights.CanChangeRequirements)
                 {
-                    throw new AccessViolationException("User can't change information of the project");
+                    throw new AccessViolationException("Project doesn't exist or user has insufficient rights");
                 }
 
-                var project = _projectRepository.ReadProject(request.ProjectId, false, false);
+                var project = _projectRepository.ReadProjectRequirements(request.ProjectId, Enum.Parse<RequirementType>(request.Type));
 
-                output.Accept(new ChangeInformationResponse
+                output.Accept(new ChangeRequirementOrderResponse
                 {
-                    ProjectId = project.Id,
                     Name = project.Name,
-                    Description = project.Description,
+                    ProjectId = request.ProjectId,
+                    Type = request.Type,
+                    Requirements = project.Requirements.Select(r => new Requirement
+                    {
+                        Id = r.Id,
+                        Title = r.Title,
+                    }),
                 });
             }
             catch (RequestValidationException e)
@@ -76,28 +85,39 @@ namespace ReqTrack.Domain.Core.UseCases.Projects.ChangeInformation
             }
         }
 
-        public void Execute(IUseCaseOutput<ChangeInformationResponse> output, ChangeInformationRequest request)
+        public void Execute(IUseCaseOutput<ChangeRequirementOrderResponse> output, ChangeRequirementOrderRequest request)
         {
             try
             {
                 request.ValidateAndThrowOnInvalid();
 
                 var rights = _securityGateway.GetProjectRights(request.ProjectId, request.RequestedBy);
-                if (!rights.IsAdministrator)
+                if (!rights.CanChangeRequirements)
                 {
                     throw new AccessViolationException("User can't change information of the project");
                 }
 
-                var project = _projectRepository.ReadProject(request.ProjectId, false, false);
+                var type = Enum.Parse<RequirementType>(request.Type);
 
-                project.Name = request.Name;
-                project.Description = request.Description;
+                var project = _projectRepository.ReadProjectRequirements(request.ProjectId, type);
 
-                if (_projectRepository.UpdateProject(project, false)) { throw new Exception(); }
-
-                output.Accept(new ChangeInformationResponse
+                var i = 0;
+                var updateList = new List<Project.Requirement>();
+                foreach (var requirement in request.Requirements)
                 {
-                    Message = $"Project {project.Name} successfully updated.",
+                    updateList.Add(new Project.Requirement(
+                        requirement.Id,
+                        type,
+                        requirement.Title,
+                        ++i)
+                    );
+                }
+
+                project.ChangeRequirements(new Project.Requirement[] {}, updateList, new Project.Requirement[] { });
+
+                output.Accept(new ChangeRequirementOrderResponse
+                {
+                    Message = $"Requirements of {project.Name} successfully updated.",
                 });
             }
             catch (RequestValidationException e)

@@ -9,7 +9,7 @@ using ReqTrack.Domain.Core.UseCases.Boundary.Extensions;
 using ReqTrack.Domain.Core.UseCases.Boundary.Interfaces;
 using ReqTrack.Domain.Core.UseCases.Boundary.Responses;
 using ReqTrack.Domain.Core.UseCases.Exceptions;
-using AccessViolationException = System.AccessViolationException;
+using AccessViolationException = ReqTrack.Domain.Core.Exceptions.AccessViolationException;
 
 namespace ReqTrack.Domain.Core.UseCases.Projects.ViewProject
 {
@@ -44,6 +44,11 @@ namespace ReqTrack.Domain.Core.UseCases.Projects.ViewProject
                     Name = project.Name,
                     Description = project.Description,
                     ProjectId = request.ProjectId,
+                    Author = new User
+                    {
+                        Id = project.Author.Id,
+                        Name = project.Author.DisplayName,
+                    },
                     Rights = new ProjectRights
                     {
                         UserId = request.RequestedBy,

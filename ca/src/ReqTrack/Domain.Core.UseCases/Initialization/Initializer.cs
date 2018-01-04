@@ -11,10 +11,13 @@ namespace ReqTrack.Domain.Core.UseCases.Initialization
         {
             UserUseCaseFactory = new UserUseCaseFactory(securityGateway, repositoryFactory);
             ProjectUseCaseFactory = new ProjectUseCaseFactory(securityGateway, repositoryFactory);
+            RequirementUseCaseFactory = new RequirementUseCaseFactory(securityGateway, repositoryFactory);
         }
 
         public IUserUseCaseFactory UserUseCaseFactory { get; }
 
         public IProjectUseCaseFactory ProjectUseCaseFactory { get; }
+
+        public IRequirementUseCaseFactory RequirementUseCaseFactory { get; }
     }
 }
