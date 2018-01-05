@@ -8,10 +8,26 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.3" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.0.1" />
   </ItemGroup>
 
   <ItemGroup>
     <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Presenters\UseCases\" />
+    <Folder Include="Presenters\Requirements\" />
+    <Folder Include="Presenters\Users\" />
+    <Folder Include="Presenters\Projects\" />
+    <Folder Include="ViewModels\Users\" />
+    <Folder Include="ViewModels\UseCases\" />
+    <Folder Include="ViewModels\Requirements\" />
+    <Folder Include="ViewModels\Projects\" />
+    <Folder Include="Views\Projects\" />
+    <Folder Include="Views\Requirements\" />
+    <Folder Include="Views\UseCases\" />
+    <Folder Include="Views\Users\" />
   </ItemGroup>
 
 </Project>
