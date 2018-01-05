@@ -1,4 +1,5 @@
 ﻿using ReqTrack.Domain.Core.UseCases.Boundary.Interfaces;
+using ReqTrack.Domain.Core.UseCases.Users.AuthorizeUser;
 using ReqTrack.Domain.Core.UseCases.Users.ChangeInformation;
 using ReqTrack.Domain.Core.UseCases.Users.ChangePassword;
 using ReqTrack.Domain.Core.UseCases.Users.DeleteUser;
@@ -18,5 +19,7 @@ namespace ReqTrack.Domain.Core.UseCases.Factories
         IUseCase<RegisterUserRequest, RegisterUserResponse> RegisterUser { get; }
 
         IUseCase<ViewProfileRequest, ViewProfileResponse> ViewProfile { get; }
+
+        IUseCase<AuthorizeUserRequest, AuthorizeUserResponse> AuthorizeUser { get; }
     }
 }

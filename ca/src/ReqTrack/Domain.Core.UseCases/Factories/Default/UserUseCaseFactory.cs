@@ -1,6 +1,7 @@
 ﻿using ReqTrack.Domain.Core.Factories;
 using ReqTrack.Domain.Core.Security;
 using ReqTrack.Domain.Core.UseCases.Boundary.Interfaces;
+using ReqTrack.Domain.Core.UseCases.Users.AuthorizeUser;
 using ReqTrack.Domain.Core.UseCases.Users.ChangeInformation;
 using ReqTrack.Domain.Core.UseCases.Users.ChangePassword;
 using ReqTrack.Domain.Core.UseCases.Users.DeleteUser;
@@ -18,6 +19,7 @@ namespace ReqTrack.Domain.Core.UseCases.Factories.Default
             DeleteUser = new DeleteUserUseCase(securityGateway, repositoryFactory.UserRepository);
             RegisterUser = new RegisterUserUseCase(securityGateway, repositoryFactory.UserRepository);
             ViewProfile = new ViewProfileUseCase(securityGateway, repositoryFactory.UserRepository);
+            AuthorizeUser = new AuthorizeUserUseCase(securityGateway, repositoryFactory.UserRepository);
         }
 
         public IUseCase<ChangeInformationInitialRequest, ChangeInformationRequest, ChangeInformationResponse> ChangeInformation { get; }
@@ -29,5 +31,7 @@ namespace ReqTrack.Domain.Core.UseCases.Factories.Default
         public IUseCase<RegisterUserRequest, RegisterUserResponse> RegisterUser { get; }
 
         public IUseCase<ViewProfileRequest, ViewProfileResponse> ViewProfile { get; }
+
+        public IUseCase<AuthorizeUserRequest, AuthorizeUserResponse> AuthorizeUser { get; }
     }
 }

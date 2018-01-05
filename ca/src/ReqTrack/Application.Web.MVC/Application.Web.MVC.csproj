@@ -20,14 +20,17 @@
     <Folder Include="Presenters\Requirements\" />
     <Folder Include="Presenters\Users\" />
     <Folder Include="Presenters\Projects\" />
-    <Folder Include="ViewModels\Users\" />
     <Folder Include="ViewModels\UseCases\" />
     <Folder Include="ViewModels\Requirements\" />
     <Folder Include="ViewModels\Projects\" />
     <Folder Include="Views\Projects\" />
     <Folder Include="Views\Requirements\" />
     <Folder Include="Views\UseCases\" />
-    <Folder Include="Views\Users\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Domain.Core.UseCases\Domain.Core.UseCases.csproj" />
+    <ProjectReference Include="..\Runtime.Core\Runtime.Core.csproj" />
   </ItemGroup>
 
 </Project>

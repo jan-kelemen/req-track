@@ -11,6 +11,8 @@ namespace ReqTrack.Domain.Core.Repositories
 
         BasicUser ReadUserInfo(Identity id);
 
+        BasicUser FindUserInfo(string username, string passwordHash);
+
         bool UpdateUser(User user);
 
         bool UpdateUserInfo(BasicUser user);
