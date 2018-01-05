@@ -6,7 +6,6 @@ using ReqTrack.Domain.Core.Entities.ValidationHelpers;
 using ReqTrack.Domain.Core.Exceptions;
 using ReqTrack.Domain.Core.Repositories;
 using ReqTrack.Domain.Core.Security;
-using ReqTrack.Domain.Core.UseCases.Boundary;
 using ReqTrack.Domain.Core.UseCases.Boundary.Extensions;
 using ReqTrack.Domain.Core.UseCases.Boundary.Interfaces;
 using ReqTrack.Domain.Core.UseCases.Boundary.Responses;
@@ -41,7 +40,7 @@ namespace ReqTrack.Domain.Core.UseCases.Users.RegisterUser
                     throw new Exception("Couldn't register user");
                 }
 
-                output.Accept(new RegisterUserResponse(ExecutionStatus.Success)
+                output.Accept(new RegisterUserResponse
                 {
                     GivenId = user.Id,
                     Message = $"User {user.UserName} successfuly created",

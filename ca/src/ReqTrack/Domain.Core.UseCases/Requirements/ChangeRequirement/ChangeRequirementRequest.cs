@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using ReqTrack.Domain.Core.Entities.ValidationHelpers;
 
 namespace ReqTrack.Domain.Core.UseCases.Requirements.ChangeRequirement

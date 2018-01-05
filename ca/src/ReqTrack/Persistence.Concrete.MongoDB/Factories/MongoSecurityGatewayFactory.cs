@@ -1,5 +1,4 @@
-﻿using MongoDB.Driver;
-using ReqTrack.Domain.Core.Factories;
+﻿using ReqTrack.Domain.Core.Factories;
 using ReqTrack.Domain.Core.Security;
 using ReqTrack.Persistence.Concrete.MongoDB.Database;
 using ReqTrack.Persistence.Concrete.MongoDB.Security;

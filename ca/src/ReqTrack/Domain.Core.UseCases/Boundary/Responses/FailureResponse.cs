@@ -2,7 +2,7 @@
 {
     public class FailureResponse : ResponseModel
     {
-        public FailureResponse() : base(ExecutionStatus.Failure)
+        public FailureResponse()
         {
         }
     }

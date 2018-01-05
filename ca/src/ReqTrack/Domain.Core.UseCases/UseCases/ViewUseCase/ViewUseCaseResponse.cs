@@ -1,15 +1,10 @@
 ﻿using System.Collections.Generic;
-using ReqTrack.Domain.Core.UseCases.Boundary;
 using ReqTrack.Domain.Core.UseCases.Boundary.Responses;
 
 namespace ReqTrack.Domain.Core.UseCases.UseCases.ViewUseCase
 {
     public class ViewUseCaseResponse : ResponseModel
     {
-        public ViewUseCaseResponse() : base(ExecutionStatus.Success)
-        {
-        }
-
         public string UseCaseId { get; set; }
 
         public string Title { get; set; }

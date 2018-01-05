@@ -5,7 +5,6 @@ using ReqTrack.Domain.Core.Entities.Projects;
 using ReqTrack.Domain.Core.Exceptions;
 using ReqTrack.Domain.Core.Repositories;
 using ReqTrack.Domain.Core.Security;
-using ReqTrack.Domain.Core.UseCases.Boundary;
 using ReqTrack.Domain.Core.UseCases.Boundary.Extensions;
 using ReqTrack.Domain.Core.UseCases.Boundary.Interfaces;
 using ReqTrack.Domain.Core.UseCases.Boundary.Responses;
@@ -46,7 +45,7 @@ namespace ReqTrack.Domain.Core.UseCases.Projects.CreateProject
                     throw new Exception("Couldn't create project");
                 }
 
-                output.Accept(new CreateProjectResponse(ExecutionStatus.Success)
+                output.Accept(new CreateProjectResponse
                 {
                     GivenId = id,
                     Message = $"Project {project.Name} successfuly created",

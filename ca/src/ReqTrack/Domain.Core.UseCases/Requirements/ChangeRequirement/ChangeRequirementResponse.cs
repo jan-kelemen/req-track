@@ -1,14 +1,9 @@
-﻿using ReqTrack.Domain.Core.UseCases.Boundary;
-using ReqTrack.Domain.Core.UseCases.Boundary.Responses;
+﻿using ReqTrack.Domain.Core.UseCases.Boundary.Responses;
 
 namespace ReqTrack.Domain.Core.UseCases.Requirements.ChangeRequirement
 {
     public class ChangeRequirementResponse : ResponseModel
     {
-        public ChangeRequirementResponse() : base(ExecutionStatus.Success)
-        {
-        }
-
         public string ProjectId { get; set; }
 
         public string RequirementId { get; set; }

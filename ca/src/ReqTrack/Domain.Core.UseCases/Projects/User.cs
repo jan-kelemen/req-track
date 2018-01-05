@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace ReqTrack.Domain.Core.UseCases.Projects
+﻿namespace ReqTrack.Domain.Core.UseCases.Projects
 {
     public class User
     {

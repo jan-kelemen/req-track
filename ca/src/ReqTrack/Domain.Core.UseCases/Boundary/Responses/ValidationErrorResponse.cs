@@ -4,7 +4,7 @@ namespace ReqTrack.Domain.Core.UseCases.Boundary.Responses
 {
     public class ValidationErrorResponse : ResponseModel
     {
-        public ValidationErrorResponse() : base(ExecutionStatus.Failure)
+        public ValidationErrorResponse()
         {
         }
 

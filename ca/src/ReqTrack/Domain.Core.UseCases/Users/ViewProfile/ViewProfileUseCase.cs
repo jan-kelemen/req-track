@@ -3,7 +3,6 @@ using System.Linq;
 using ReqTrack.Domain.Core.Exceptions;
 using ReqTrack.Domain.Core.Repositories;
 using ReqTrack.Domain.Core.Security;
-using ReqTrack.Domain.Core.UseCases.Boundary;
 using ReqTrack.Domain.Core.UseCases.Boundary.Extensions;
 using ReqTrack.Domain.Core.UseCases.Boundary.Interfaces;
 using ReqTrack.Domain.Core.UseCases.Boundary.Responses;
@@ -31,7 +30,7 @@ namespace ReqTrack.Domain.Core.UseCases.Users.ViewProfile
 
                 var user = _userRepository.ReadUser(request.UserId, true);
 
-                output.Accept(new ViewProfileResponse(ExecutionStatus.Success)
+                output.Accept(new ViewProfileResponse
                 {
                     UserId = user.Id,
                     UserName = user.UserName,

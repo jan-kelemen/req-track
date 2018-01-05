@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using ReqTrack.Domain.Core.Exceptions;
 using ReqTrack.Domain.Core.Repositories;
 using ReqTrack.Domain.Core.Security;

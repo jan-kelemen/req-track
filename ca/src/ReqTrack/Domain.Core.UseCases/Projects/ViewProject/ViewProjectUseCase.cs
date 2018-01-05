@@ -4,7 +4,6 @@ using System.Linq;
 using ReqTrack.Domain.Core.Exceptions;
 using ReqTrack.Domain.Core.Repositories;
 using ReqTrack.Domain.Core.Security;
-using ReqTrack.Domain.Core.UseCases.Boundary;
 using ReqTrack.Domain.Core.UseCases.Boundary.Extensions;
 using ReqTrack.Domain.Core.UseCases.Boundary.Interfaces;
 using ReqTrack.Domain.Core.UseCases.Boundary.Responses;
@@ -39,7 +38,7 @@ namespace ReqTrack.Domain.Core.UseCases.Projects.ViewProject
 
                 var project = _projectRepository.ReadProject(request.ProjectId, request.ShowRequirements, request.ShowUseCases);
 
-                output.Accept(new ViewProjectResponse(ExecutionStatus.Success)
+                output.Accept(new ViewProjectResponse
                 {
                     Name = project.Name,
                     Description = project.Description,

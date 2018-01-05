@@ -4,7 +4,6 @@ using ReqTrack.Domain.Core.Entities.Requirements;
 using ReqTrack.Domain.Core.Exceptions;
 using ReqTrack.Domain.Core.Repositories;
 using ReqTrack.Domain.Core.Security;
-using ReqTrack.Domain.Core.UseCases.Boundary;
 using ReqTrack.Domain.Core.UseCases.Boundary.Extensions;
 using ReqTrack.Domain.Core.UseCases.Boundary.Interfaces;
 using ReqTrack.Domain.Core.UseCases.Boundary.Responses;
@@ -39,7 +38,7 @@ namespace ReqTrack.Domain.Core.UseCases.Projects.ViewProjectRequirements
 
                 var project = _projectRepository.ReadProjectRequirements(request.ProjectId, Enum.Parse<RequirementType>(request.Type));
 
-                output.Accept(new ViewProjectRequirementsResponse(ExecutionStatus.Success)
+                output.Accept(new ViewProjectRequirementsResponse
                 {
                     Name = project.Name,
                     ProjectId = request.ProjectId,
