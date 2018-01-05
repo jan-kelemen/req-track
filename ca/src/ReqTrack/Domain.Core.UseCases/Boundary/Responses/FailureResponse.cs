@@ -2,7 +2,7 @@
 {
     public class FailureResponse : ResponseModel
     {
-        public FailureResponse()
+        public FailureResponse(string message) : base(message)
         {
         }
     }

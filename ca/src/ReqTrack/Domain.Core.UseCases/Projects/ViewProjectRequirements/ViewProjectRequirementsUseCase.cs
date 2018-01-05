@@ -52,32 +52,19 @@ namespace ReqTrack.Domain.Core.UseCases.Projects.ViewProjectRequirements
             }
             catch (RequestValidationException e)
             {
-                return output.Accept(new ValidationErrorResponse
-                {
-                    Message = $"Invalid request. {e.Message}",
-                    ValidationErrors = e.ValidationErrors,
-                });
+                return output.Accept(new ValidationErrorResponse(e.ValidationErrors, $"Invalid request. {e.Message}"));
             }
             catch (AccessViolationException e)
             {
-                return output.Accept(new FailureResponse
-                {
-                    Message = $"Insufficient rights. {e.Message}",
-                });
+                return output.Accept(new FailureResponse($"Insufficient rights. {e.Message}"));
             }
             catch (EntityNotFoundException e)
             {
-                return output.Accept(new FailureResponse
-                {
-                    Message = $"Project not found. {e.Message}",
-                });
+                return output.Accept(new FailureResponse($"Entity not found. {e.Message}"));
             }
             catch (Exception e)
             {
-                return output.Accept(new FailureResponse
-                {
-                    Message = $"Tehnical error happend. {e.Message}",
-                });
+                return output.Accept(new FailureResponse($"Tehnical error happend. {e.Message}"));
             }
         }
     }
