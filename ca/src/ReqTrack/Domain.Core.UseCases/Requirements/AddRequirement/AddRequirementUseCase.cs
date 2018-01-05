@@ -61,7 +61,7 @@ namespace ReqTrack.Domain.Core.UseCases.Requirements.AddRequirement
 
                 if (id == null)
                 {
-                    throw new Exception("Couldn't create requirement");
+                    return output.Accept(new FailureResponse("Requirement couldn't be created."));
                 }
 
                 return output.Accept(new AddRequirementResponse

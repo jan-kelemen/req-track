@@ -7,6 +7,7 @@ using ReqTrack.Domain.Core.UseCases.Users.ChangePassword;
 using ReqTrack.Domain.Core.UseCases.Users.DeleteUser;
 using ReqTrack.Domain.Core.UseCases.Users.RegisterUser;
 using ReqTrack.Domain.Core.UseCases.Users.ViewProfile;
+
 namespace ReqTrack.Domain.Core.UseCases.Factories.Default
 {
     internal class UserUseCaseFactory : IUserUseCaseFactory

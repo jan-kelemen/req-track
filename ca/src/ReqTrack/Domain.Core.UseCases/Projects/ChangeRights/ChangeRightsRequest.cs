@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+
 namespace ReqTrack.Domain.Core.UseCases.Projects.ChangeRights
 {
     public class ChangeRightsRequest : ChangeRightsInitialRequest

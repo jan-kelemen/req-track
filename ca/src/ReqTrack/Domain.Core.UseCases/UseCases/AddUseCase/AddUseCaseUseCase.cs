@@ -66,10 +66,9 @@ namespace ReqTrack.Domain.Core.UseCases.UseCases.AddUseCase
                     steps);
 
                 var id = _useCaseRepository.CreateUseCase(useCase);
-
                 if (id == null)
                 {
-                    throw new Exception("Couldn't create use case");
+                    return output.Accept(new FailureResponse("Use case couldn't be created."));
                 }
 
                 return output.Accept(new AddUseCaseResponse

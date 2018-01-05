@@ -1,4 +1,5 @@
 ﻿using ReqTrack.Domain.Core.UseCases.Boundary.Responses;
+
 namespace ReqTrack.Domain.Core.UseCases.Requirements.ChangeRequirement
 {
     public class ChangeRequirementResponse : ResponseModel

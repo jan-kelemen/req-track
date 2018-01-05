@@ -36,7 +36,7 @@ namespace ReqTrack.Domain.Core.UseCases.Projects.DeleteProject
 
                 if (!_projectRepository.DeleteProject(request.ProjectId))
                 {
-                    throw new Exception("Couldn't delete project");
+                    return output.Accept(new FailureResponse("Project couldn't be deleted."));
                 }
 
                 return output.Accept(new DeleteProjectResponse

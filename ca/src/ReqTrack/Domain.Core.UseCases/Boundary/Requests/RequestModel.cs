@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+
 namespace ReqTrack.Domain.Core.UseCases.Boundary.Requests
 {
     public abstract class RequestModel

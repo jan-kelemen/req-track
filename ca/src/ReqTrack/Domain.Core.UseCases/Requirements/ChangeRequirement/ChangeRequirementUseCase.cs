@@ -80,7 +80,7 @@ namespace ReqTrack.Domain.Core.UseCases.Requirements.ChangeRequirement
 
                 if (_requirementRepository.UpdateRequirement(requirement))
                 {
-                    throw new Exception("Couldn't update the requirement");
+                    return output.Accept(new FailureResponse("Requirement couldn't be updated."));
                 }
 
                 return output.Accept(new ChangeRequirementResponse

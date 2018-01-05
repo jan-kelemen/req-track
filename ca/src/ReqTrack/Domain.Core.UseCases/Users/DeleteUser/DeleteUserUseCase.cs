@@ -4,6 +4,7 @@ using ReqTrack.Domain.Core.Repositories;
 using ReqTrack.Domain.Core.Security;
 using ReqTrack.Domain.Core.UseCases.Boundary.Interfaces;
 using ReqTrack.Domain.Core.UseCases.Boundary.Responses;
+
 namespace ReqTrack.Domain.Core.UseCases.Users.DeleteUser
 {
     public class DeleteUserUseCase : IUseCase<DeleteUserRequest, DeleteUserResponse>
@@ -29,7 +30,7 @@ namespace ReqTrack.Domain.Core.UseCases.Users.DeleteUser
 
                 if (!_userRepository.DeleteUser(request.UserId))
                 {
-                    throw new Exception("Couldn't delete user");
+                    return output.Accept(new FailureResponse("User couldn't be deleted."));
                 }
 
                 return output.Accept(new DeleteUserResponse

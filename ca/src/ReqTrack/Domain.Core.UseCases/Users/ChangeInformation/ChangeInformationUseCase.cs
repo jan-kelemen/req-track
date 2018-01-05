@@ -5,6 +5,7 @@ using ReqTrack.Domain.Core.Repositories;
 using ReqTrack.Domain.Core.Security;
 using ReqTrack.Domain.Core.UseCases.Boundary.Interfaces;
 using ReqTrack.Domain.Core.UseCases.Boundary.Responses;
+
 namespace ReqTrack.Domain.Core.UseCases.Users.ChangeInformation
 {
     public class ChangeInformationUseCase 
@@ -61,7 +62,7 @@ namespace ReqTrack.Domain.Core.UseCases.Users.ChangeInformation
 
                 if (!_userRepository.UpdateUserInfo(user))
                 {
-                    throw new Exception("Couldn't update user information");
+                    return output.Accept(new FailureResponse("User information couldn't be updated."));
                 }
 
                 return output.Accept(new ChangeInformationResponse

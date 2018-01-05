@@ -98,22 +98,19 @@ namespace ReqTrack.Domain.Core.UseCases.Projects.ChangeRights
                     };
                 }
 
-                var result = _securityGateway.ChangeProjectRights(
+                var rights = request.Rights.Select(r => new Security.ProjectRights(
+                    r.UserId,
                     request.ProjectId,
-                    request.Rights.Select(r => new Security.ProjectRights(
-                        r.UserId,
-                        request.ProjectId,
-                        r.CanViewProject,
-                        r.CanChangeRequirements,
-                        r.CanChangeUseCases,
-                        r.CanChangeProjectRights,
-                        r.IsAdministrator)
-                    )
+                    r.CanViewProject,
+                    r.CanChangeRequirements,
+                    r.CanChangeUseCases,
+                    r.CanChangeProjectRights,
+                    r.IsAdministrator)
                 );
 
-                if (!result)
+                if (!_securityGateway.ChangeProjectRights(request.ProjectId, rights))
                 {
-                    throw new Exception("Project rights couldn't be updated.");
+                    return output.Accept(new FailureResponse("Project rights couldn't be updated."));
                 }
 
                 return output.Accept(new ChangeRightsResponse

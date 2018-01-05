@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using ReqTrack.Domain.Core.UseCases.Boundary.Requests;
+
 namespace ReqTrack.Domain.Core.UseCases.Projects.ChangeUseCaseOrder
 {
     public class ChangeUseCaseOrderInitialRequest : RequestModel

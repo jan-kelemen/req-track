@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using ReqTrack.Domain.Core.UseCases.Boundary.Requests;
+
 namespace ReqTrack.Domain.Core.UseCases.Requirements.ViewRequirement
 {
     public class ViewRequirementRequest : RequestModel

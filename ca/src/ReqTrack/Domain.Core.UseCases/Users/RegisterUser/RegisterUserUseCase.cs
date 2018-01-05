@@ -8,6 +8,7 @@ using ReqTrack.Domain.Core.Repositories;
 using ReqTrack.Domain.Core.Security;
 using ReqTrack.Domain.Core.UseCases.Boundary.Interfaces;
 using ReqTrack.Domain.Core.UseCases.Boundary.Responses;
+
 namespace ReqTrack.Domain.Core.UseCases.Users.RegisterUser
 {
     public class RegisterUserUseCase : IUseCase<RegisterUserRequest, RegisterUserResponse>
@@ -37,7 +38,7 @@ namespace ReqTrack.Domain.Core.UseCases.Users.RegisterUser
                 var id = _userRepository.CreateUser(user);
                 if (id == null)
                 {
-                    throw new Exception("Couldn't register user");
+                    return output.Accept(new FailureResponse("User couldn't be registered."));
                 }
 
                 return output.Accept(new RegisterUserResponse

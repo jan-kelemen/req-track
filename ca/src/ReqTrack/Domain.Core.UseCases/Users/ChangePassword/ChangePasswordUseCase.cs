@@ -6,6 +6,7 @@ using ReqTrack.Domain.Core.Repositories;
 using ReqTrack.Domain.Core.Security;
 using ReqTrack.Domain.Core.UseCases.Boundary.Interfaces;
 using ReqTrack.Domain.Core.UseCases.Boundary.Responses;
+
 namespace ReqTrack.Domain.Core.UseCases.Users.ChangePassword
 {
     public class ChangePasswordUseCase
@@ -57,7 +58,7 @@ namespace ReqTrack.Domain.Core.UseCases.Users.ChangePassword
 
                 if (_userRepository.UpdateUser(user))
                 {
-                    throw new Exception("Couldn't update user password");
+                    return output.Accept(new FailureResponse("Password couldn't be changed."));
                 }
 
                 return output.Accept(new ChangePasswordResponse

@@ -39,7 +39,7 @@ namespace ReqTrack.Domain.Core.UseCases.UseCases.DeleteUseCase
 
                 if (!_useCaseRepository.DeleteUseCase(request.UseCaseId))
                 {
-                    throw new Exception("Couldn't delete useCase");
+                    return output.Accept(new FailureResponse("Use case couldn't be deleted."));
                 }
 
                 return output.Accept(new DeleteUseCaseResponse

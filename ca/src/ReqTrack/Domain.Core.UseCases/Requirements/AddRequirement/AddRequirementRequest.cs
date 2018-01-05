@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using ReqTrack.Domain.Core.Entities.ValidationHelpers;
 using ReqTrack.Domain.Core.UseCases.Boundary.Requests;
+
 namespace ReqTrack.Domain.Core.UseCases.Requirements.AddRequirement
 {
     public class AddRequirementRequest : RequestModel

@@ -39,7 +39,7 @@ namespace ReqTrack.Domain.Core.UseCases.Requirements.DeleteRequirement
 
                 if (!_requirementRepository.DeleteRequirement(request.RequirementId))
                 {
-                    throw new Exception("Couldn't delete requirement");
+                    return output.Accept(new FailureResponse("Requirement couldn't be deleted."));
                 }
 
                 return output.Accept(new DeleteRequirementResponse

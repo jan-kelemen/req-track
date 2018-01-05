@@ -90,7 +90,7 @@ namespace ReqTrack.Domain.Core.UseCases.UseCases.ChangeUseCase
 
                 if (_useCaseRepository.UpdateUseCase(useCase))
                 {
-                    throw new Exception("Couldn't update the use case");
+                    return output.Accept(new FailureResponse("Use case couldn't be updated"));
                 }
 
                 return output.Accept(new ChangeUseCaseResponse
