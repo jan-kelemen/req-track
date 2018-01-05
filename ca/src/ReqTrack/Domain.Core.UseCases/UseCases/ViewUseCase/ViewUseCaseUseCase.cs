@@ -5,7 +5,6 @@ using ReqTrack.Domain.Core.Repositories;
 using ReqTrack.Domain.Core.Security;
 using ReqTrack.Domain.Core.UseCases.Boundary.Interfaces;
 using ReqTrack.Domain.Core.UseCases.Boundary.Responses;
-using AccessViolationException = ReqTrack.Domain.Core.Exceptions.AccessViolationException;
 
 namespace ReqTrack.Domain.Core.UseCases.UseCases.ViewUseCase
 {
@@ -33,7 +32,7 @@ namespace ReqTrack.Domain.Core.UseCases.UseCases.ViewUseCase
                 var rights = _securityGateway.GetProjectRights(request.ProjectId, request.RequestedBy);
                 if (rights == null || !rights.CanViewProject)
                 {
-                    throw new AccessViolationException("");
+                    return output.Accept(new FailureResponse("User can't view this project."));
                 }
 
                 var useCase = _useCaseRepository.ReadUseCase(request.UseCaseId);
@@ -47,10 +46,6 @@ namespace ReqTrack.Domain.Core.UseCases.UseCases.ViewUseCase
                     Note = useCase.Note,
                     Steps = useCase.Steps.Select(x => x.Content),
                 });
-            }
-            catch (AccessViolationException e)
-            {
-                return output.Accept(new FailureResponse($"Insufficient rights. {e.Message}"));
             }
             catch (EntityNotFoundException e)
             {

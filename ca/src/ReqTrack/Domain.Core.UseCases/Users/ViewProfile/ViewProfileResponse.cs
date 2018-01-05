@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using ReqTrack.Domain.Core.UseCases.Boundary.Responses;
-
 namespace ReqTrack.Domain.Core.UseCases.Users.ViewProfile
 {
     public class ViewProfileResponse : ResponseModel

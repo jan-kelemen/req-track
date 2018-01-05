@@ -2,7 +2,6 @@
 using ReqTrack.Domain.Core.Security;
 using ReqTrack.Domain.Core.UseCases.Factories;
 using ReqTrack.Domain.Core.UseCases.Factories.Default;
-
 namespace ReqTrack.Domain.Core.UseCases.Initialization
 {
     public class Initializer

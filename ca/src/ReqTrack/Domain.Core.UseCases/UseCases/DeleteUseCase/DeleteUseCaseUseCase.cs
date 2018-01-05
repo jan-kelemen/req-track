@@ -4,7 +4,6 @@ using ReqTrack.Domain.Core.Repositories;
 using ReqTrack.Domain.Core.Security;
 using ReqTrack.Domain.Core.UseCases.Boundary.Interfaces;
 using ReqTrack.Domain.Core.UseCases.Boundary.Responses;
-using AccessViolationException = ReqTrack.Domain.Core.Exceptions.AccessViolationException;
 
 namespace ReqTrack.Domain.Core.UseCases.UseCases.DeleteUseCase
 {
@@ -33,9 +32,9 @@ namespace ReqTrack.Domain.Core.UseCases.UseCases.DeleteUseCase
 
                 var rights = _securityGateway.GetProjectRights(request.ProjectId, request.RequestedBy);
 
-                if (!rights.CanChangeUseCases)
+                if (rights == null || !rights.CanChangeUseCases)
                 {
-                    throw new AccessViolationException("User doesn't have sufficient rights to delete the use case.");
+                    return output.Accept(new FailureResponse("User can't change use cases of this project."));
                 }
 
                 if (!_useCaseRepository.DeleteUseCase(request.UseCaseId))
@@ -47,10 +46,6 @@ namespace ReqTrack.Domain.Core.UseCases.UseCases.DeleteUseCase
                 {
                     Message = "Use case deleted successfully",
                 });
-            }
-            catch (AccessViolationException e)
-            {
-                return output.Accept(new FailureResponse($"Insufficient rights. {e.Message}"));
             }
             catch (EntityNotFoundException e)
             {

@@ -6,7 +6,6 @@ using ReqTrack.Domain.Core.Repositories;
 using ReqTrack.Domain.Core.Security;
 using ReqTrack.Domain.Core.UseCases.Boundary.Interfaces;
 using ReqTrack.Domain.Core.UseCases.Boundary.Responses;
-using AccessViolationException = ReqTrack.Domain.Core.Exceptions.AccessViolationException;
 
 namespace ReqTrack.Domain.Core.UseCases.Projects.ChangeRights
 {
@@ -33,9 +32,9 @@ namespace ReqTrack.Domain.Core.UseCases.Projects.ChangeRights
                 }
 
                 var userRights = _securityGateway.GetProjectRights(request.ProjectId, request.RequestedBy);
-                if (!userRights.CanChangeProjectRights)
+                if (userRights == null || !userRights.CanChangeProjectRights)
                 {
-                    throw new AccessViolationException("User can't change information of the project");
+                    return output.Accept(new FailureResponse("User can't change information of this project."));
                 }
 
                 var rights = _securityGateway.GetProjectRights(request.ProjectId);
@@ -57,10 +56,6 @@ namespace ReqTrack.Domain.Core.UseCases.Projects.ChangeRights
                     }),
                 });
             }
-            catch (AccessViolationException e)
-            {
-                return output.Accept(new FailureResponse($"Insufficient rights. {e.Message}"));
-            }
             catch (EntityNotFoundException e)
             {
                 return output.Accept(new FailureResponse($"Entity not found. {e.Message}"));
@@ -81,9 +76,9 @@ namespace ReqTrack.Domain.Core.UseCases.Projects.ChangeRights
                 }
 
                 var userRights = _securityGateway.GetProjectRights(request.ProjectId, request.RequestedBy);
-                if (!userRights.CanChangeProjectRights)
+                if (userRights == null || !userRights.CanChangeProjectRights)
                 {
-                    throw new AccessViolationException("User can't change information of the project");
+                    return output.Accept(new FailureResponse("User can't change information of this project."));
                 }
 
                 if (request.Rights == null)
@@ -131,10 +126,6 @@ namespace ReqTrack.Domain.Core.UseCases.Projects.ChangeRights
             {
                 var errors = new Dictionary<string, string> { { e.PropertyKey, e.Message } };
                 return output.Accept(new ValidationErrorResponse(errors, $"Invalid data for {e.PropertyKey}."));
-            }
-            catch (AccessViolationException e)
-            {
-                return output.Accept(new FailureResponse($"Insufficient rights. {e.Message}"));
             }
             catch (EntityNotFoundException e)
             {

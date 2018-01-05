@@ -3,7 +3,6 @@ using ReqTrack.Domain.Core.UseCases.Requirements.AddRequirement;
 using ReqTrack.Domain.Core.UseCases.Requirements.ChangeRequirement;
 using ReqTrack.Domain.Core.UseCases.Requirements.DeleteRequirement;
 using ReqTrack.Domain.Core.UseCases.Requirements.ViewRequirement;
-
 namespace ReqTrack.Domain.Core.UseCases.Factories
 {
     public interface IRequirementUseCaseFactory

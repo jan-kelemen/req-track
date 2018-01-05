@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-
 namespace ReqTrack.Domain.Core.UseCases.Users.ChangePassword
 {
     public class ChangePasswordRequest : ChangePasswordInitialRequest

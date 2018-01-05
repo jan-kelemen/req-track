@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using ReqTrack.Domain.Core.UseCases.Boundary.Requests;
-
 namespace ReqTrack.Domain.Core.UseCases.Requirements.DeleteRequirement
 {
     public class DeleteRequirementRequest : RequestModel

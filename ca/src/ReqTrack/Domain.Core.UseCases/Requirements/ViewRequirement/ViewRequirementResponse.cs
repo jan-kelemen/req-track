@@ -1,5 +1,4 @@
 ﻿using ReqTrack.Domain.Core.UseCases.Boundary.Responses;
-
 namespace ReqTrack.Domain.Core.UseCases.Requirements.ViewRequirement
 {
     public class ViewRequirementResponse : ResponseModel

@@ -4,7 +4,6 @@ using ReqTrack.Domain.Core.Repositories;
 using ReqTrack.Domain.Core.Security;
 using ReqTrack.Domain.Core.UseCases.Boundary.Interfaces;
 using ReqTrack.Domain.Core.UseCases.Boundary.Responses;
-using AccessViolationException = ReqTrack.Domain.Core.Exceptions.AccessViolationException;
 
 namespace ReqTrack.Domain.Core.UseCases.Projects.DeleteProject
 {
@@ -30,10 +29,9 @@ namespace ReqTrack.Domain.Core.UseCases.Projects.DeleteProject
                 }
 
                 var rights = _securityGateway.GetProjectRights(request.ProjectId, request.RequestedBy);
-
-                if (!rights.IsAdministrator)
+                if (rights == null || !rights.IsAdministrator)
                 {
-                    throw new AccessViolationException("User doesn't have sufficient rights to delete the project.");
+                    return output.Accept(new FailureResponse("User can't delete this project."));
                 }
 
                 if (!_projectRepository.DeleteProject(request.ProjectId))
@@ -45,10 +43,6 @@ namespace ReqTrack.Domain.Core.UseCases.Projects.DeleteProject
                 {
                     Message = "Project deleted successfully",
                 });
-            }
-            catch (AccessViolationException e)
-            {
-                return output.Accept(new FailureResponse($"Insufficient rights. {e.Message}"));
             }
             catch (EntityNotFoundException e)
             {

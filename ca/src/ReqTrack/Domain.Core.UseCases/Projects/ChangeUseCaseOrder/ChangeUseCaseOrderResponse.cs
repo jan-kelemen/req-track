@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using ReqTrack.Domain.Core.UseCases.Boundary.Responses;
-
 namespace ReqTrack.Domain.Core.UseCases.Projects.ChangeUseCaseOrder
 {
     public class ChangeUseCaseOrderResponse : ResponseModel

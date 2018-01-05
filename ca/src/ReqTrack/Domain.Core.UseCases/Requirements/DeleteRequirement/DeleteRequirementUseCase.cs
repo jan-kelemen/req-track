@@ -4,7 +4,6 @@ using ReqTrack.Domain.Core.Repositories;
 using ReqTrack.Domain.Core.Security;
 using ReqTrack.Domain.Core.UseCases.Boundary.Interfaces;
 using ReqTrack.Domain.Core.UseCases.Boundary.Responses;
-using AccessViolationException = ReqTrack.Domain.Core.Exceptions.AccessViolationException;
 
 namespace ReqTrack.Domain.Core.UseCases.Requirements.DeleteRequirement
 {
@@ -35,7 +34,7 @@ namespace ReqTrack.Domain.Core.UseCases.Requirements.DeleteRequirement
 
                 if (!rights.CanChangeRequirements)
                 {
-                    throw new AccessViolationException("User doesn't have sufficient rights to delete the requirement.");
+                    return output.Accept(new FailureResponse("User can't change requiremnts of this project"));
                 }
 
                 if (!_requirementRepository.DeleteRequirement(request.RequirementId))
@@ -47,10 +46,6 @@ namespace ReqTrack.Domain.Core.UseCases.Requirements.DeleteRequirement
                 {
                     Message = "Requirement deleted successfully",
                 });
-            }
-            catch (AccessViolationException e)
-            {
-                return output.Accept(new FailureResponse($"Insufficient rights. {e.Message}"));
             }
             catch (EntityNotFoundException e)
             {

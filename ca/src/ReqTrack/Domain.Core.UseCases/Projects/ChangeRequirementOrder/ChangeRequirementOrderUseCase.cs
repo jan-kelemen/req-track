@@ -8,7 +8,6 @@ using ReqTrack.Domain.Core.Repositories;
 using ReqTrack.Domain.Core.Security;
 using ReqTrack.Domain.Core.UseCases.Boundary.Interfaces;
 using ReqTrack.Domain.Core.UseCases.Boundary.Responses;
-using AccessViolationException = ReqTrack.Domain.Core.Exceptions.AccessViolationException;
 
 namespace ReqTrack.Domain.Core.UseCases.Projects.ChangeRequirementOrder
 {
@@ -36,9 +35,9 @@ namespace ReqTrack.Domain.Core.UseCases.Projects.ChangeRequirementOrder
                 }
 
                 var rights = _securityGateway.GetProjectRights(request.ProjectId, request.RequestedBy);
-                if (!rights.CanChangeRequirements)
+                if (rights == null || !rights.CanChangeRequirements)
                 {
-                    throw new AccessViolationException("Project doesn't exist or user has insufficient rights");
+                    return output.Accept(new FailureResponse("User can't change requirements of this project."));
                 }
 
                 var project = _projectRepository.ReadProjectRequirements(request.ProjectId, Enum.Parse<RequirementType>(request.Type));
@@ -54,10 +53,6 @@ namespace ReqTrack.Domain.Core.UseCases.Projects.ChangeRequirementOrder
                         Title = r.Title,
                     }),
                 });
-            }
-            catch (AccessViolationException e)
-            {
-                return output.Accept(new FailureResponse($"Insufficient rights. {e.Message}"));
             }
             catch (EntityNotFoundException e)
             {
@@ -79,9 +74,9 @@ namespace ReqTrack.Domain.Core.UseCases.Projects.ChangeRequirementOrder
                 }
 
                 var rights = _securityGateway.GetProjectRights(request.ProjectId, request.RequestedBy);
-                if (!rights.CanChangeRequirements)
+                if (rights == null || !rights.CanChangeRequirements)
                 {
-                    throw new AccessViolationException("User can't change requirements of the project");
+                    return output.Accept(new FailureResponse("User can't change requirements of this project."));
                 }
 
                 var type = Enum.Parse<RequirementType>(request.Type);
@@ -111,10 +106,6 @@ namespace ReqTrack.Domain.Core.UseCases.Projects.ChangeRequirementOrder
             {
                 var errors = new Dictionary<string, string> { { e.PropertyKey, e.Message } };
                 return output.Accept(new ValidationErrorResponse(errors, $"Invalid data for {e.PropertyKey}."));
-            }
-            catch (AccessViolationException e)
-            {
-                return output.Accept(new FailureResponse($"Insufficient rights. {e.Message}"));
             }
             catch (EntityNotFoundException e)
             {

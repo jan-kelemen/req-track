@@ -2,12 +2,12 @@
 using System.Linq;
 using MongoDB.Driver;
 using ReqTrack.Domain.Core.Entities;
+using ReqTrack.Domain.Core.Exceptions;
 using ReqTrack.Domain.Core.Security;
 using ReqTrack.Persistence.Concrete.MongoDB.Database;
 using ReqTrack.Persistence.Concrete.MongoDB.Entities;
 using ReqTrack.Persistence.Concrete.MongoDB.Extensions.Mapping;
 using ReqTrack.Persistence.Concrete.MongoDB.Repositories.Internal;
-using AccessViolationException = ReqTrack.Domain.Core.Exceptions.AccessViolationException;
 
 namespace ReqTrack.Persistence.Concrete.MongoDB.Security
 {
@@ -15,13 +15,22 @@ namespace ReqTrack.Persistence.Concrete.MongoDB.Security
     {
         private readonly MongoRepository<MongoSecurityRights> _securityRightsRepository;
 
+        private readonly MongoRepository<MongoUser> _userRepository;
+
+        private readonly MongoRepository<MongoProject> _projectRepository;
+
         public SecurityGateway(MongoReqTrackDatabase database)
         {
             _securityRightsRepository = new MongoRepository<MongoSecurityRights>(database.SecurityRightsCollection);
+            _userRepository = new MongoRepository<MongoUser>(database.UserCollection);
+            _projectRepository = new MongoRepository<MongoProject>(database.ProjectCollection);
         }
 
         public IEnumerable<ProjectRights> GetProjectRights(Identity projectId)
         {
+            var project = _projectRepository.Read(projectId.ToMongoIdentity());
+            if(project == null) { throw new EntityNotFoundException { Id = projectId } ;}
+
             var filter = Builders<MongoSecurityRights>.Filter.Eq(x => x.ProjectId, projectId.ToMongoIdentity());
             var rights = _securityRightsRepository.Find(filter);
 
@@ -37,10 +46,17 @@ namespace ReqTrack.Persistence.Concrete.MongoDB.Security
 
         public ProjectRights GetProjectRights(Identity projectId, Identity userId)
         {
+            var project = _projectRepository.Read(projectId.ToMongoIdentity());
+            if (project == null) { throw new EntityNotFoundException { Id = projectId }; }
+
+            var user = _userRepository.Read(userId.ToMongoIdentity());
+            if(user == null) { throw new EntityNotFoundException { Id = userId }; }
+
             var filter = Builders<MongoSecurityRights>.Filter
                 .Where(x => x.ProjectId == projectId.ToMongoIdentity() && x.UserId == userId.ToMongoIdentity());
             var rights = _securityRightsRepository.Find(filter).FirstOrDefault();
-            if (rights == null) { throw new AccessViolationException("Project doesn't exit or user has insufficient rights"); }
+
+            if (rights == null) { return null; }
 
             return new ProjectRights(
                 userId,
@@ -54,6 +70,9 @@ namespace ReqTrack.Persistence.Concrete.MongoDB.Security
 
         public bool ChangeProjectRights(Identity projectId, IEnumerable<ProjectRights> newProjectRights)
         {
+            var project = _projectRepository.Read(projectId.ToMongoIdentity());
+            if (project == null) { throw new EntityNotFoundException { Id = projectId }; }
+
             var deleteFilter = Builders<MongoSecurityRights>.Filter.Eq(x => x.ProjectId, projectId.ToMongoIdentity());
             _securityRightsRepository.Delete(deleteFilter);
 

@@ -7,7 +7,6 @@ using ReqTrack.Domain.Core.Repositories;
 using ReqTrack.Domain.Core.Security;
 using ReqTrack.Domain.Core.UseCases.Boundary.Interfaces;
 using ReqTrack.Domain.Core.UseCases.Boundary.Responses;
-using AccessViolationException = ReqTrack.Domain.Core.Exceptions.AccessViolationException;
 
 namespace ReqTrack.Domain.Core.UseCases.Projects.ChangeUseCaseOrder
 {
@@ -35,9 +34,9 @@ namespace ReqTrack.Domain.Core.UseCases.Projects.ChangeUseCaseOrder
                 }
 
                 var rights = _securityGateway.GetProjectRights(request.ProjectId, request.RequestedBy);
-                if (!rights.CanChangeUseCases)
+                if (rights == null || !rights.CanChangeUseCases)
                 {
-                    throw new AccessViolationException("Project doesn't exist or user has insufficient rights");
+                    return output.Accept(new FailureResponse("User can't change use cases of this project."));
                 }
 
                 var project = _projectRepository.ReadProject(request.ProjectId, false, true);
@@ -52,10 +51,6 @@ namespace ReqTrack.Domain.Core.UseCases.Projects.ChangeUseCaseOrder
                         Title = r.Title,
                     }),
                 });
-            }
-            catch (AccessViolationException e)
-            {
-                return output.Accept(new FailureResponse($"Insufficient rights. {e.Message}"));
             }
             catch (EntityNotFoundException e)
             {
@@ -77,9 +72,9 @@ namespace ReqTrack.Domain.Core.UseCases.Projects.ChangeUseCaseOrder
                 }
 
                 var rights = _securityGateway.GetProjectRights(request.ProjectId, request.RequestedBy);
-                if (!rights.CanChangeUseCases)
+                if (rights == null || !rights.CanChangeUseCases)
                 {
-                    throw new AccessViolationException("User can't change use cases of the project");
+                    return output.Accept(new FailureResponse("User can't change use cases of the project"));
                 }
 
                 var project = _projectRepository.ReadProject(request.ProjectId, false, true);
@@ -106,10 +101,6 @@ namespace ReqTrack.Domain.Core.UseCases.Projects.ChangeUseCaseOrder
             {
                 var errors = new Dictionary<string, string> { { e.PropertyKey, e.Message } };
                 return output.Accept(new ValidationErrorResponse(errors, $"Invalid data for {e.PropertyKey}."));
-            }
-            catch (AccessViolationException e)
-            {
-                return output.Accept(new FailureResponse($"Insufficient rights. {e.Message}"));
             }
             catch (EntityNotFoundException e)
             {

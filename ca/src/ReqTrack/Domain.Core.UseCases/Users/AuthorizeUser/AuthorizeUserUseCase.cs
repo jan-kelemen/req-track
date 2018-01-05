@@ -5,7 +5,6 @@ using ReqTrack.Domain.Core.Repositories;
 using ReqTrack.Domain.Core.Security;
 using ReqTrack.Domain.Core.UseCases.Boundary.Interfaces;
 using ReqTrack.Domain.Core.UseCases.Boundary.Responses;
-
 namespace ReqTrack.Domain.Core.UseCases.Users.AuthorizeUser
 {
     public class AuthorizeUserUseCase : IUseCase<AuthorizeUserRequest, AuthorizeUserResponse>

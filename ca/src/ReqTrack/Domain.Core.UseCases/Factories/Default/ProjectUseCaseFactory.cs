@@ -8,7 +8,6 @@ using ReqTrack.Domain.Core.UseCases.Projects.ChangeUseCaseOrder;
 using ReqTrack.Domain.Core.UseCases.Projects.CreateProject;
 using ReqTrack.Domain.Core.UseCases.Projects.DeleteProject;
 using ReqTrack.Domain.Core.UseCases.Projects.ViewProject;
-
 namespace ReqTrack.Domain.Core.UseCases.Factories.Default
 {
     internal class ProjectUseCaseFactory : IProjectUseCaseFactory

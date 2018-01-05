@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using ReqTrack.Domain.Core.UseCases.Boundary.Requests;
-
 namespace ReqTrack.Domain.Core.UseCases.UseCases.ChangeUseCase
 {
     public class ChangeUseCaseInitialRequest : RequestModel

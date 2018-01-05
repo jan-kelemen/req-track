@@ -5,7 +5,6 @@ using ReqTrack.Domain.Core.UseCases.UseCases.AddUseCase;
 using ReqTrack.Domain.Core.UseCases.UseCases.ChangeUseCase;
 using ReqTrack.Domain.Core.UseCases.UseCases.DeleteUseCase;
 using ReqTrack.Domain.Core.UseCases.UseCases.ViewUseCase;
-
 namespace ReqTrack.Domain.Core.UseCases.Factories.Default
 {
     internal class UseCaseUseCaseFactory : IUseCaseUseCaseFactory

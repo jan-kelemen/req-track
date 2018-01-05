@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-
 namespace ReqTrack.Domain.Core.UseCases.Projects.ChangeRequirementOrder
 {
     public class ChangeRequirementOrderRequest : ChangeRequirementOrderInitialRequest

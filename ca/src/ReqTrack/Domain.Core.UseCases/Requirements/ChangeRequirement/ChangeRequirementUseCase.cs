@@ -6,7 +6,6 @@ using ReqTrack.Domain.Core.Repositories;
 using ReqTrack.Domain.Core.Security;
 using ReqTrack.Domain.Core.UseCases.Boundary.Interfaces;
 using ReqTrack.Domain.Core.UseCases.Boundary.Responses;
-using AccessViolationException = ReqTrack.Domain.Core.Exceptions.AccessViolationException;
 
 namespace ReqTrack.Domain.Core.UseCases.Requirements.ChangeRequirement
 {
@@ -33,7 +32,10 @@ namespace ReqTrack.Domain.Core.UseCases.Requirements.ChangeRequirement
                 }
 
                 var rights = _securityGateway.GetProjectRights(request.ProjectId, request.RequestedBy);
-                if (rights == null || !rights.CanChangeRequirements) { throw new AccessViolationException(""); }
+                if (rights == null || !rights.CanChangeRequirements)
+                {
+                    return output.Accept(new FailureResponse("User can't change requirements of this project."));
+                }
 
                 var requirement = _requirementRepository.ReadRequirement(request.RequirementId);
 
@@ -45,10 +47,6 @@ namespace ReqTrack.Domain.Core.UseCases.Requirements.ChangeRequirement
                     Title = requirement.Title,
                     Note = requirement.Note,
                 });
-            }
-            catch (AccessViolationException e)
-            {
-                return output.Accept(new FailureResponse($"Insufficient rights. {e.Message}"));
             }
             catch (EntityNotFoundException e)
             {
@@ -70,7 +68,10 @@ namespace ReqTrack.Domain.Core.UseCases.Requirements.ChangeRequirement
                 }
 
                 var rights = _securityGateway.GetProjectRights(request.ProjectId, request.RequestedBy);
-                if (rights == null || !rights.CanChangeRequirements) { throw new AccessViolationException(""); }
+                if (rights == null || !rights.CanChangeRequirements)
+                {
+                    return output.Accept(new FailureResponse("User can't change requirements of this project."));
+                }
 
                 var requirement = _requirementRepository.ReadRequirement(request.RequirementId);
                 requirement.Title = request.Title;
@@ -91,10 +92,6 @@ namespace ReqTrack.Domain.Core.UseCases.Requirements.ChangeRequirement
             {
                 var errors = new Dictionary<string, string> { { e.PropertyKey, e.Message } };
                 return output.Accept(new ValidationErrorResponse(errors, $"Invalid data for {e.PropertyKey}."));
-            }
-            catch (AccessViolationException e)
-            {
-                return output.Accept(new FailureResponse($"Insufficient rights. {e.Message}"));
             }
             catch (EntityNotFoundException e)
             {

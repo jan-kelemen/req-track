@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using ReqTrack.Domain.Core.Entities.ValidationHelpers;
-
 namespace ReqTrack.Domain.Core.UseCases.Requirements.ChangeRequirement
 {
     public class ChangeRequirementRequest : ChangeRequirementInitialRequest

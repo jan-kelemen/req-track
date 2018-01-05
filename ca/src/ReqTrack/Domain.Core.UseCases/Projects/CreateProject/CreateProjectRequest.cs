@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using ReqTrack.Domain.Core.Entities.ValidationHelpers;
 using ReqTrack.Domain.Core.UseCases.Boundary.Requests;
-
 namespace ReqTrack.Domain.Core.UseCases.Projects.CreateProject
 {
     public class CreateProjectRequest : RequestModel

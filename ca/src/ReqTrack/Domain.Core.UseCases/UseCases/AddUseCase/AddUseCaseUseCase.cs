@@ -7,7 +7,6 @@ using ReqTrack.Domain.Core.Repositories;
 using ReqTrack.Domain.Core.Security;
 using ReqTrack.Domain.Core.UseCases.Boundary.Interfaces;
 using ReqTrack.Domain.Core.UseCases.Boundary.Responses;
-using AccessViolationException = ReqTrack.Domain.Core.Exceptions.AccessViolationException;
 
 namespace ReqTrack.Domain.Core.UseCases.UseCases.AddUseCase
 {
@@ -43,7 +42,10 @@ namespace ReqTrack.Domain.Core.UseCases.UseCases.AddUseCase
                 }
 
                 var rights = _securityGateway.GetProjectRights(request.ProjectId, request.RequestedBy);
-                if(rights == null || !rights.CanChangeUseCases) { throw new AccessViolationException(""); }
+                if (rights == null || !rights.CanChangeUseCases)
+                {
+                    return output.Accept(new FailureResponse("User cahn't change use cases of this. project"));
+                }
 
                 var user = _userRepository.ReadUserInfo(request.RequestedBy);
                 var project = _projectRepository.ReadProject(request.ProjectId, false, false);
@@ -80,10 +82,6 @@ namespace ReqTrack.Domain.Core.UseCases.UseCases.AddUseCase
             {
                 var errors = new Dictionary<string, string> { { e.PropertyKey, e.Message } };
                 return output.Accept(new ValidationErrorResponse(errors, $"Invalid data for {e.PropertyKey}."));
-            }
-            catch (AccessViolationException e)
-            {
-                return output.Accept(new FailureResponse($"Insufficient rights. {e.Message}"));
             }
             catch (EntityNotFoundException e)
             {
