@@ -24,14 +24,14 @@ namespace ReqTrack.Domain.Core.UseCases.Users.ChangePassword
             _userRepository = userRepository;
         }
 
-        public void Execute(IUseCaseOutput<ChangePasswordResponse> output, ChangePasswordInitialRequest request)
+        public bool Execute(IUseCaseOutput<ChangePasswordResponse> output, ChangePasswordInitialRequest request)
         {
             try
             {
                 request.ValidateAndThrowOnInvalid();
 
                 var user = _userRepository.ReadUserInfo(request.UserId);
-                output.Accept(new ChangePasswordResponse
+                return output.Accept(new ChangePasswordResponse
                 {
                     UserId = user.Id,
                     DisplayName = user.DisplayName,
@@ -39,7 +39,7 @@ namespace ReqTrack.Domain.Core.UseCases.Users.ChangePassword
             }
             catch (RequestValidationException e)
             {
-                output.Accept(new ValidationErrorResponse
+                return output.Accept(new ValidationErrorResponse
                 {
                     Message = $"Invalid request. {e.Message}",
                     ValidationErrors = e.ValidationErrors,
@@ -47,21 +47,21 @@ namespace ReqTrack.Domain.Core.UseCases.Users.ChangePassword
             }
             catch (EntityNotFoundException e)
             {
-                output.Accept(new FailureResponse
+                return output.Accept(new FailureResponse
                 {
                     Message = $"User not found. {e.Message}",
                 });
             }
             catch (Exception e)
             {
-                output.Accept(new FailureResponse
+                return output.Accept(new FailureResponse
                 {
                     Message = $"Tehnical error happend. {e.Message}",
                 });
             }
         }
 
-        public void Execute(IUseCaseOutput<ChangePasswordResponse> output, ChangePasswordRequest request)
+        public bool Execute(IUseCaseOutput<ChangePasswordResponse> output, ChangePasswordRequest request)
         {
             try
             {
@@ -74,7 +74,7 @@ namespace ReqTrack.Domain.Core.UseCases.Users.ChangePassword
                     throw new Exception("Couldn't update user password");
                 }
 
-                output.Accept(new ChangePasswordResponse
+                return output.Accept(new ChangePasswordResponse
                 {
                     UserId = user.Id,
                     Message = "Password changed successfully",
@@ -83,7 +83,7 @@ namespace ReqTrack.Domain.Core.UseCases.Users.ChangePassword
             }
             catch (RequestValidationException e)
             {
-                output.Accept(new ValidationErrorResponse
+                return output.Accept(new ValidationErrorResponse
                 {
                     Message = $"Invalid request. {e.Message}",
                     ValidationErrors = e.ValidationErrors,
@@ -91,7 +91,7 @@ namespace ReqTrack.Domain.Core.UseCases.Users.ChangePassword
             }
             catch (ValidationException e)
             {
-                output.Accept(new ValidationErrorResponse
+                return output.Accept(new ValidationErrorResponse
                 {
                     Message = $"Invalid data for {e.PropertyKey}.",
                     ValidationErrors = new Dictionary<string, string>
@@ -102,14 +102,14 @@ namespace ReqTrack.Domain.Core.UseCases.Users.ChangePassword
             }
             catch (EntityNotFoundException e)
             {
-                output.Accept(new FailureResponse
+                return output.Accept(new FailureResponse
                 {
                     Message = $"User not found. {e.Message}",
                 });
             }
             catch (Exception e)
             {
-                output.Accept(new FailureResponse
+                return output.Accept(new FailureResponse
                 {
                     Message = $"Tehnical error happend. {e.Message}",
                 });

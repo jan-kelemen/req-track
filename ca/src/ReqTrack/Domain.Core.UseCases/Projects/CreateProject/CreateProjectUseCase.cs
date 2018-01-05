@@ -30,7 +30,7 @@ namespace ReqTrack.Domain.Core.UseCases.Projects.CreateProject
             _userRepository = userRepository;
         }
 
-        public void Execute(IUseCaseOutput<CreateProjectResponse> output, CreateProjectRequest request)
+        public bool Execute(IUseCaseOutput<CreateProjectResponse> output, CreateProjectRequest request)
         {
             try
             {
@@ -45,7 +45,7 @@ namespace ReqTrack.Domain.Core.UseCases.Projects.CreateProject
                     throw new Exception("Couldn't create project");
                 }
 
-                output.Accept(new CreateProjectResponse
+                return output.Accept(new CreateProjectResponse
                 {
                     GivenId = id,
                     Message = $"Project {project.Name} successfuly created",
@@ -53,7 +53,7 @@ namespace ReqTrack.Domain.Core.UseCases.Projects.CreateProject
             }
             catch (RequestValidationException e)
             {
-                output.Accept(new ValidationErrorResponse
+                return output.Accept(new ValidationErrorResponse
                 {
                     Message = $"Invalid request. {e.Message}",
                     ValidationErrors = e.ValidationErrors,
@@ -61,7 +61,7 @@ namespace ReqTrack.Domain.Core.UseCases.Projects.CreateProject
             }
             catch (ValidationException e)
             {
-                output.Accept(new ValidationErrorResponse
+                return output.Accept(new ValidationErrorResponse
                 {
                     Message = $"Invalid data for {e.PropertyKey}.",
                     ValidationErrors = new Dictionary<string, string>
@@ -72,7 +72,7 @@ namespace ReqTrack.Domain.Core.UseCases.Projects.CreateProject
             }
             catch (Exception e)
             {
-                output.Accept(new FailureResponse
+                return output.Accept(new FailureResponse
                 {
                     Message = $"Tehnical error happend. {e.Message}",
                 });

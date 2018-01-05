@@ -25,7 +25,7 @@ namespace ReqTrack.Domain.Core.UseCases.Projects.ChangeRights
             _projectRepository = projectRepository;
         }
 
-        public void Execute(IUseCaseOutput<ChangeRightsResponse> output, ChangeRightsInitialRequest request)
+        public bool Execute(IUseCaseOutput<ChangeRightsResponse> output, ChangeRightsInitialRequest request)
         {
             try
             {
@@ -41,7 +41,7 @@ namespace ReqTrack.Domain.Core.UseCases.Projects.ChangeRights
 
                 var project = _projectRepository.ReadProject(request.ProjectId, false, false);
 
-                output.Accept(new ChangeRightsResponse
+                return output.Accept(new ChangeRightsResponse
                 {
                     ProjectId = request.ProjectId,
                     Name =  project.Name,
@@ -58,7 +58,7 @@ namespace ReqTrack.Domain.Core.UseCases.Projects.ChangeRights
             }
             catch (RequestValidationException e)
             {
-                output.Accept(new ValidationErrorResponse
+                return output.Accept(new ValidationErrorResponse
                 {
                     Message = $"Invalid request. {e.Message}",
                     ValidationErrors = e.ValidationErrors,
@@ -66,7 +66,7 @@ namespace ReqTrack.Domain.Core.UseCases.Projects.ChangeRights
             }
             catch (ValidationException e)
             {
-                output.Accept(new ValidationErrorResponse
+                return output.Accept(new ValidationErrorResponse
                 {
                     Message = $"Invalid data for {e.PropertyKey}.",
                     ValidationErrors = new Dictionary<string, string>
@@ -77,28 +77,28 @@ namespace ReqTrack.Domain.Core.UseCases.Projects.ChangeRights
             }
             catch (AccessViolationException e)
             {
-                output.Accept(new FailureResponse
+                return output.Accept(new FailureResponse
                 {
                     Message = $"Insufficient rights. {e.Message}",
                 });
             }
             catch (EntityNotFoundException e)
             {
-                output.Accept(new FailureResponse
+                return output.Accept(new FailureResponse
                 {
                     Message = $"Project not found. {e.Message}",
                 });
             }
             catch (Exception e)
             {
-                output.Accept(new FailureResponse
+                return output.Accept(new FailureResponse
                 {
                     Message = $"Tehnical error happend. {e.Message}",
                 });
             }
         }
 
-        public void Execute(IUseCaseOutput<ChangeRightsResponse> output, ChangeRightsRequest request)
+        public bool Execute(IUseCaseOutput<ChangeRightsResponse> output, ChangeRightsRequest request)
         {
             try
             {
@@ -145,7 +145,7 @@ namespace ReqTrack.Domain.Core.UseCases.Projects.ChangeRights
                     throw new Exception("Project rights couldn't be updated.");
                 }
 
-                output.Accept(new ChangeRightsResponse
+                return output.Accept(new ChangeRightsResponse
                 {
                     ProjectId = request.ProjectId,
                     Message = "Project rights successfully updated"
@@ -153,7 +153,7 @@ namespace ReqTrack.Domain.Core.UseCases.Projects.ChangeRights
             }
             catch (RequestValidationException e)
             {
-                output.Accept(new ValidationErrorResponse
+                return output.Accept(new ValidationErrorResponse
                 {
                     Message = $"Invalid request. {e.Message}",
                     ValidationErrors = e.ValidationErrors,
@@ -161,7 +161,7 @@ namespace ReqTrack.Domain.Core.UseCases.Projects.ChangeRights
             }
             catch (ValidationException e)
             {
-                output.Accept(new ValidationErrorResponse
+                return output.Accept(new ValidationErrorResponse
                 {
                     Message = $"Invalid data for {e.PropertyKey}.",
                     ValidationErrors = new Dictionary<string, string>
@@ -172,21 +172,21 @@ namespace ReqTrack.Domain.Core.UseCases.Projects.ChangeRights
             }
             catch (AccessViolationException e)
             {
-                output.Accept(new FailureResponse
+                return output.Accept(new FailureResponse
                 {
                     Message = $"Insufficient rights. {e.Message}",
                 });
             }
             catch (EntityNotFoundException e)
             {
-                output.Accept(new FailureResponse
+                return output.Accept(new FailureResponse
                 {
                     Message = $"Project not found. {e.Message}",
                 });
             }
             catch (Exception e)
             {
-                output.Accept(new FailureResponse
+                return output.Accept(new FailureResponse
                 {
                     Message = $"Tehnical error happend. {e.Message}",
                 });

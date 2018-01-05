@@ -22,7 +22,7 @@ namespace ReqTrack.Domain.Core.UseCases.Users.ViewProfile
             _userRepository = userRepository;
         }
 
-        public void Execute(IUseCaseOutput<ViewProfileResponse> output, ViewProfileRequest request)
+        public bool Execute(IUseCaseOutput<ViewProfileResponse> output, ViewProfileRequest request)
         {
             try
             {
@@ -30,7 +30,7 @@ namespace ReqTrack.Domain.Core.UseCases.Users.ViewProfile
 
                 var user = _userRepository.ReadUser(request.UserId, true);
 
-                output.Accept(new ViewProfileResponse
+                return output.Accept(new ViewProfileResponse
                 {
                     UserId = user.Id,
                     UserName = user.UserName,
@@ -44,7 +44,7 @@ namespace ReqTrack.Domain.Core.UseCases.Users.ViewProfile
             }
             catch (RequestValidationException e)
             {
-                output.Accept(new ValidationErrorResponse
+                return output.Accept(new ValidationErrorResponse
                 {
                     Message = $"Invalid request. {e.Message}",
                     ValidationErrors = e.ValidationErrors,
@@ -52,14 +52,14 @@ namespace ReqTrack.Domain.Core.UseCases.Users.ViewProfile
             }
             catch (EntityNotFoundException e)
             {
-                output.Accept(new FailureResponse
+                return output.Accept(new FailureResponse
                 {
                     Message = $"User not found. {e.Message}",
                 });
             }
             catch (Exception e)
             {
-                output.Accept(new FailureResponse
+                return output.Accept(new FailureResponse
                 {
                     Message = $"Tehnical error happend. {e.Message}",
                 });

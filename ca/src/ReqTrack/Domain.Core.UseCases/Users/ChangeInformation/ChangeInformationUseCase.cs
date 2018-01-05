@@ -23,7 +23,7 @@ namespace ReqTrack.Domain.Core.UseCases.Users.ChangeInformation
             _userRepository = userRepository;
         }
 
-        public void Execute(IUseCaseOutput<ChangeInformationResponse> output, ChangeInformationInitialRequest request)
+        public bool Execute(IUseCaseOutput<ChangeInformationResponse> output, ChangeInformationInitialRequest request)
         {
             try
             {
@@ -31,7 +31,7 @@ namespace ReqTrack.Domain.Core.UseCases.Users.ChangeInformation
 
                 var user = _userRepository.ReadUserInfo(request.UserId);
 
-                output.Accept(new ChangeInformationResponse
+                return output.Accept(new ChangeInformationResponse
                 {
                     UserId = user.Id,
                     DisplayName = user.DisplayName,
@@ -39,7 +39,7 @@ namespace ReqTrack.Domain.Core.UseCases.Users.ChangeInformation
             }
             catch (RequestValidationException e)
             {
-                output.Accept(new ValidationErrorResponse
+                return output.Accept(new ValidationErrorResponse
                 {
                     Message = $"Invalid request. {e.Message}",
                     ValidationErrors = e.ValidationErrors,
@@ -47,21 +47,21 @@ namespace ReqTrack.Domain.Core.UseCases.Users.ChangeInformation
             }
             catch (EntityNotFoundException e)
             {
-                output.Accept(new FailureResponse
+                return output.Accept(new FailureResponse
                 {
                     Message = $"User not found. {e.Message}",
                 });
             }
             catch (Exception e)
             {
-                output.Accept(new FailureResponse
+                return output.Accept(new FailureResponse
                 {
                     Message = $"Tehnical error happend. {e.Message}",
                 });
             }
         }
 
-        public void Execute(IUseCaseOutput<ChangeInformationResponse> output, ChangeInformationRequest request)
+        public bool Execute(IUseCaseOutput<ChangeInformationResponse> output, ChangeInformationRequest request)
         {
             try
             {
@@ -75,7 +75,7 @@ namespace ReqTrack.Domain.Core.UseCases.Users.ChangeInformation
                     throw new Exception("Couldn't update user information");
                 }
 
-                output.Accept(new ChangeInformationResponse
+                return output.Accept(new ChangeInformationResponse
                 {
                     UserId = user.Id,
                     Message = "Username changed successfully",
@@ -83,7 +83,7 @@ namespace ReqTrack.Domain.Core.UseCases.Users.ChangeInformation
             }
             catch (RequestValidationException e)
             {
-                output.Accept(new ValidationErrorResponse
+                return output.Accept(new ValidationErrorResponse
                 {
                     Message = $"Invalid request. {e.Message}",
                     ValidationErrors = e.ValidationErrors,
@@ -91,7 +91,7 @@ namespace ReqTrack.Domain.Core.UseCases.Users.ChangeInformation
             }
             catch (ValidationException e)
             {
-                output.Accept(new ValidationErrorResponse
+                return output.Accept(new ValidationErrorResponse
                 {
                     Message = $"Invalid data for {e.PropertyKey}.",
                     ValidationErrors = new Dictionary<string, string>
@@ -102,14 +102,14 @@ namespace ReqTrack.Domain.Core.UseCases.Users.ChangeInformation
             }
             catch (EntityNotFoundException e)
             {
-                output.Accept(new FailureResponse
+                return output.Accept(new FailureResponse
                 {
                     Message = $"User not found. {e.Message}",
                 });
             }
             catch (Exception e)
             {
-                output.Accept(new FailureResponse
+                return output.Accept(new FailureResponse
                 {
                     Message = $"Tehnical error happend. {e.Message}",
                 });

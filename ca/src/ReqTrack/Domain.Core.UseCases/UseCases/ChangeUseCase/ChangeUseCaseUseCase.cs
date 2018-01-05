@@ -26,7 +26,7 @@ namespace ReqTrack.Domain.Core.UseCases.UseCases.ChangeUseCase
             _useCaseRepository = useCaseRepository;
         }
 
-        public void Execute(IUseCaseOutput<ChangeUseCaseResponse> output, ChangeUseCaseInitialRequest request)
+        public bool Execute(IUseCaseOutput<ChangeUseCaseResponse> output, ChangeUseCaseInitialRequest request)
         {
             try
             {
@@ -37,7 +37,7 @@ namespace ReqTrack.Domain.Core.UseCases.UseCases.ChangeUseCase
 
                 var useCase = _useCaseRepository.ReadUseCase(request.UseCaseId);
 
-                output.Accept(new ChangeUseCaseResponse
+                return output.Accept(new ChangeUseCaseResponse
                 {
                     ProjectId = useCase.Project.Id,
                     UseCaseId = useCase.Id,
@@ -48,7 +48,7 @@ namespace ReqTrack.Domain.Core.UseCases.UseCases.ChangeUseCase
             }
             catch (RequestValidationException e)
             {
-                output.Accept(new ValidationErrorResponse
+                return output.Accept(new ValidationErrorResponse
                 {
                     Message = $"Invalid request. {e.Message}",
                     ValidationErrors = e.ValidationErrors,
@@ -56,28 +56,28 @@ namespace ReqTrack.Domain.Core.UseCases.UseCases.ChangeUseCase
             }
             catch (AccessViolationException e)
             {
-                output.Accept(new FailureResponse
+                return output.Accept(new FailureResponse
                 {
                     Message = $"Insufficient rights. {e.Message}",
                 });
             }
             catch (EntityNotFoundException e)
             {
-                output.Accept(new FailureResponse
+                return output.Accept(new FailureResponse
                 {
                     Message = $"Entity not found. {e.Message}",
                 });
             }
             catch (Exception e)
             {
-                output.Accept(new FailureResponse
+                return output.Accept(new FailureResponse
                 {
                     Message = $"Tehnical error happend. {e.Message}",
                 });
             }
         }
 
-        public void Execute(IUseCaseOutput<ChangeUseCaseResponse> output, ChangeUseCaseRequest request)
+        public bool Execute(IUseCaseOutput<ChangeUseCaseResponse> output, ChangeUseCaseRequest request)
         {
             try
             {
@@ -105,14 +105,14 @@ namespace ReqTrack.Domain.Core.UseCases.UseCases.ChangeUseCase
                     throw new Exception("Couldn't update the use case");
                 }
 
-                output.Accept(new ChangeUseCaseResponse
+                return output.Accept(new ChangeUseCaseResponse
                 {
                     Message = "Use case updated successfully",
                 });
             }
             catch (RequestValidationException e)
             {
-                output.Accept(new ValidationErrorResponse
+                return output.Accept(new ValidationErrorResponse
                 {
                     Message = $"Invalid request. {e.Message}",
                     ValidationErrors = e.ValidationErrors,
@@ -120,7 +120,7 @@ namespace ReqTrack.Domain.Core.UseCases.UseCases.ChangeUseCase
             }
             catch (ValidationException e)
             {
-                output.Accept(new ValidationErrorResponse
+                return output.Accept(new ValidationErrorResponse
                 {
                     Message = $"Invalid data for {e.PropertyKey}.",
                     ValidationErrors = new Dictionary<string, string>
@@ -131,21 +131,21 @@ namespace ReqTrack.Domain.Core.UseCases.UseCases.ChangeUseCase
             }
             catch (AccessViolationException e)
             {
-                output.Accept(new FailureResponse
+                return output.Accept(new FailureResponse
                 {
                     Message = $"Insufficient rights. {e.Message}",
                 });
             }
             catch (EntityNotFoundException e)
             {
-                output.Accept(new FailureResponse
+                return output.Accept(new FailureResponse
                 {
                     Message = $"Entity not found. {e.Message}",
                 });
             }
             catch (Exception e)
             {
-                output.Accept(new FailureResponse
+                return output.Accept(new FailureResponse
                 {
                     Message = $"Tehnical error happend. {e.Message}",
                 });

@@ -24,7 +24,7 @@ namespace ReqTrack.Domain.Core.UseCases.UseCases.DeleteUseCase
             _useCaseRepository = useCaseRepository;
         }
 
-        public void Execute(IUseCaseOutput<DeleteUseCaseResponse> output, DeleteUseCaseRequest request)
+        public bool Execute(IUseCaseOutput<DeleteUseCaseResponse> output, DeleteUseCaseRequest request)
         {
             try
             {
@@ -42,14 +42,14 @@ namespace ReqTrack.Domain.Core.UseCases.UseCases.DeleteUseCase
                     throw new Exception("Couldn't delete useCase");
                 }
 
-                output.Accept(new DeleteUseCaseResponse
+                return output.Accept(new DeleteUseCaseResponse
                 {
                     Message = "Use case deleted successfully",
                 });
             }
             catch (RequestValidationException e)
             {
-                output.Accept(new ValidationErrorResponse
+                return output.Accept(new ValidationErrorResponse
                 {
                     Message = $"Invalid request. {e.Message}",
                     ValidationErrors = e.ValidationErrors,
@@ -57,21 +57,21 @@ namespace ReqTrack.Domain.Core.UseCases.UseCases.DeleteUseCase
             }
             catch (AccessViolationException e)
             {
-                output.Accept(new FailureResponse
+                return output.Accept(new FailureResponse
                 {
                     Message = $"Insufficient rights. {e.Message}",
                 });
             }
             catch (EntityNotFoundException e)
             {
-                output.Accept(new FailureResponse
+                return output.Accept(new FailureResponse
                 {
                     Message = $"Entity not found. {e.Message}",
                 });
             }
             catch (Exception e)
             {
-                output.Accept(new FailureResponse
+                return output.Accept(new FailureResponse
                 {
                     Message = $"Tehnical error happend. {e.Message}",
                 });

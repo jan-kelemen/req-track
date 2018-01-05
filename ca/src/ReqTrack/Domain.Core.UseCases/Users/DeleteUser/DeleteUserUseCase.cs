@@ -21,7 +21,7 @@ namespace ReqTrack.Domain.Core.UseCases.Users.DeleteUser
             _userRepository = userRepository;
         }
 
-        public void Execute(IUseCaseOutput<DeleteUserResponse> output, DeleteUserRequest request)
+        public bool Execute(IUseCaseOutput<DeleteUserResponse> output, DeleteUserRequest request)
         {
             try
             {
@@ -32,14 +32,14 @@ namespace ReqTrack.Domain.Core.UseCases.Users.DeleteUser
                     throw new Exception("Couldn't delete user");
                 }
 
-                output.Accept(new DeleteUserResponse
+                return output.Accept(new DeleteUserResponse
                 {
                     Message = "User deleted successfully.",
                 });
             }
             catch (RequestValidationException e)
             {
-                output.Accept(new ValidationErrorResponse
+                return output.Accept(new ValidationErrorResponse
                 {
                     Message = $"Invalid request. {e.Message}",
                     ValidationErrors = e.ValidationErrors,
@@ -47,14 +47,14 @@ namespace ReqTrack.Domain.Core.UseCases.Users.DeleteUser
             }
             catch (EntityNotFoundException e)
             {
-                output.Accept(new FailureResponse
+                return output.Accept(new FailureResponse
                 {
                     Message = $"User not found. {e.Message}",
                 });
             }
             catch (Exception e)
             {
-                output.Accept(new FailureResponse
+                return output.Accept(new FailureResponse
                 {
                     Message = $"Tehnical error happend. {e.Message}",
                 });

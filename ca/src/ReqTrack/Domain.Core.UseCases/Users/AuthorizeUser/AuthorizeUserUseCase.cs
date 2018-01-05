@@ -22,7 +22,7 @@ namespace ReqTrack.Domain.Core.UseCases.Users.AuthorizeUser
             _userRepository = userRepository;
         }
 
-        public void Execute(IUseCaseOutput<AuthorizeUserResponse> output, AuthorizeUserRequest request)
+        public bool Execute(IUseCaseOutput<AuthorizeUserResponse> output, AuthorizeUserRequest request)
         {
             try
             {
@@ -31,7 +31,7 @@ namespace ReqTrack.Domain.Core.UseCases.Users.AuthorizeUser
                 var passwordHash = UserValidationHelper.HashPassword(request.Password);
                 var user = _userRepository.FindUserInfo(request.UserName, passwordHash);
 
-                output.Accept(new AuthorizeUserResponse
+                return output.Accept(new AuthorizeUserResponse
                 {
                     
                     UserId = user.Id,
@@ -40,7 +40,7 @@ namespace ReqTrack.Domain.Core.UseCases.Users.AuthorizeUser
             }
             catch (RequestValidationException e)
             {
-                output.Accept(new ValidationErrorResponse
+                return output.Accept(new ValidationErrorResponse
                 {
                     Message = $"Invalid request. {e.Message}",
                     ValidationErrors = e.ValidationErrors,
@@ -48,14 +48,14 @@ namespace ReqTrack.Domain.Core.UseCases.Users.AuthorizeUser
             }
             catch (EntityNotFoundException e)
             {
-                output.Accept(new FailureResponse
+                return output.Accept(new FailureResponse
                 {
                     Message = $"Username or password is invalid.",
                 });
             }
             catch (Exception e)
             {
-                output.Accept(new FailureResponse
+                return output.Accept(new FailureResponse
                 {
                     Message = $"Tehnical error happend. {e.Message}",
                 });

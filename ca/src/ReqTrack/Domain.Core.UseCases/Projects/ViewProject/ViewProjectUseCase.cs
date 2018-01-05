@@ -24,7 +24,7 @@ namespace ReqTrack.Domain.Core.UseCases.Projects.ViewProject
             _projectRepository = projectRepository;
         }
 
-        public void Execute(IUseCaseOutput<ViewProjectResponse> output, ViewProjectRequest request)
+        public bool Execute(IUseCaseOutput<ViewProjectResponse> output, ViewProjectRequest request)
         {
             try
             {
@@ -38,7 +38,7 @@ namespace ReqTrack.Domain.Core.UseCases.Projects.ViewProject
 
                 var project = _projectRepository.ReadProject(request.ProjectId, request.ShowRequirements, request.ShowUseCases);
 
-                output.Accept(new ViewProjectResponse
+                return output.Accept(new ViewProjectResponse
                 {
                     Name = project.Name,
                     Description = project.Description,
@@ -71,7 +71,7 @@ namespace ReqTrack.Domain.Core.UseCases.Projects.ViewProject
             }
             catch (RequestValidationException e)
             {
-                output.Accept(new ValidationErrorResponse
+                return output.Accept(new ValidationErrorResponse
                 {
                     Message = $"Invalid request. {e.Message}",
                     ValidationErrors = e.ValidationErrors,
@@ -79,21 +79,21 @@ namespace ReqTrack.Domain.Core.UseCases.Projects.ViewProject
             }
             catch (AccessViolationException e)
             {
-                output.Accept(new FailureResponse
+                return output.Accept(new FailureResponse
                 {
                     Message = $"Insufficient rights. {e.Message}",
                 });
             }
             catch (EntityNotFoundException e)
             {
-                output.Accept(new FailureResponse
+                return output.Accept(new FailureResponse
                 {
                     Message = $"Project not found. {e.Message}",
                 });
             }
             catch (Exception e)
             {
-                output.Accept(new FailureResponse
+                return output.Accept(new FailureResponse
                 {
                     Message = $"Tehnical error happend. {e.Message}",
                 });

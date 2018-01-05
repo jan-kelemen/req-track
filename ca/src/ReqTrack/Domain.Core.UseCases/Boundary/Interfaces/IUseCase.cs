@@ -7,7 +7,7 @@ namespace ReqTrack.Domain.Core.UseCases.Boundary.Interfaces
         where TRequest : RequestModel 
         where TResponse : ResponseModel
     {
-        void Execute(IUseCaseOutput<TResponse> output, TRequest request);
+        bool Execute(IUseCaseOutput<TResponse> output, TRequest request);
     }
 
     public interface IUseCase<in TInitialRequest, in TRequest, out TResponse>
@@ -15,8 +15,8 @@ namespace ReqTrack.Domain.Core.UseCases.Boundary.Interfaces
         where TRequest : RequestModel
         where TResponse : ResponseModel
     {
-        void Execute(IUseCaseOutput<TResponse> output, TInitialRequest request);
+        bool Execute(IUseCaseOutput<TResponse> output, TInitialRequest request);
 
-        void Execute(IUseCaseOutput<TResponse> output, TRequest request);
+        bool Execute(IUseCaseOutput<TResponse> output, TRequest request);
     }
 }

@@ -27,7 +27,7 @@ namespace ReqTrack.Domain.Core.UseCases.Projects.ChangeUseCaseOrder
         }
 
 
-        public void Execute(IUseCaseOutput<ChangeUseCaseOrderResponse> output, ChangeUseCaseOrderInitialRequest request)
+        public bool Execute(IUseCaseOutput<ChangeUseCaseOrderResponse> output, ChangeUseCaseOrderInitialRequest request)
         {
             try
             {
@@ -41,7 +41,7 @@ namespace ReqTrack.Domain.Core.UseCases.Projects.ChangeUseCaseOrder
 
                 var project = _projectRepository.ReadProject(request.ProjectId, false, true);
 
-                output.Accept(new ChangeUseCaseOrderResponse
+                return output.Accept(new ChangeUseCaseOrderResponse
                 {
                     Name = project.Name,
                     ProjectId = request.ProjectId,
@@ -54,7 +54,7 @@ namespace ReqTrack.Domain.Core.UseCases.Projects.ChangeUseCaseOrder
             }
             catch (RequestValidationException e)
             {
-                output.Accept(new ValidationErrorResponse
+                return output.Accept(new ValidationErrorResponse
                 {
                     Message = $"Invalid request. {e.Message}",
                     ValidationErrors = e.ValidationErrors,
@@ -62,28 +62,28 @@ namespace ReqTrack.Domain.Core.UseCases.Projects.ChangeUseCaseOrder
             }
             catch (AccessViolationException e)
             {
-                output.Accept(new FailureResponse
+                return output.Accept(new FailureResponse
                 {
                     Message = $"Insufficient rights. {e.Message}",
                 });
             }
             catch (EntityNotFoundException e)
             {
-                output.Accept(new FailureResponse
+                return output.Accept(new FailureResponse
                 {
                     Message = $"Project not found. {e.Message}",
                 });
             }
             catch (Exception e)
             {
-                output.Accept(new FailureResponse
+                return output.Accept(new FailureResponse
                 {
                     Message = $"Tehnical error happend. {e.Message}",
                 });
             }
         }
 
-        public void Execute(IUseCaseOutput<ChangeUseCaseOrderResponse> output, ChangeUseCaseOrderRequest request)
+        public bool Execute(IUseCaseOutput<ChangeUseCaseOrderResponse> output, ChangeUseCaseOrderRequest request)
         {
             try
             {
@@ -110,14 +110,14 @@ namespace ReqTrack.Domain.Core.UseCases.Projects.ChangeUseCaseOrder
 
                 project.ChangeUseCases(new Project.UseCase[] {}, updateList, new Project.UseCase[] { });
 
-                output.Accept(new ChangeUseCaseOrderResponse
+                return output.Accept(new ChangeUseCaseOrderResponse
                 {
                     Message = $"Use cases of {project.Name} successfully updated.",
                 });
             }
             catch (RequestValidationException e)
             {
-                output.Accept(new ValidationErrorResponse
+                return output.Accept(new ValidationErrorResponse
                 {
                     Message = $"Invalid request. {e.Message}",
                     ValidationErrors = e.ValidationErrors,
@@ -125,7 +125,7 @@ namespace ReqTrack.Domain.Core.UseCases.Projects.ChangeUseCaseOrder
             }
             catch (ValidationException e)
             {
-                output.Accept(new ValidationErrorResponse
+                return output.Accept(new ValidationErrorResponse
                 {
                     Message = $"Invalid data for {e.PropertyKey}.",
                     ValidationErrors = new Dictionary<string, string>
@@ -136,21 +136,21 @@ namespace ReqTrack.Domain.Core.UseCases.Projects.ChangeUseCaseOrder
             }
             catch (AccessViolationException e)
             {
-                output.Accept(new FailureResponse
+                return output.Accept(new FailureResponse
                 {
                     Message = $"Insufficient rights. {e.Message}",
                 });
             }
             catch (EntityNotFoundException e)
             {
-                output.Accept(new FailureResponse
+                return output.Accept(new FailureResponse
                 {
                     Message = $"Project not found. {e.Message}",
                 });
             }
             catch (Exception e)
             {
-                output.Accept(new FailureResponse
+                return output.Accept(new FailureResponse
                 {
                     Message = $"Tehnical error happend. {e.Message}",
                 });

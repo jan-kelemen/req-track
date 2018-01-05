@@ -22,7 +22,7 @@ namespace ReqTrack.Domain.Core.UseCases.Projects.DeleteProject
             _projectRepository = projectRepository;
         }
 
-        public void Execute(IUseCaseOutput<DeleteProjectResponse> output, DeleteProjectRequest request)
+        public bool Execute(IUseCaseOutput<DeleteProjectResponse> output, DeleteProjectRequest request)
         {
             try
             {
@@ -40,14 +40,14 @@ namespace ReqTrack.Domain.Core.UseCases.Projects.DeleteProject
                     throw new Exception("Couldn't delete project");
                 }
 
-                output.Accept(new DeleteProjectResponse
+                return output.Accept(new DeleteProjectResponse
                 {
                     Message = "Project deleted successfully",
                 });
             }
             catch (RequestValidationException e)
             {
-                output.Accept(new ValidationErrorResponse
+                return output.Accept(new ValidationErrorResponse
                 {
                     Message = $"Invalid request. {e.Message}",
                     ValidationErrors = e.ValidationErrors,
@@ -55,21 +55,21 @@ namespace ReqTrack.Domain.Core.UseCases.Projects.DeleteProject
             }
             catch (AccessViolationException e)
             {
-                output.Accept(new FailureResponse
+                return output.Accept(new FailureResponse
                 {
                     Message = $"Insufficient rights. {e.Message}",
                 });
             }
             catch (EntityNotFoundException e)
             {
-                output.Accept(new FailureResponse
+                return output.Accept(new FailureResponse
                 {
                     Message = $"Project not found. {e.Message}",
                 });
             }
             catch (Exception e)
             {
-                output.Accept(new FailureResponse
+                return output.Accept(new FailureResponse
                 {
                     Message = $"Tehnical error happend. {e.Message}",
                 });

@@ -24,7 +24,7 @@ namespace ReqTrack.Domain.Core.UseCases.Requirements.DeleteRequirement
             _requirementRepository = requirementRepository;
         }
 
-        public void Execute(IUseCaseOutput<DeleteRequirementResponse> output, DeleteRequirementRequest request)
+        public bool Execute(IUseCaseOutput<DeleteRequirementResponse> output, DeleteRequirementRequest request)
         {
             try
             {
@@ -42,14 +42,14 @@ namespace ReqTrack.Domain.Core.UseCases.Requirements.DeleteRequirement
                     throw new Exception("Couldn't delete requirement");
                 }
 
-                output.Accept(new DeleteRequirementResponse
+                return output.Accept(new DeleteRequirementResponse
                 {
                     Message = "Requirement deleted successfully",
                 });
             }
             catch (RequestValidationException e)
             {
-                output.Accept(new ValidationErrorResponse
+                return output.Accept(new ValidationErrorResponse
                 {
                     Message = $"Invalid request. {e.Message}",
                     ValidationErrors = e.ValidationErrors,
@@ -57,21 +57,21 @@ namespace ReqTrack.Domain.Core.UseCases.Requirements.DeleteRequirement
             }
             catch (AccessViolationException e)
             {
-                output.Accept(new FailureResponse
+                return output.Accept(new FailureResponse
                 {
                     Message = $"Insufficient rights. {e.Message}",
                 });
             }
             catch (EntityNotFoundException e)
             {
-                output.Accept(new FailureResponse
+                return output.Accept(new FailureResponse
                 {
                     Message = $"Entity not found. {e.Message}",
                 });
             }
             catch (Exception e)
             {
-                output.Accept(new FailureResponse
+                return output.Accept(new FailureResponse
                 {
                     Message = $"Tehnical error happend. {e.Message}",
                 });

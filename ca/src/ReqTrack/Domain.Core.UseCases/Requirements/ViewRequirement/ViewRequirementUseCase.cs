@@ -22,7 +22,7 @@ namespace ReqTrack.Domain.Core.UseCases.Requirements.ViewRequirement
             _requirementRepository = requirementRepository;
         }
 
-        public void Execute(IUseCaseOutput<ViewRequirementResponse> output, ViewRequirementRequest request)
+        public bool Execute(IUseCaseOutput<ViewRequirementResponse> output, ViewRequirementRequest request)
         {
             try
             {
@@ -36,7 +36,7 @@ namespace ReqTrack.Domain.Core.UseCases.Requirements.ViewRequirement
 
                 var requirement = _requirementRepository.ReadRequirement(request.RequirementId);
 
-                output.Accept(new ViewRequirementResponse
+                return output.Accept(new ViewRequirementResponse
                 {
                     Project = new Project {Id = requirement.Project.Id, Name = requirement.Project.Name},
                     Author = new User {Id = requirement.Author.Id, Name = requirement.Author.DisplayName},
@@ -48,7 +48,7 @@ namespace ReqTrack.Domain.Core.UseCases.Requirements.ViewRequirement
             }
             catch (RequestValidationException e)
             {
-                output.Accept(new ValidationErrorResponse
+                return output.Accept(new ValidationErrorResponse
                 {
                     Message = $"Invalid request. {e.Message}",
                     ValidationErrors = e.ValidationErrors,
@@ -56,21 +56,21 @@ namespace ReqTrack.Domain.Core.UseCases.Requirements.ViewRequirement
             }
             catch (AccessViolationException e)
             {
-                output.Accept(new FailureResponse
+                return output.Accept(new FailureResponse
                 {
                     Message = $"Insufficient rights. {e.Message}",
                 });
             }
             catch (EntityNotFoundException e)
             {
-                output.Accept(new FailureResponse
+                return output.Accept(new FailureResponse
                 {
                     Message = $"Entity not found. {e.Message}",
                 });
             }
             catch (Exception e)
             {
-                output.Accept(new FailureResponse
+                return output.Accept(new FailureResponse
                 {
                     Message = $"Tehnical error happend. {e.Message}",
                 });

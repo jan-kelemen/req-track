@@ -25,7 +25,7 @@ namespace ReqTrack.Domain.Core.UseCases.Users.RegisterUser
             _userRepository = userRepository;
         }
 
-        public void Execute(IUseCaseOutput<RegisterUserResponse> output, RegisterUserRequest request)
+        public bool Execute(IUseCaseOutput<RegisterUserResponse> output, RegisterUserRequest request)
         {
             try
             {
@@ -40,7 +40,7 @@ namespace ReqTrack.Domain.Core.UseCases.Users.RegisterUser
                     throw new Exception("Couldn't register user");
                 }
 
-                output.Accept(new RegisterUserResponse
+                return output.Accept(new RegisterUserResponse
                 {
                     GivenId = user.Id,
                     Message = $"User {user.UserName} successfuly created",
@@ -48,7 +48,7 @@ namespace ReqTrack.Domain.Core.UseCases.Users.RegisterUser
             }
             catch (RequestValidationException e)
             {
-                output.Accept(new ValidationErrorResponse
+                return output.Accept(new ValidationErrorResponse
                 {
                     Message = $"Invalid request. {e.Message}",
                     ValidationErrors = e.ValidationErrors,
@@ -56,7 +56,7 @@ namespace ReqTrack.Domain.Core.UseCases.Users.RegisterUser
             }
             catch (ValidationException e)
             {
-                output.Accept(new ValidationErrorResponse
+                return output.Accept(new ValidationErrorResponse
                 {
                     Message = $"Invalid data for {e.PropertyKey}.",
                     ValidationErrors = new Dictionary<string, string>
@@ -67,7 +67,7 @@ namespace ReqTrack.Domain.Core.UseCases.Users.RegisterUser
             }
             catch (Exception e)
             {
-                output.Accept(new FailureResponse
+                return output.Accept(new FailureResponse
                 {
                     Message = $"Tehnical error happend. {e.Message}",
                 });

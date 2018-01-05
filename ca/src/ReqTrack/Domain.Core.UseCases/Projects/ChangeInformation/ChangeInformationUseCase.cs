@@ -24,7 +24,7 @@ namespace ReqTrack.Domain.Core.UseCases.Projects.ChangeInformation
             _projectRepository = projectRepository;
         }
 
-        public void Execute(IUseCaseOutput<ChangeInformationResponse> output, ChangeInformationInitialRequest request)
+        public bool Execute(IUseCaseOutput<ChangeInformationResponse> output, ChangeInformationInitialRequest request)
         {
             try
             {
@@ -33,12 +33,15 @@ namespace ReqTrack.Domain.Core.UseCases.Projects.ChangeInformation
                 var rights = _securityGateway.GetProjectRights(request.ProjectId, request.RequestedBy);
                 if (!rights.IsAdministrator)
                 {
-                    throw new AccessViolationException("User can't change information of the project");
+                    return output.Accept(new FailureResponse
+                    {
+                        Message = "User can't change information of the project.",
+                    });
                 }
 
                 var project = _projectRepository.ReadProject(request.ProjectId, false, false);
 
-                output.Accept(new ChangeInformationResponse
+                return output.Accept(new ChangeInformationResponse
                 {
                     ProjectId = project.Id,
                     Name = project.Name,
@@ -47,7 +50,7 @@ namespace ReqTrack.Domain.Core.UseCases.Projects.ChangeInformation
             }
             catch (RequestValidationException e)
             {
-                output.Accept(new ValidationErrorResponse
+                return output.Accept(new ValidationErrorResponse
                 {
                     Message = $"Invalid request. {e.Message}",
                     ValidationErrors = e.ValidationErrors,
@@ -55,28 +58,28 @@ namespace ReqTrack.Domain.Core.UseCases.Projects.ChangeInformation
             }
             catch (AccessViolationException e)
             {
-                output.Accept(new FailureResponse
+                return output.Accept(new FailureResponse
                 {
                     Message = $"Insufficient rights. {e.Message}",
                 });
             }
             catch (EntityNotFoundException e)
             {
-                output.Accept(new FailureResponse
+                return output.Accept(new FailureResponse
                 {
                     Message = $"Project not found. {e.Message}",
                 });
             }
             catch (Exception e)
             {
-                output.Accept(new FailureResponse
+                return output.Accept(new FailureResponse
                 {
                     Message = $"Tehnical error happend. {e.Message}",
                 });
             }
         }
 
-        public void Execute(IUseCaseOutput<ChangeInformationResponse> output, ChangeInformationRequest request)
+        public bool Execute(IUseCaseOutput<ChangeInformationResponse> output, ChangeInformationRequest request)
         {
             try
             {
@@ -85,7 +88,10 @@ namespace ReqTrack.Domain.Core.UseCases.Projects.ChangeInformation
                 var rights = _securityGateway.GetProjectRights(request.ProjectId, request.RequestedBy);
                 if (!rights.IsAdministrator)
                 {
-                    throw new AccessViolationException("User can't change information of the project");
+                    return output.Accept(new FailureResponse
+                    {
+                        Message = "User can't change information of the project.",
+                    });
                 }
 
                 var project = _projectRepository.ReadProject(request.ProjectId, false, false);
@@ -93,16 +99,22 @@ namespace ReqTrack.Domain.Core.UseCases.Projects.ChangeInformation
                 project.Name = request.Name;
                 project.Description = request.Description;
 
-                if (_projectRepository.UpdateProject(project, false)) { throw new Exception(); }
+                if (_projectRepository.UpdateProject(project, false))
+                {
+                    return output.Accept(new FailureResponse
+                    {
+                        Message = "Couldn't update the project.",
+                    });
+                }
 
-                output.Accept(new ChangeInformationResponse
+                return output.Accept(new ChangeInformationResponse
                 {
                     Message = $"Project {project.Name} successfully updated.",
                 });
             }
             catch (RequestValidationException e)
             {
-                output.Accept(new ValidationErrorResponse
+                return output.Accept(new ValidationErrorResponse
                 {
                     Message = $"Invalid request. {e.Message}",
                     ValidationErrors = e.ValidationErrors,
@@ -110,7 +122,7 @@ namespace ReqTrack.Domain.Core.UseCases.Projects.ChangeInformation
             }
             catch (ValidationException e)
             {
-                output.Accept(new ValidationErrorResponse
+                return output.Accept(new ValidationErrorResponse
                 {
                     Message = $"Invalid data for {e.PropertyKey}.",
                     ValidationErrors = new Dictionary<string, string>
@@ -121,21 +133,21 @@ namespace ReqTrack.Domain.Core.UseCases.Projects.ChangeInformation
             }
             catch (AccessViolationException e)
             {
-                output.Accept(new FailureResponse
+                return output.Accept(new FailureResponse
                 {
                     Message = $"Insufficient rights. {e.Message}",
                 });
             }
             catch (EntityNotFoundException e)
             {
-                output.Accept(new FailureResponse
+                return output.Accept(new FailureResponse
                 {
                     Message = $"Project not found. {e.Message}",
                 });
             }
             catch (Exception e)
             {
-                output.Accept(new FailureResponse
+                return output.Accept(new FailureResponse
                 {
                     Message = $"Tehnical error happend. {e.Message}",
                 });
