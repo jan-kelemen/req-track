@@ -11,7 +11,7 @@ namespace ReqTrack.Application.Web.MVC.ViewModels.Users
         }
 
         [DisplayName("User name")]
-        [StringLength(UserValidationHelper.MaximumUserNameLength, ErrorMessage = "User name is invalid.")]
+        [StringLength(UserValidationHelper.MaximumUserNameLength, ErrorMessage = "User name is too long.")]
         [Required(ErrorMessage = "User name is required.")]
         public string UserName { get; set; }
 
