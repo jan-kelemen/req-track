@@ -32,11 +32,7 @@ namespace ReqTrack.Domain.Core.UseCases.Users.ChangePassword
                 }
 
                 var user = _userRepository.ReadUserInfo(request.UserId);
-                return output.Accept(new ChangePasswordResponse
-                {
-                    UserId = user.Id,
-                    DisplayName = user.DisplayName,
-                });
+                return output.Accept(new ChangePasswordResponse { });
             }
             catch (EntityNotFoundException e)
             {
@@ -64,7 +60,7 @@ namespace ReqTrack.Domain.Core.UseCases.Users.ChangePassword
                 return output.Accept(new ChangePasswordResponse
                 {
                     UserId = user.Id,
-                    Message = "Password changed successfully",
+                    Message = "Password changed successfully"
                 });
 
             }

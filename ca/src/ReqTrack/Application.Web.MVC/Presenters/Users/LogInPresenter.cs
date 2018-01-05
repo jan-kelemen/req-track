@@ -7,9 +7,9 @@ using ReqTrack.Domain.Core.UseCases.Users.AuthorizeUser;
 
 namespace ReqTrack.Application.Web.MVC.Presenters.Users
 {
-    public class AuthorizeUserPresenter : Presenter<AuthorizeUserResponse, LogInViewModel>
+    public class LogInPresenter : Presenter<AuthorizeUserResponse, LogInViewModel>
     {
-        public AuthorizeUserPresenter(ISession session, ViewDataDictionary viewData, ModelStateDictionary modelState)
+        public LogInPresenter(ISession session, ViewDataDictionary viewData, ModelStateDictionary modelState)
             : base(session, viewData, modelState)
         {
         }
