@@ -5,9 +5,9 @@ namespace ReqTrack.Domain.Core.Entities.ValidationHelpers
 {
     public static class ProjectValidationHelper
     {
-        public static readonly int MaximumNameLength = 50;
+        public const int MaximumNameLength = 50;
 
-        public static readonly int MaximumDescriptionLength = 1000;
+        public const int MaximumDescriptionLength = 1000;
 
         public static bool IsAuthorValid(BasicUser author)
         {

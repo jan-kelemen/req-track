@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using ReqTrack.Application.Web.MVC.Factories;
 using ReqTrack.Application.Web.MVC.ViewModels.Users;
 using ReqTrack.Domain.Core.UseCases.Factories;
@@ -42,7 +43,11 @@ namespace ReqTrack.Application.Web.MVC.Controllers
             };
 
             var presenter = _userPresenterFactory.AuthorizeUser(HttpContext.Session);
-            uc.Execute(null, request);
+            if (uc.Execute(presenter, request))
+            {
+                HttpContext.Session.SetString("UserId", presenter.Response.UserId);
+                HttpContext.Session.SetString("UserName", presenter.Response.DisplayName);
+            }
 
             return View(vm);
         }

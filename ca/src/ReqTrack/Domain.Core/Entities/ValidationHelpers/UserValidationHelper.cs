@@ -8,13 +8,13 @@ namespace ReqTrack.Domain.Core.Entities.ValidationHelpers
     /// Helper class for common operations and constants related to the user.
     /// </summary>
     public static class UserValidationHelper
-    {        
+    {
         /// <summary>
         /// Maximum length of the user's userName.
         /// </summary>
-        public static readonly int MaximumUserNameLength = 50;
+        public const int MaximumUserNameLength = 50;
 
-        public static readonly int MaximumDisplayNameLength = 100;
+        public const int MaximumDisplayNameLength = 100;
 
         /// <summary>
         /// Calculate the hash of the password.

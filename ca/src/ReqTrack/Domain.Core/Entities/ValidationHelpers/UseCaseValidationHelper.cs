@@ -6,11 +6,11 @@ namespace ReqTrack.Domain.Core.Entities.ValidationHelpers
 {
     public static class UseCaseValidationHelper
     {
-        public static readonly int MaximumTitleLength = 200;
+        public const int MaximumTitleLength = 200;
 
-        public static readonly int MaximumNoteLength = 1000;
+        public const int MaximumNoteLength = 1000;
 
-        public static readonly int MaximumStepContentLength = 200;
+        public const int MaximumStepContentLength = 200;
 
         public static bool IsProjectValid(BasicProject project)
         {

@@ -15,9 +15,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain.Core.UseCases", "Dom
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain.Core.UseCases.Test.Unit", "Domain.Core.UseCases.Test.Unit\Domain.Core.UseCases.Test.Unit.csproj", "{EDC86C6F-38EE-403E-908E-65603BBBD95A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Runtime.Core", "Runtime.Core\Runtime.Core.csproj", "{FEB2C10C-557F-4347-AAD4-7806534CB345}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Runtime.Core", "Runtime.Core\Runtime.Core.csproj", "{FEB2C10C-557F-4347-AAD4-7806534CB345}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application.Web.MVC", "Application.Web.MVC\Application.Web.MVC.csproj", "{874C4E1F-CC56-464A-82C1-99A6F362B173}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Application.Web.MVC", "Application.Web.MVC\Application.Web.MVC.csproj", "{874C4E1F-CC56-464A-82C1-99A6F362B173}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

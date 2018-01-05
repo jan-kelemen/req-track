@@ -2,11 +2,11 @@
 
 namespace ReqTrack.Application.Web.MVC.Presenters
 {
-    public abstract class Presenter<TResponse, VM> : IPresenter<TResponse, VM> where TResponse : ResponseModel
+    public abstract class Presenter<T, VM> : IPresenter<T, VM> where T : ResponseModel
     {
         public VM ViewModel { get; protected set; }
 
-        public TResponse Response { get; protected set; }
+        public T Response { get; protected set; }
 
         public bool Accept(FailureResponse failure)
         {
@@ -18,6 +18,6 @@ namespace ReqTrack.Application.Web.MVC.Presenters
             return false;
         }
 
-        public abstract bool Accept(TResponse success);
+        public abstract bool Accept(T success);
     }
 }
