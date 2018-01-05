@@ -19,7 +19,6 @@
     <Folder Include="Presenters\UseCases\" />
     <Folder Include="Presenters\Requirements\" />
     <Folder Include="Presenters\Projects\" />
-    <Folder Include="ViewModels\Projects\" />
     <Folder Include="Views\Projects\" />
     <Folder Include="Views\Requirements\" />
     <Folder Include="Views\UseCases\" />
