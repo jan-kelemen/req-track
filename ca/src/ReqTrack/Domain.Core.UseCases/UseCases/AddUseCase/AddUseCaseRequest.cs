@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using ReqTrack.Domain.Core.Entities.ValidationHelpers;
 using ReqTrack.Domain.Core.UseCases.Boundary.Requests;
 
@@ -19,10 +18,9 @@ namespace ReqTrack.Domain.Core.UseCases.UseCases.AddUseCase
 
         public IEnumerable<string> Steps { get; set; }
 
-        public override bool Validate(out Dictionary<string, string> errors)
+        protected override void ValidateCore(Dictionary<string, string> errors)
         {
-            base.Validate(out errors);
-
+            base.ValidateCore(errors);
             if (string.IsNullOrWhiteSpace(ProjectId))
             {
                 errors.Add(nameof(ProjectId), "Project identifier is invalid");
@@ -37,8 +35,6 @@ namespace ReqTrack.Domain.Core.UseCases.UseCases.AddUseCase
             {
                 errors.Add(nameof(Note), "Note is invalid");
             }
-
-            return !errors.Any();
         }
     }
 }

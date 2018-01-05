@@ -5,10 +5,8 @@ using ReqTrack.Domain.Core.Entities.UseCases;
 using ReqTrack.Domain.Core.Exceptions;
 using ReqTrack.Domain.Core.Repositories;
 using ReqTrack.Domain.Core.Security;
-using ReqTrack.Domain.Core.UseCases.Boundary.Extensions;
 using ReqTrack.Domain.Core.UseCases.Boundary.Interfaces;
 using ReqTrack.Domain.Core.UseCases.Boundary.Responses;
-using ReqTrack.Domain.Core.UseCases.Exceptions;
 using AccessViolationException = ReqTrack.Domain.Core.Exceptions.AccessViolationException;
 
 namespace ReqTrack.Domain.Core.UseCases.UseCases.AddUseCase
@@ -39,7 +37,10 @@ namespace ReqTrack.Domain.Core.UseCases.UseCases.AddUseCase
         {
             try
             {
-                request.ValidateAndThrowOnInvalid();
+                if (!request.Validate(out var errors))
+                {
+                    return output.Accept(new ValidationErrorResponse(errors, "Invalid request."));
+                }
 
                 var rights = _securityGateway.GetProjectRights(request.ProjectId, request.RequestedBy);
                 if(rights == null || !rights.CanChangeUseCases) { throw new AccessViolationException(""); }
@@ -74,10 +75,6 @@ namespace ReqTrack.Domain.Core.UseCases.UseCases.AddUseCase
                     GivenId = id,
                     Message = $"Use case successfuly created",
                 });
-            }
-            catch (RequestValidationException e)
-            {
-                return output.Accept(new ValidationErrorResponse(e.ValidationErrors, $"Invalid request. {e.Message}"));
             }
             catch (ValidationException e)
             {

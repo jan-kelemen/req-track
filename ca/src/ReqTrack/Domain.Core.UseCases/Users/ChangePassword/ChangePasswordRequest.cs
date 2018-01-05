@@ -15,10 +15,9 @@ namespace ReqTrack.Domain.Core.UseCases.Users.ChangePassword
 
         public string ConfirmedPassword { get; set; }
 
-        public override bool Validate(out Dictionary<string, string> errors)
+        protected override void ValidateCore(Dictionary<string, string> errors)
         {
-            base.Validate(out errors);
-
+            base.ValidateCore(errors);
             if (string.IsNullOrWhiteSpace(OldPassword))
             {
                 errors.Add(nameof(OldPassword), "Password field is empty");
@@ -38,8 +37,6 @@ namespace ReqTrack.Domain.Core.UseCases.Users.ChangePassword
             {
                 errors.Add("", "New and confirmed passwords don't match");
             }
-
-            return !errors.Any();
         }
     }
 }

@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using ReqTrack.Domain.Core.Entities.ValidationHelpers;
 using ReqTrack.Domain.Core.UseCases.Boundary.Requests;
 
@@ -15,10 +14,9 @@ namespace ReqTrack.Domain.Core.UseCases.Projects.CreateProject
 
         public string Description { get; set; }
 
-        public override bool Validate(out Dictionary<string, string> errors)
+        protected override void ValidateCore(Dictionary<string, string> errors)
         {
-            base.Validate(out errors);
-
+            base.ValidateCore(errors);
             if (!ProjectValidationHelper.IsNameValid(Name))
             {
                 errors.Add(nameof(Name), "Name is invalid");
@@ -28,8 +26,6 @@ namespace ReqTrack.Domain.Core.UseCases.Projects.CreateProject
             {
                 errors.Add(nameof(Description), "Description is invalid");
             }
-
-            return !errors.Any();
         }
     }
 }

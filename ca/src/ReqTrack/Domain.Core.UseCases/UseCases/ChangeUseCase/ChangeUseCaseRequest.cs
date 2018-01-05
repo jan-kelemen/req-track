@@ -16,10 +16,9 @@ namespace ReqTrack.Domain.Core.UseCases.UseCases.ChangeUseCase
 
         public IEnumerable<string> Steps { get; set; }
 
-        public override bool Validate(out Dictionary<string, string> errors)
+        protected override void ValidateCore(Dictionary<string, string> errors)
         {
-            base.Validate(out errors);
-
+            base.ValidateCore(errors);
             if (!RequirementValidationHelper.IsTitleValid(Title))
             {
                 errors.Add(nameof(Title), "Title is invalid");
@@ -29,8 +28,6 @@ namespace ReqTrack.Domain.Core.UseCases.UseCases.ChangeUseCase
             {
                 errors.Add(nameof(Note), "Note is invalid");
             }
-
-            return !errors.Any();
         }
     }
 }

@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using ReqTrack.Domain.Core.Entities.ValidationHelpers;
 
 namespace ReqTrack.Domain.Core.UseCases.Requirements.ChangeRequirement
@@ -16,10 +15,9 @@ namespace ReqTrack.Domain.Core.UseCases.Requirements.ChangeRequirement
 
         public string Note { get; set; }
 
-        public override bool Validate(out Dictionary<string, string> errors)
+        protected override void ValidateCore(Dictionary<string, string> errors)
         {
-            base.Validate(out errors);
-
+            base.ValidateCore(errors);
             if (!RequirementValidationHelper.IsTitleValid(Title))
             {
                 errors.Add(nameof(Title), "Title is invalid");
@@ -29,8 +27,6 @@ namespace ReqTrack.Domain.Core.UseCases.Requirements.ChangeRequirement
             {
                 errors.Add(nameof(Note), "Note is invalid");
             }
-
-            return !errors.Any();
         }
     }
 }

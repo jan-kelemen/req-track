@@ -4,10 +4,8 @@ using ReqTrack.Domain.Core.Entities.Requirements;
 using ReqTrack.Domain.Core.Exceptions;
 using ReqTrack.Domain.Core.Repositories;
 using ReqTrack.Domain.Core.Security;
-using ReqTrack.Domain.Core.UseCases.Boundary.Extensions;
 using ReqTrack.Domain.Core.UseCases.Boundary.Interfaces;
 using ReqTrack.Domain.Core.UseCases.Boundary.Responses;
-using ReqTrack.Domain.Core.UseCases.Exceptions;
 using AccessViolationException = ReqTrack.Domain.Core.Exceptions.AccessViolationException;
 
 namespace ReqTrack.Domain.Core.UseCases.Requirements.ChangeRequirement
@@ -29,7 +27,10 @@ namespace ReqTrack.Domain.Core.UseCases.Requirements.ChangeRequirement
         {
             try
             {
-                request.ValidateAndThrowOnInvalid();
+                if (!request.Validate(out var errors))
+                {
+                    return output.Accept(new ValidationErrorResponse(errors, "Invalid request."));
+                }
 
                 var rights = _securityGateway.GetProjectRights(request.ProjectId, request.RequestedBy);
                 if (rights == null || !rights.CanChangeRequirements) { throw new AccessViolationException(""); }
@@ -44,10 +45,6 @@ namespace ReqTrack.Domain.Core.UseCases.Requirements.ChangeRequirement
                     Title = requirement.Title,
                     Note = requirement.Note,
                 });
-            }
-            catch (RequestValidationException e)
-            {
-                return output.Accept(new ValidationErrorResponse(e.ValidationErrors, $"Invalid request. {e.Message}"));
             }
             catch (AccessViolationException e)
             {
@@ -67,7 +64,10 @@ namespace ReqTrack.Domain.Core.UseCases.Requirements.ChangeRequirement
         {
             try
             {
-                request.ValidateAndThrowOnInvalid();
+                if (!request.Validate(out var errors))
+                {
+                    return output.Accept(new ValidationErrorResponse(errors, "Invalid request."));
+                }
 
                 var rights = _securityGateway.GetProjectRights(request.ProjectId, request.RequestedBy);
                 if (rights == null || !rights.CanChangeRequirements) { throw new AccessViolationException(""); }
@@ -86,10 +86,6 @@ namespace ReqTrack.Domain.Core.UseCases.Requirements.ChangeRequirement
                 {
                     Message = "Requirement updated successfully",
                 });
-            }
-            catch (RequestValidationException e)
-            {
-                return output.Accept(new ValidationErrorResponse(e.ValidationErrors, $"Invalid request. {e.Message}"));
             }
             catch (ValidationException e)
             {

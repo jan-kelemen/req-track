@@ -12,11 +12,16 @@ namespace ReqTrack.Domain.Core.UseCases.Boundary.Requests
         /// </summary>
         public string RequestedBy { get; }
 
-        public virtual bool Validate(out Dictionary<string, string> errors)
+        public bool Validate(out Dictionary<string, string> errors)
         {
             errors = new Dictionary<string, string>();
-
+            ValidateCore(errors);
             return !errors.Any();
+        }
+
+        protected virtual void ValidateCore(Dictionary<string, string> errors)
+        {
+            ;
         }
     }
 }

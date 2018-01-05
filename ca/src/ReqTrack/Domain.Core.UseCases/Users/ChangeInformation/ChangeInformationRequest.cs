@@ -12,16 +12,13 @@ namespace ReqTrack.Domain.Core.UseCases.Users.ChangeInformation
 
         public string DisplayName { get; set; }
 
-        public override bool Validate(out Dictionary<string, string> errors)
+        protected override void ValidateCore(Dictionary<string, string> errors)
         {
-            base.Validate(out errors);
-
+            base.ValidateCore(errors);
             if (UserValidationHelper.IsDisplayNameValid(DisplayName))
             {
                 errors.Add(nameof(DisplayName), "Display name is invalid");
             }
-
-            return !errors.Any();
         }
     }
 }

@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using ReqTrack.Domain.Core.Entities.ValidationHelpers;
 using ReqTrack.Domain.Core.UseCases.Boundary.Requests;
 
@@ -18,10 +17,9 @@ namespace ReqTrack.Domain.Core.UseCases.Users.RegisterUser
 
         public string Password { get; set; }
 
-        public override bool Validate(out Dictionary<string, string> errors)
+        protected override void ValidateCore(Dictionary<string, string> errors)
         {
-            base.Validate(out errors);
-
+            base.ValidateCore(errors);
             if (!UserValidationHelper.IsUserNameValid(UserName))
             {
                 errors.Add(nameof(UserName), "Username is invalid");
@@ -36,8 +34,6 @@ namespace ReqTrack.Domain.Core.UseCases.Users.RegisterUser
             {
                 errors.Add(nameof(Password), "Password can't be empty");
             }
-
-            return !errors.Any();
         }
     }
 }

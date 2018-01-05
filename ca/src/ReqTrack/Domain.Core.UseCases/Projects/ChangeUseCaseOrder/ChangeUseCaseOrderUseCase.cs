@@ -5,10 +5,8 @@ using ReqTrack.Domain.Core.Entities.Projects;
 using ReqTrack.Domain.Core.Exceptions;
 using ReqTrack.Domain.Core.Repositories;
 using ReqTrack.Domain.Core.Security;
-using ReqTrack.Domain.Core.UseCases.Boundary.Extensions;
 using ReqTrack.Domain.Core.UseCases.Boundary.Interfaces;
 using ReqTrack.Domain.Core.UseCases.Boundary.Responses;
-using ReqTrack.Domain.Core.UseCases.Exceptions;
 using AccessViolationException = ReqTrack.Domain.Core.Exceptions.AccessViolationException;
 
 namespace ReqTrack.Domain.Core.UseCases.Projects.ChangeUseCaseOrder
@@ -31,7 +29,10 @@ namespace ReqTrack.Domain.Core.UseCases.Projects.ChangeUseCaseOrder
         {
             try
             {
-                request.ValidateAndThrowOnInvalid();
+                if (!request.Validate(out var errors))
+                {
+                    return output.Accept(new ValidationErrorResponse(errors, "Invalid request."));
+                }
 
                 var rights = _securityGateway.GetProjectRights(request.ProjectId, request.RequestedBy);
                 if (!rights.CanChangeUseCases)
@@ -52,10 +53,6 @@ namespace ReqTrack.Domain.Core.UseCases.Projects.ChangeUseCaseOrder
                     }),
                 });
             }
-            catch (RequestValidationException e)
-            {
-                return output.Accept(new ValidationErrorResponse(e.ValidationErrors, $"Invalid request. {e.Message}"));
-            }
             catch (AccessViolationException e)
             {
                 return output.Accept(new FailureResponse($"Insufficient rights. {e.Message}"));
@@ -74,7 +71,10 @@ namespace ReqTrack.Domain.Core.UseCases.Projects.ChangeUseCaseOrder
         {
             try
             {
-                request.ValidateAndThrowOnInvalid();
+                if (!request.Validate(out var errors))
+                {
+                    return output.Accept(new ValidationErrorResponse(errors, "Invalid request."));
+                }
 
                 var rights = _securityGateway.GetProjectRights(request.ProjectId, request.RequestedBy);
                 if (!rights.CanChangeUseCases)
@@ -101,10 +101,6 @@ namespace ReqTrack.Domain.Core.UseCases.Projects.ChangeUseCaseOrder
                 {
                     Message = $"Use cases of {project.Name} successfully updated.",
                 });
-            }
-            catch (RequestValidationException e)
-            {
-                return output.Accept(new ValidationErrorResponse(e.ValidationErrors, $"Invalid request. {e.Message}"));
             }
             catch (ValidationException e)
             {

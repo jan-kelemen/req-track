@@ -3,10 +3,8 @@ using System.Collections.Generic;
 using ReqTrack.Domain.Core.Exceptions;
 using ReqTrack.Domain.Core.Repositories;
 using ReqTrack.Domain.Core.Security;
-using ReqTrack.Domain.Core.UseCases.Boundary.Extensions;
 using ReqTrack.Domain.Core.UseCases.Boundary.Interfaces;
 using ReqTrack.Domain.Core.UseCases.Boundary.Responses;
-using ReqTrack.Domain.Core.UseCases.Exceptions;
 
 namespace ReqTrack.Domain.Core.UseCases.Users.ChangeInformation
 {
@@ -27,7 +25,10 @@ namespace ReqTrack.Domain.Core.UseCases.Users.ChangeInformation
         {
             try
             {
-                request.ValidateAndThrowOnInvalid();
+                if (!request.Validate(out var errors))
+                {
+                    return output.Accept(new ValidationErrorResponse(errors, "Invalid request."));
+                }
 
                 var user = _userRepository.ReadUserInfo(request.UserId);
 
@@ -36,10 +37,6 @@ namespace ReqTrack.Domain.Core.UseCases.Users.ChangeInformation
                     UserId = user.Id,
                     DisplayName = user.DisplayName,
                 });
-            }
-            catch (RequestValidationException e)
-            {
-                return output.Accept(new ValidationErrorResponse(e.ValidationErrors, $"Invalid request. {e.Message}"));
             }
             catch (EntityNotFoundException e)
             {
@@ -55,7 +52,10 @@ namespace ReqTrack.Domain.Core.UseCases.Users.ChangeInformation
         {
             try
             {
-                request.ValidateAndThrowOnInvalid();
+                if (!request.Validate(out var errors))
+                {
+                    return output.Accept(new ValidationErrorResponse(errors, "Invalid request."));
+                }
 
                 var user = _userRepository.ReadUserInfo(request.UserId);
                 user.DisplayName = request.DisplayName;
@@ -70,10 +70,6 @@ namespace ReqTrack.Domain.Core.UseCases.Users.ChangeInformation
                     UserId = user.Id,
                     Message = "Username changed successfully",
                 });
-            }
-            catch (RequestValidationException e)
-            {
-                return output.Accept(new ValidationErrorResponse(e.ValidationErrors, $"Invalid request. {e.Message}"));
             }
             catch (ValidationException e)
             {

@@ -4,10 +4,8 @@ using ReqTrack.Domain.Core.Entities.Requirements;
 using ReqTrack.Domain.Core.Exceptions;
 using ReqTrack.Domain.Core.Repositories;
 using ReqTrack.Domain.Core.Security;
-using ReqTrack.Domain.Core.UseCases.Boundary.Extensions;
 using ReqTrack.Domain.Core.UseCases.Boundary.Interfaces;
 using ReqTrack.Domain.Core.UseCases.Boundary.Responses;
-using ReqTrack.Domain.Core.UseCases.Exceptions;
 using AccessViolationException = ReqTrack.Domain.Core.Exceptions.AccessViolationException;
 
 namespace ReqTrack.Domain.Core.UseCases.Projects.ViewProjectRequirements
@@ -28,7 +26,10 @@ namespace ReqTrack.Domain.Core.UseCases.Projects.ViewProjectRequirements
         {
             try
             {
-                request.ValidateAndThrowOnInvalid();
+                if (!request.Validate(out var errors))
+                {
+                    return output.Accept(new ValidationErrorResponse(errors, "Invalid request."));
+                }
 
                 var rights = _securityGateway.GetProjectRights(request.ProjectId, request.RequestedBy);
                 if (!rights.CanViewProject)
@@ -49,10 +50,6 @@ namespace ReqTrack.Domain.Core.UseCases.Projects.ViewProjectRequirements
                         Title = r.Title,
                     }),
                 });
-            }
-            catch (RequestValidationException e)
-            {
-                return output.Accept(new ValidationErrorResponse(e.ValidationErrors, $"Invalid request. {e.Message}"));
             }
             catch (AccessViolationException e)
             {

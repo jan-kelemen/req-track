@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using ReqTrack.Domain.Core.UseCases.Boundary.Requests;
 
 namespace ReqTrack.Domain.Core.UseCases.Users.ChangePassword
@@ -12,18 +11,15 @@ namespace ReqTrack.Domain.Core.UseCases.Users.ChangePassword
 
         public string UserId { get; set; }
 
-        public override bool Validate(out Dictionary<string, string> errors)
+        protected override void ValidateCore(Dictionary<string, string> errors)
         {
-            base.Validate(out errors);
-
+            base.ValidateCore(errors);
             if (string.IsNullOrWhiteSpace(UserId) || RequestedBy != UserId)
             {
                 errors.Add(
                     nameof(UserId),
                     "User identifier can't be different from user which requested the change");
             }
-
-            return !errors.Any();
         }
     }
 }
