@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using ReqTrack.Application.Web.MVC.Factories;
 using ReqTrack.Application.Web.MVC.ViewModels.Users;
 using ReqTrack.Domain.Core.UseCases.Factories;
 using ReqTrack.Domain.Core.UseCases.Users.AuthorizeUser;
@@ -10,13 +11,17 @@ namespace ReqTrack.Application.Web.MVC.Controllers
     {
         private readonly IUserUseCaseFactory _userUseCaseFactory;
 
-        public UsersController() : this(RegistryProxy.Get.GetFactory<IUserUseCaseFactory>())
+        private readonly IUserPresenterFactory _userPresenterFactory;
+
+        public UsersController() : 
+            this(RegistryProxy.Get.GetFactory<IUserUseCaseFactory>(), RegistryProxy.Get.GetFactory<IUserPresenterFactory>())
         {
         }
 
-        public UsersController(IUserUseCaseFactory userUseCaseFactory)
+        public UsersController(IUserUseCaseFactory userUseCaseFactory, IUserPresenterFactory userPresenterFactory)
         {
             _userUseCaseFactory = userUseCaseFactory;
+            _userPresenterFactory = userPresenterFactory;
         }
 
         [HttpGet]
@@ -36,6 +41,7 @@ namespace ReqTrack.Application.Web.MVC.Controllers
                 Password = vm.Password,
             };
 
+            var presenter = _userPresenterFactory.AuthorizeUser(HttpContext.Session);
             uc.Execute(null, request);
 
             return View(vm);

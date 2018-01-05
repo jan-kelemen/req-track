@@ -16,9 +16,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Factories\Default\" />
     <Folder Include="Presenters\UseCases\" />
     <Folder Include="Presenters\Requirements\" />
-    <Folder Include="Presenters\Users\" />
     <Folder Include="Presenters\Projects\" />
     <Folder Include="ViewModels\UseCases\" />
     <Folder Include="ViewModels\Requirements\" />
