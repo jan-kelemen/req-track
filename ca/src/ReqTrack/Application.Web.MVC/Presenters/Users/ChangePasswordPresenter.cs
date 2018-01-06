@@ -17,7 +17,10 @@ namespace ReqTrack.Application.Web.MVC.Presenters.Users
         public override bool Accept(ChangePasswordResponse success)
         {
             Accept(success as ResponseModel);
-            ViewModel = new ChangePasswordViewModel(UserId, UserName);
+            ViewModel = new ChangePasswordViewModel(UserId, UserName)
+            {
+                UserName = success.UserName,
+            };
             return true;
         }
     }

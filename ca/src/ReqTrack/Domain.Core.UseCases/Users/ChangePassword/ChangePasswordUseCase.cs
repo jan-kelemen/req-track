@@ -31,8 +31,12 @@ namespace ReqTrack.Domain.Core.UseCases.Users.ChangePassword
                     return output.Accept(new ValidationErrorResponse(errors, "Invalid request."));
                 }
 
-                var user = _userRepository.ReadUserInfo(request.UserId);
-                return output.Accept(new ChangePasswordResponse { });
+                var user = _userRepository.ReadUser(request.UserId, false);
+                return output.Accept(new ChangePasswordResponse
+                {
+                    UserId = user.Id,
+                    UserName = user.UserName,
+                });
             }
             catch (EntityNotFoundException e)
             {

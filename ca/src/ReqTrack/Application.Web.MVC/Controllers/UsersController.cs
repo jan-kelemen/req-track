@@ -10,6 +10,7 @@ using ReqTrack.Application.Web.MVC.ViewModels.Users;
 using ReqTrack.Domain.Core.UseCases.Factories;
 using ReqTrack.Domain.Core.UseCases.Users.AuthorizeUser;
 using ReqTrack.Domain.Core.UseCases.Users.ChangeInformation;
+using ReqTrack.Domain.Core.UseCases.Users.ChangePassword;
 using ReqTrack.Domain.Core.UseCases.Users.RegisterUser;
 using ReqTrack.Domain.Core.UseCases.Users.ViewProfile;
 using ReqTrack.Runtime.Core.Registry;
@@ -120,12 +121,12 @@ namespace ReqTrack.Application.Web.MVC.Controllers
         }
 
         [HttpGet]
-        public IActionResult ChangeInformation()
+        public IActionResult ChangeInformation(string id)
         {
             var uc = _userUseCaseFactory.ChangeInformation;
             var request = new ChangeInformationInitialRequest(HttpContext.Session.GetString("UserId"))
             {
-                UserId = HttpContext.Session.GetString("UserId"),
+                UserId = id,
             };
 
             var presenter = _userPresenterFactory.ChangeInformation(HttpContext.Session, ViewData, ModelState);
@@ -147,6 +148,40 @@ namespace ReqTrack.Application.Web.MVC.Controllers
 
             var presenter = _userPresenterFactory.ChangeInformation(HttpContext.Session, ViewData, ModelState);
             if(!uc.Execute(presenter, request)) { return View(vm); }
+
+            return RedirectToAction(nameof(Index), new { id = presenter.Response.UserId });
+        }
+
+        [HttpGet]
+        public IActionResult ChangePassword(string id)
+        {
+            var uc = _userUseCaseFactory.ChangePassword;
+            var request = new ChangePasswordInitialRequest(HttpContext.Session.GetString("UserId"))
+            {
+                UserId = id,
+            };
+
+            var presenter = _userPresenterFactory.ChangePassword(HttpContext.Session, ViewData, ModelState);
+            if (!uc.Execute(presenter, request)) { return NotFound(); }
+
+            return View(presenter.ViewModel);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult ChangePassword(ChangePasswordViewModel vm)
+        {
+            var uc = _userUseCaseFactory.ChangePassword;
+            var request = new ChangePasswordRequest(HttpContext.Session.GetString("UserId"))
+            {
+                UserId = vm.ApplicationUserId,
+                OldPassword = vm.OldPassword,
+                NewPassword = vm.NewPassword,
+                ConfirmedPassword = vm.ConfirmedPassword,
+            };
+
+            var presenter = _userPresenterFactory.ChangePassword(HttpContext.Session, ViewData, ModelState);
+            if (!uc.Execute(presenter, request)) { return View(vm); }
 
             return RedirectToAction(nameof(Index), new { id = presenter.Response.UserId });
         }
