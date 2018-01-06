@@ -1,0 +1,39 @@
+﻿@model ReqTrack.Application.Web.MVC.ViewModels.Users.ViewProfileViewModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Index</h2>
+
+<div>
+    <h4>ViewProfileViewModel</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.UserName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.UserName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.DisplayName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.DisplayName)
+        </dd>
+    </dl>
+    <hr/>
+    <h4>Projects</h4>
+    <table>
+        <tr>
+            <th>Name</th>
+            <th>Actions</th>
+        </tr>
+        @foreach (var p in Model.Projects)
+        {
+            <tr>@p.Item2</tr>
+            <tr>@Html.ActionLink("View", "Index", "Projects", routeValues: new { id = p.Item1 })</tr>
+        }
+    </table>
+</div>

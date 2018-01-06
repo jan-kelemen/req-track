@@ -11,6 +11,7 @@ using ReqTrack.Application.Web.MVC.ViewModels.Users;
 using ReqTrack.Domain.Core.UseCases.Factories;
 using ReqTrack.Domain.Core.UseCases.Users.AuthorizeUser;
 using ReqTrack.Domain.Core.UseCases.Users.RegisterUser;
+using ReqTrack.Domain.Core.UseCases.Users.ViewProfile;
 using ReqTrack.Runtime.Core.Registry;
 
 namespace ReqTrack.Application.Web.MVC.Controllers
@@ -63,7 +64,7 @@ namespace ReqTrack.Application.Web.MVC.Controllers
             var principal = new ClaimsPrincipal(userIdentity);
             HttpContext.SignInAsync(principal).Wait();
 
-            return Redirect("/");
+            return RedirectToAction(nameof(Index), new {id = presenter.Response.UserId});
         }
 
         [HttpGet]
@@ -101,6 +102,21 @@ namespace ReqTrack.Application.Web.MVC.Controllers
             if(!uc.Execute(presenter, request)) { return View(vm); }
 
             return Redirect(nameof(LogIn));
+        }
+
+        [HttpGet]
+        public IActionResult Index(string id)
+        {
+            var uc = _userUseCaseFactory.ViewProfile;
+            var request = new ViewProfileRequest(HttpContext.Session.GetString("UserId"))
+            {
+                UserId = id,
+            };
+
+            var presenter = _userPresenterFactory.ViewProfile(HttpContext.Session, ViewData, ModelState);
+            if(!uc.Execute(presenter, request)) { return NotFound(); }
+
+            return View(presenter.ViewModel);
         }
     }
 }
