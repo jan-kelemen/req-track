@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using ReqTrack.Domain.Core.Entities.Projects;
 using ReqTrack.Domain.Core.Entities.ValidationHelpers;
+using ReqTrack.Domain.Core.Exceptions;
 
 namespace ReqTrack.Domain.Core.Entities.Users
 {
@@ -30,7 +31,7 @@ namespace ReqTrack.Domain.Core.Entities.Users
             string userName,
             string displayName,
             string passwordHash,
-            IEnumerable<BasicProject> projects = null) 
+            IEnumerable<BasicProject> projects = null)
             : base(id, displayName)
         {
             UserName = userName;
@@ -76,6 +77,17 @@ namespace ReqTrack.Domain.Core.Entities.Users
         }
 
         public IEnumerable<BasicProject> Projects => _projects;
+
+        public void ChangePassword(string newPassword, string oldPassword)
+        {
+            var oldHash = UserValidationHelper.HashPassword(oldPassword);
+            if (oldHash != _passwordHash)
+            {
+                throw new ValidationException("Old passwod isn't correct.") { PropertyKey = "OldPassword" };
+            }
+
+            _passwordHash = UserValidationHelper.HashPassword(newPassword);
+        }
 
         public bool CanAddProject(BasicProject project)
         {

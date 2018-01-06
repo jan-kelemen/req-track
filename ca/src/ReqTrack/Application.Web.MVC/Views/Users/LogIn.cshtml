@@ -1,31 +1,35 @@
 ﻿@model ReqTrack.Application.Web.MVC.ViewModels.Users.LogInViewModel
 
 @{
-    ViewData["Title"] = "LogIn";
+    ViewData["Title"] = "Log in";
 }
 
-<h2>LogIn</h2>
+<div class="row" style="margin-top: 10px">
+    <div class="col-xs-2">
+        <h4>Actions</h4> <hr />
+        <a asp-area="" asp-controller="Users" asp-action="RegisterUser" class="btn btn-default">Register</a> <br /><br />
+    </div>
 
-<h4>LogInViewModel</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="LogIn">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="UserName" class="control-label"></label>
-                <input asp-for="UserName" class="form-control" />
-                <span asp-validation-for="UserName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Password" class="control-label"></label>
-                <input asp-for="Password" class="form-control" />
-                <span asp-validation-for="Password" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-default" />
-            </div>
-        </form>
+    <div class="col-xs-10">
+        <h4>Log in</h4> <hr />
+        <div>
+            <form asp-action="LogIn">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="UserName" class="control-label"></label>
+                    <input asp-for="UserName" class="form-control" />
+                    <span asp-validation-for="UserName" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Password" class="control-label"></label>
+                    <input asp-for="Password" class="form-control" />
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Log in" class="btn btn-default" />
+                </div>
+            </form>
+        </div>
     </div>
 </div>
 

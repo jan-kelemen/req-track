@@ -1,39 +1,57 @@
 ﻿@model ReqTrack.Application.Web.MVC.ViewModels.Users.ViewProfileViewModel
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = Model.DisplayName;
+    var projectList = Model.Projects.ToList();
 }
 
-<h2>Index</h2>
+<div class="row" style="margin-top: 10px">
+    <div class="col-xs-2">
+        <h4>Actions</h4> <hr />
+        <a asp-area="" asp-controller="Projects" asp-action="CreateProject" class="btn btn-default">Create project</a> <br /> <br />
 
-<div>
-    <h4>ViewProfileViewModel</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.UserName)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.UserName)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.DisplayName)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.DisplayName)
-        </dd>
-    </dl>
-    <hr/>
-    <h4>Projects</h4>
-    <table>
-        <tr>
-            <th>Name</th>
-            <th>Actions</th>
-        </tr>
-        @foreach (var p in Model.Projects)
+        @if (Model.ApplicationUserId == Model.UserId)
         {
-            <tr>@p.Item2</tr>
-            <tr>@Html.ActionLink("View", "Index", "Projects", routeValues: new { id = p.Item1 })</tr>
+            <h4>Accout</h4> <hr />
+            <a asp-area="" asp-controller="Users" asp-action="ChangeInformation" asp-route-id=@Model.UserId class="btn btn-default">Change information</a> <br /> <br />
+            <a asp-area="" asp-controller="Users" asp-action="ChangePassword" asp-route-id=@Model.UserId class="btn btn-default">Change password</a> <br /><br />
+            <a asp-area="" asp-controller="Users" asp-action="DeleteUser" asp-route-id=@Model.UserId class="btn btn-default">Delete account</a> <br /><br />
         }
-    </table>
+    </div>
+
+    <div class="col-xs-10">
+        <h4>User: @Model.DisplayName</h4> <hr />
+
+        <div>
+            <dl class="dl-horizontal">
+                <dt>
+                    @Html.DisplayNameFor(model => model.UserName)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.UserName)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.DisplayName)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.DisplayName)
+                </dd>
+            </dl>
+            <hr />
+            <h4>Associated projects</h4>
+            <ul class="list-group">
+                @if (projectList.Any())
+                {
+                    foreach (var tuple in projectList)
+                    {
+                        <li><a asp-area="" asp-controller="Users" asp-action="Index" asp-route-id=@tuple.Item1 class="list-group-item">@tuple.Item2</a></li>
+                    }
+                }
+                else
+                {
+                    <li class="list-group-item">No associated projects</li>
+                }
+            </ul>
+        </div>
+    </div>
 </div>

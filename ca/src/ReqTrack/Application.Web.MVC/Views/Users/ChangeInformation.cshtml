@@ -1,46 +1,36 @@
 ﻿@model ReqTrack.Application.Web.MVC.ViewModels.Users.ChangeInformationViewModel
 
 @{
-    ViewData["Title"] = "ChangeInformation";
+    ViewData["Title"] = "Change information";
 }
 
-<h2>ChangeInformation</h2>
-
-<h4>ChangeInformationViewModel</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="ChangeInformation">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="UserName" class="control-label"></label>
-                <input asp-for="UserName" class="form-control" />
-                <span asp-validation-for="UserName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="DisplayName" class="control-label"></label>
-                <input asp-for="DisplayName" class="form-control" />
-                <span asp-validation-for="DisplayName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ApplicationUserId" class="control-label"></label>
-                <input asp-for="ApplicationUserId" class="form-control" />
-                <span asp-validation-for="ApplicationUserId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ApplicationUserName" class="control-label"></label>
-                <input asp-for="ApplicationUserName" class="form-control" />
-                <span asp-validation-for="ApplicationUserName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-default" />
-            </div>
-        </form>
+<div class="row" style="margin-top: 10px">
+    <div class="col-xs-2">
+        <h4>Actions</h4> <hr />
+        <a asp-area="" asp-controller="Users" asp-action="Index" asp-route-id=@Model.ApplicationUserId class="btn btn-default">View profile</a> <br /> <br />
     </div>
-</div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
+    <div class="col-xs-10">
+        <h4>Change information of user: @Model.UserName</h4> <hr />
+        <div>
+            <form asp-action="ChangeInformation">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="DisplayName" class="control-label"></label>
+                    <input asp-for="DisplayName" class="form-control" />
+                    <span asp-validation-for="DisplayName" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input asp-for="ApplicationUserId" class="form-control" />
+                    <input asp-for="ApplicationUserName" class="form-control" />
+                    <input asp-for="UserName" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Save" class="btn btn-default" />
+                </div>
+            </form>
+        </div>
+    </div>
 </div>
 
 @section Scripts {

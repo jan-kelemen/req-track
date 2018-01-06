@@ -41,7 +41,7 @@ namespace ReqTrack.Domain.Core.UseCases.Users.AuthorizeUser
             }
             catch (EntityNotFoundException e)
             {
-                return output.Accept(new FailureResponse($"Entity not found. {e.Message}"));
+                return output.Accept(new FailureResponse($"Username or password is invalid."));
             }
             catch (Exception e)
             {

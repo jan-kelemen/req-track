@@ -2,21 +2,17 @@
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using ReqTrack.Application.Web.MVC.ViewModels.Users;
-using ReqTrack.Domain.Core.UseCases.Boundary.Responses;
 using ReqTrack.Domain.Core.UseCases.Users.ChangeInformation;
 
 namespace ReqTrack.Application.Web.MVC.Presenters.Users
 {
     public class ChangeInformationPresenter : Presenter<ChangeInformationResponse, ChangeInformationViewModel>
     {
-        public ChangeInformationPresenter(ISession session, ViewDataDictionary viewData, ModelStateDictionary modelState)
-            : base(session, viewData, modelState)
-        {
-        }
+        public ChangeInformationPresenter(ISession s, ITempDataDictionary t, ModelStateDictionary m) : base(s,t,m) { }
 
         public override bool Accept(ChangeInformationResponse success)
         {
-            Accept(success as ResponseModel);
+            base.Accept(success);
             ViewModel = new ChangeInformationViewModel(UserId, UserName)
             {
                 DisplayName = success.DisplayName,

@@ -11,10 +11,7 @@ namespace ReqTrack.Application.Web.MVC.Presenters.Users
 {
     public class ViewProfilePresenter : Presenter<ViewProfileResponse, ViewProfileViewModel>
     {
-        public ViewProfilePresenter(ISession session, ViewDataDictionary viewData, ModelStateDictionary modelState)
-            : base(session, viewData, modelState)
-        {
-        }
+        public ViewProfilePresenter(ISession s, ITempDataDictionary t, ModelStateDictionary m) : base(s, t, m) { }
 
         public override bool Accept(ViewProfileResponse success)
         {

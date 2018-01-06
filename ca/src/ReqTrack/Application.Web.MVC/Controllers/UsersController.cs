@@ -11,6 +11,7 @@ using ReqTrack.Domain.Core.UseCases.Factories;
 using ReqTrack.Domain.Core.UseCases.Users.AuthorizeUser;
 using ReqTrack.Domain.Core.UseCases.Users.ChangeInformation;
 using ReqTrack.Domain.Core.UseCases.Users.ChangePassword;
+using ReqTrack.Domain.Core.UseCases.Users.DeleteUser;
 using ReqTrack.Domain.Core.UseCases.Users.RegisterUser;
 using ReqTrack.Domain.Core.UseCases.Users.ViewProfile;
 using ReqTrack.Runtime.Core.Registry;
@@ -49,7 +50,7 @@ namespace ReqTrack.Application.Web.MVC.Controllers
                 Password = vm.Password,
             };
 
-            var presenter = _userPresenterFactory.AuthorizeUser(HttpContext.Session, ViewData, ModelState);
+            var presenter = _userPresenterFactory.Default<AuthorizeUserResponse>(HttpContext.Session, TempData, ModelState);
             if (!uc.Execute(presenter, request)) { return View(vm); }
 
             HttpContext.Session.SetString("UserId", presenter.Response.UserId);
@@ -71,8 +72,7 @@ namespace ReqTrack.Application.Web.MVC.Controllers
         [HttpGet]
         public IActionResult SignOut()
         {
-            HttpContext.Session.SetString("UserId", null);
-            HttpContext.Session.SetString("UserName", null);
+            HttpContext.Session.Clear();
 
             HttpContext.SignOutAsync().Wait();
             return Redirect("/");
@@ -99,8 +99,8 @@ namespace ReqTrack.Application.Web.MVC.Controllers
                 ConfirmedPassword = vm.ConfirmPassword,
             };
 
-            var presenter = _userPresenterFactory.RegisterUser(HttpContext.Session, ViewData, ModelState);
-            if(!uc.Execute(presenter, request)) { return View(vm); }
+            var presenter = _userPresenterFactory.Default<RegisterUserResponse>(HttpContext.Session, TempData, ModelState);
+            if (!uc.Execute(presenter, request)) { return View(vm); }
 
             return Redirect(nameof(LogIn));
         }
@@ -114,7 +114,7 @@ namespace ReqTrack.Application.Web.MVC.Controllers
                 UserId = id,
             };
 
-            var presenter = _userPresenterFactory.ViewProfile(HttpContext.Session, ViewData, ModelState);
+            var presenter = _userPresenterFactory.ViewProfile(HttpContext.Session, TempData, ModelState);
             if(!uc.Execute(presenter, request)) { return NotFound(); }
 
             return View(presenter.ViewModel);
@@ -129,7 +129,7 @@ namespace ReqTrack.Application.Web.MVC.Controllers
                 UserId = id,
             };
 
-            var presenter = _userPresenterFactory.ChangeInformation(HttpContext.Session, ViewData, ModelState);
+            var presenter = _userPresenterFactory.ChangeInformation(HttpContext.Session, TempData, ModelState);
             if(!uc.Execute(presenter, request)) { return NotFound(); }
 
             return View(presenter.ViewModel);
@@ -146,7 +146,7 @@ namespace ReqTrack.Application.Web.MVC.Controllers
                 DisplayName = vm.DisplayName,
             };
 
-            var presenter = _userPresenterFactory.ChangeInformation(HttpContext.Session, ViewData, ModelState);
+            var presenter = _userPresenterFactory.ChangeInformation(HttpContext.Session, TempData, ModelState);
             if(!uc.Execute(presenter, request)) { return View(vm); }
 
             return RedirectToAction(nameof(Index), new { id = presenter.Response.UserId });
@@ -161,7 +161,7 @@ namespace ReqTrack.Application.Web.MVC.Controllers
                 UserId = id,
             };
 
-            var presenter = _userPresenterFactory.ChangePassword(HttpContext.Session, ViewData, ModelState);
+            var presenter = _userPresenterFactory.ChangePassword(HttpContext.Session, TempData, ModelState);
             if (!uc.Execute(presenter, request)) { return NotFound(); }
 
             return View(presenter.ViewModel);
@@ -180,10 +180,25 @@ namespace ReqTrack.Application.Web.MVC.Controllers
                 ConfirmedPassword = vm.ConfirmedPassword,
             };
 
-            var presenter = _userPresenterFactory.ChangePassword(HttpContext.Session, ViewData, ModelState);
+            var presenter = _userPresenterFactory.ChangePassword(HttpContext.Session, TempData, ModelState);
             if (!uc.Execute(presenter, request)) { return View(vm); }
 
             return RedirectToAction(nameof(Index), new { id = presenter.Response.UserId });
+        }
+
+        [HttpGet]
+        public IActionResult DeleteUser(string id)
+        {
+            var uc = _userUseCaseFactory.DeleteUser;
+            var request = new DeleteUserRequest(HttpContext.Session.GetString("UserId"))
+            {
+                UserId = id,
+            };
+
+            var presenter = _userPresenterFactory.Default<DeleteUserResponse>(HttpContext.Session, TempData, ModelState);
+            if (!uc.Execute(presenter, request)) { return NotFound(); }
+
+            return RedirectToAction(nameof(LogIn));
         }
     }
 }

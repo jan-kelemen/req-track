@@ -9,10 +9,7 @@ namespace ReqTrack.Application.Web.MVC.Presenters.Users
 {
     public class LogInPresenter : Presenter<AuthorizeUserResponse, LogInViewModel>
     {
-        public LogInPresenter(ISession session, ViewDataDictionary viewData, ModelStateDictionary modelState)
-            : base(session, viewData, modelState)
-        {
-        }
+        public LogInPresenter(ISession s, ITempDataDictionary t, ModelStateDictionary m) : base(s, t, m) { }
 
         public override bool Accept(AuthorizeUserResponse success) => Accept(success as ResponseModel);
     }

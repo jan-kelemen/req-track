@@ -52,11 +52,15 @@ namespace ReqTrack.Domain.Core.UseCases.Users.ChangePassword
         {
             try
             {
-                var user = _userRepository.ReadUser(request.RequestedBy, false);
-                var passwordHash = UserValidationHelper.HashPassword(request.NewPassword);
-                user.PasswordHash = passwordHash;
+                if (!request.Validate(out var errors))
+                {
+                    return output.Accept(new ValidationErrorResponse(errors, "Invalid request."));
+                }
 
-                if (_userRepository.UpdateUser(user))
+                var user = _userRepository.ReadUser(request.RequestedBy, false);
+                user.ChangePassword(request.NewPassword, request.OldPassword);
+
+                if (!_userRepository.UpdateUser(user))
                 {
                     return output.Accept(new FailureResponse("Password couldn't be changed."));
                 }
