@@ -5,10 +5,12 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ReqTrack.Application.Web.MVC.Factories;
+using ReqTrack.Application.Web.MVC.Factories.Default;
 using ReqTrack.Application.Web.MVC.Presenters.Users;
 using ReqTrack.Application.Web.MVC.ViewModels.Users;
 using ReqTrack.Domain.Core.UseCases.Factories;
 using ReqTrack.Domain.Core.UseCases.Users.AuthorizeUser;
+using ReqTrack.Domain.Core.UseCases.Users.RegisterUser;
 using ReqTrack.Runtime.Core.Registry;
 
 namespace ReqTrack.Application.Web.MVC.Controllers
@@ -23,6 +25,7 @@ namespace ReqTrack.Application.Web.MVC.Controllers
         public UsersController()
         {
             _userUseCaseFactory = RegistryProxy.Get.GetFactory<IUserUseCaseFactory>();
+            _userPresenterFactory = new UserPresenterFactory();
         }
 
         [HttpGet]
@@ -44,7 +47,7 @@ namespace ReqTrack.Application.Web.MVC.Controllers
                 Password = vm.Password,
             };
 
-            var presenter = new AuthorizeUserPresenter(HttpContext.Session, ViewData, ModelState);
+            var presenter = _userPresenterFactory.AuthorizeUser(HttpContext.Session, ViewData, ModelState);
             if (!uc.Execute(presenter, request)) { return View(vm); }
 
             HttpContext.Session.SetString("UserId", presenter.Response.UserId);
@@ -63,6 +66,7 @@ namespace ReqTrack.Application.Web.MVC.Controllers
             return Redirect("/");
         }
 
+        [HttpGet]
         public IActionResult SignOut()
         {
             HttpContext.Session.SetString("UserId", null);
@@ -70,6 +74,33 @@ namespace ReqTrack.Application.Web.MVC.Controllers
 
             HttpContext.SignOutAsync().Wait();
             return Redirect("/");
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult RegisterUser()
+        {
+            return View(new RegisterUserViewModel());
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        [AutoValidateAntiforgeryToken]
+        public IActionResult RegisterUser(RegisterUserViewModel vm)
+        {
+            var uc = _userUseCaseFactory.RegisterUser;
+            var request = new RegisterUserRequest
+            {
+                UserName = vm.UserName,
+                DisplayName = vm.DisplayName,
+                Password = vm.Password,
+                ConfirmedPassword = vm.ConfirmPassword,
+            };
+
+            var presenter = _userPresenterFactory.RegisterUser(HttpContext.Session, ViewData, ModelState);
+            if(!uc.Execute(presenter, request)) { return View(vm); }
+
+            return Redirect(nameof(LogIn));
         }
     }
 }

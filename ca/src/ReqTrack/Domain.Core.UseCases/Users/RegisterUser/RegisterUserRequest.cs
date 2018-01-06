@@ -17,6 +17,8 @@ namespace ReqTrack.Domain.Core.UseCases.Users.RegisterUser
 
         public string Password { get; set; }
 
+        public string ConfirmedPassword { get; set; }
+
         protected override void ValidateCore(Dictionary<string, string> errors)
         {
             base.ValidateCore(errors);
@@ -32,7 +34,17 @@ namespace ReqTrack.Domain.Core.UseCases.Users.RegisterUser
 
             if (string.IsNullOrWhiteSpace(Password))
             {
-                errors.Add(nameof(Password), "Password can't be empty");
+                errors.Add(nameof(Password), "Password field is empty");
+            }
+
+            if (string.IsNullOrWhiteSpace(ConfirmedPassword))
+            {
+                errors.Add(nameof(ConfirmedPassword), "Password field is empty");
+            }
+
+            if (Password != ConfirmedPassword)
+            {
+                errors.Add("", "New and confirmed passwords don't match");
             }
         }
     }

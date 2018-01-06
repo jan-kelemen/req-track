@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using MongoDB.Bson;
+using ReqTrack.Domain.Core.Entities;
 using ReqTrack.Domain.Core.Entities.Projects;
 using ReqTrack.Domain.Core.Entities.Requirements;
 using ReqTrack.Domain.Core.Entities.Users;
@@ -14,7 +16,7 @@ namespace ReqTrack.Persistence.Concrete.MongoDB.Extensions.Mapping
         {
             return new MongoProject
             {
-                Id = project.Id.ToMongoIdentity(),
+                Id = project.Id.IsBlankIdentity() ? ObjectId.GenerateNewId() : project.Id.ToMongoIdentity(),
                 AuthorId = project.Author.Id.ToMongoIdentity(),
                 Name = project.Name,
                 Description = project.Description,

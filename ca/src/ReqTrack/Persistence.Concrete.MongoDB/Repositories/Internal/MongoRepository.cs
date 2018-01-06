@@ -21,6 +21,7 @@ namespace ReqTrack.Persistence.Concrete.MongoDB.Repositories.Internal
 
         public ObjectId Create(T entity)
         {
+            entity.Id = ObjectId.GenerateNewId();
             _collection.InsertOne(entity);
             return entity.Id;
         }

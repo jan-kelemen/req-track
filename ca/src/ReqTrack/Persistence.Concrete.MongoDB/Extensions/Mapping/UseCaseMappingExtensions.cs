@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using MongoDB.Bson;
 using ReqTrack.Domain.Core.Entities.Projects;
 using ReqTrack.Domain.Core.Entities.UseCases;
 using ReqTrack.Domain.Core.Entities.Users;
@@ -12,7 +13,7 @@ namespace ReqTrack.Persistence.Concrete.MongoDB.Extensions.Mapping
         {
             return new MongoUseCase
             {
-                Id = useCase.Id.ToMongoIdentity(),
+                Id = useCase.Id.IsBlankIdentity() ? ObjectId.GenerateNewId() : useCase.Id.ToMongoIdentity(),
                 AuthorId = useCase.Author.Id.ToMongoIdentity(),
                 ProjectId = useCase.Project.Id.ToMongoIdentity(),
                 Title = useCase.Title,

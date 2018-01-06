@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using MongoDB.Bson;
 using ReqTrack.Domain.Core.Entities.Projects;
 using ReqTrack.Domain.Core.Entities.Users;
 using ReqTrack.Persistence.Concrete.MongoDB.Entities;
@@ -12,7 +13,7 @@ namespace ReqTrack.Persistence.Concrete.MongoDB.Extensions.Mapping
         {
             return new MongoUser
             {
-                Id = user.Id.ToMongoIdentity(),
+                Id = user.Id.IsBlankIdentity() ? ObjectId.GenerateNewId() : user.Id.ToMongoIdentity(),
                 DisplayName = user.DisplayName,
                 Username = user.UserName,
                 Password = user.PasswordHash,
