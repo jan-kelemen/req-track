@@ -1,5 +1,6 @@
 ﻿using System;
 using ReqTrack.Domain.Core.Entities.ValidationHelpers;
+using ReqTrack.Domain.Core.Exceptions;
 
 namespace ReqTrack.Domain.Core.Entities.Users
 {
@@ -23,7 +24,10 @@ namespace ReqTrack.Domain.Core.Entities.Users
             {
                 if (!UserValidationHelper.IsDisplayNameValid(value))
                 {
-                    throw new ArgumentException($"Display name \"{value}\" is invalid.");
+                    throw new ValidationException("Display name is invalid.")
+                    {
+                        PropertyKey = nameof(DisplayName),
+                    };
                 }
 
                 _displayName = value;

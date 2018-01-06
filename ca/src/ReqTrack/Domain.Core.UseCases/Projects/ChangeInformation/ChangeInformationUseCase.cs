@@ -75,7 +75,7 @@ namespace ReqTrack.Domain.Core.UseCases.Projects.ChangeInformation
                 project.Name = request.Name;
                 project.Description = request.Description;
 
-                if (_projectRepository.UpdateProject(project, false))
+                if (!_projectRepository.UpdateProject(project, false))
                 {
                     return output.Accept(new FailureResponse("Couldn't update the project."));
                 }

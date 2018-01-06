@@ -6,9 +6,9 @@ namespace ReqTrack.Application.Web.MVC.ViewModels.Projects
 {
     public class CreateProjectViewModel : ViewModel
     {
-        public CreateProjectViewModel(string userId, string userName) : base(userId, userName)
-        {
-        }
+        public CreateProjectViewModel() : this(null, null) { }
+
+        public CreateProjectViewModel(string userId, string userName) : base(userId, userName) { }
 
         [DisplayName("Name")]
         [StringLength(ProjectValidationHelper.MaximumNameLength, ErrorMessage = "Name is too long")]

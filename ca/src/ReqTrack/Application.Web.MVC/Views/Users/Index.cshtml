@@ -39,18 +39,25 @@
             </dl>
             <hr />
             <h4>Associated projects</h4>
-            <ul class="list-group">
+            <table class="table">
                 @if (projectList.Any())
                 {
+                    <tr><th>Project</th><th></th></tr>
                     foreach (var tuple in projectList)
                     {
-                        <li><a asp-area="" asp-controller="Users" asp-action="Index" asp-route-id=@tuple.Item1 class="list-group-item">@tuple.Item2</a></li>
+                        <tr>
+                            <td>@tuple.Item2</td>
+                            <td><a asp-area="" asp-controller="Projects" asp-action="Index" asp-route-id=@tuple.Item1 class="list-group-item">View</a></td>
+                        </tr>
                     }
                 }
                 else
                 {
-                    <li class="list-group-item">No associated projects</li>
+                    <tr>No projects for this user</tr>
                 }
+            </table>
+            <ul class="list-group">
+
             </ul>
         </div>
     </div>

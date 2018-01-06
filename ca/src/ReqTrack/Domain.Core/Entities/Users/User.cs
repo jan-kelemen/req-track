@@ -51,7 +51,10 @@ namespace ReqTrack.Domain.Core.Entities.Users
             {
                 if (!UserValidationHelper.IsUserNameValid(value))
                 {
-                    throw new ArgumentException($"User name \"{value}\" is invalid.");
+                    throw new ValidationException("User name is invalid.")
+                    {
+                        PropertyKey = nameof(UserName),
+                    };
                 }
 
                 _userName = value;
@@ -69,7 +72,10 @@ namespace ReqTrack.Domain.Core.Entities.Users
             {
                 if (!UserValidationHelper.IsPasswordHashValid(value))
                 {
-                    throw new ArgumentException($"Password hash \"{value}\" is invalid.");
+                    throw new ValidationException("Password hash is invalid.")
+                    {
+                        PropertyKey = "Password",
+                    };
                 }
 
                 _passwordHash = value;

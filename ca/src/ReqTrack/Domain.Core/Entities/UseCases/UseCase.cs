@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using ReqTrack.Domain.Core.Entities.Projects;
 using ReqTrack.Domain.Core.Entities.Users;
 using ReqTrack.Domain.Core.Entities.ValidationHelpers;
+using ReqTrack.Domain.Core.Exceptions;
 
 namespace ReqTrack.Domain.Core.Entities.UseCases
 {
@@ -46,7 +47,10 @@ namespace ReqTrack.Domain.Core.Entities.UseCases
             {
                 if (!UseCaseValidationHelper.IsProjectValid(value))
                 {
-                    throw new ArgumentException("Project is invalid");
+                    throw new ValidationException("Project is invalid")
+                    {
+                        PropertyKey = nameof(Project),
+                    };
                 }
 
                 _project = value;
@@ -60,7 +64,10 @@ namespace ReqTrack.Domain.Core.Entities.UseCases
             {
                 if (!UseCaseValidationHelper.IsAuthorValid(value))
                 {
-                    throw new ArgumentException("Author is invalid");
+                    throw new ValidationException("Author is invalid.")
+                    {
+                        PropertyKey = nameof(Author),
+                    };
                 }
 
                 _author = value;
@@ -74,7 +81,10 @@ namespace ReqTrack.Domain.Core.Entities.UseCases
             {
                 if (!UseCaseValidationHelper.IsNoteValid(value))
                 {
-                    throw new ArgumentException("Note is invalid");
+                    throw new ValidationException("Note is invalid.")
+                    {
+                        PropertyKey = nameof(Note),
+                    };
                 }
 
                 _note = value;
@@ -91,7 +101,10 @@ namespace ReqTrack.Domain.Core.Entities.UseCases
                 {
                     if (!UseCaseValidationHelper.IsStepContentValid(step.Content))
                     {
-                        throw new ArgumentException("Use case step isn't valid");
+                        throw new ValidationException("Use case step isn't valid")
+                        {
+                            PropertyKey = nameof(Steps),
+                        };
                     }
                 }
 

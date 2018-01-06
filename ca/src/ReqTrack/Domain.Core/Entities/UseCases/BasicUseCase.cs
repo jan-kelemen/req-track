@@ -1,5 +1,6 @@
 ﻿using System;
 using ReqTrack.Domain.Core.Entities.ValidationHelpers;
+using ReqTrack.Domain.Core.Exceptions;
 
 namespace ReqTrack.Domain.Core.Entities.UseCases
 {
@@ -19,7 +20,10 @@ namespace ReqTrack.Domain.Core.Entities.UseCases
             {
                 if (!UseCaseValidationHelper.IsTitleValid(value))
                 {
-                    throw new ArgumentException("Title is invalid");
+                    throw new ValidationException("Title is invalid")
+                    {
+                        PropertyKey = nameof(Title),
+                    };
                 }
 
                 _title = value;

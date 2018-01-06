@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System.Linq;
+using System.Threading;
 using MongoDB.Driver;
 using ReqTrack.Domain.Core.Entities;
 using ReqTrack.Domain.Core.Entities.Projects;
@@ -29,7 +30,10 @@ namespace ReqTrack.Persistence.Concrete.MongoDB.Repositories
 
             if (_projectRepository.Count(projectWithSameNameOfAuthor) != 0)
             {
-                throw new AbandonedMutexException();
+                throw new ValidationException("User already has a project with the same name.")
+                {
+                    PropertyKey = "Name",
+                };
             }
 
             var id = _projectRepository.Create(mongoProject);
@@ -100,9 +104,13 @@ namespace ReqTrack.Persistence.Concrete.MongoDB.Repositories
             var projectWithSameNameOfAuthor = Builders<MongoProject>.Filter
                 .Where(x => x.Name == project.Name && x.AuthorId == mongoProject.AuthorId);
 
-            if (_projectRepository.Count(projectWithSameNameOfAuthor) != 0)
+            var sameProject = _projectRepository.Find(projectWithSameNameOfAuthor).FirstOrDefault();
+            if (sameProject != null && sameProject.Id != project.Id.ToMongoIdentity())
             {
-                throw new AbandonedMutexException();
+                throw new ValidationException("User already has a project with the same name.")
+                {
+                    PropertyKey = "Name",
+                };
             }
 
             var filter = _projectRepository.IdFilter(mongoProject.Id);

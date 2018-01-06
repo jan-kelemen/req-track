@@ -32,8 +32,20 @@ namespace ReqTrack.Application.Web.MVC.ViewModels.Projects
         [DisplayName("Last changed by")]
         public string UserDisplayName { get; set; }
 
-        public IDictionary<string, IEnumerable<Tuple<string, string>>> Requirements { get; set; }
+        public IDictionary<string, IList<Tuple<string, string>>> Requirements { get; set; }
 
         public IEnumerable<Tuple<string, string>> UseCases { get; set; }
+
+        [HiddenInput]
+        public bool CanChangeRequirements { get; set; }
+
+        [HiddenInput]
+        public bool CanChangeUseCases { get; set; }
+
+        [HiddenInput]
+        public bool CanChangeProjectRights { get; set; }
+
+        [HiddenInput]
+        public bool IsAdministrator { get; set; }
     }
 }

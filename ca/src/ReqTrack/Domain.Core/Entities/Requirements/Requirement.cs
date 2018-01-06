@@ -2,6 +2,7 @@
 using ReqTrack.Domain.Core.Entities.Projects;
 using ReqTrack.Domain.Core.Entities.Users;
 using ReqTrack.Domain.Core.Entities.ValidationHelpers;
+using ReqTrack.Domain.Core.Exceptions;
 
 namespace ReqTrack.Domain.Core.Entities.Requirements
 {
@@ -34,7 +35,10 @@ namespace ReqTrack.Domain.Core.Entities.Requirements
             {
                 if(!RequirementValidationHelper.IsProjectValid(value))
                 {
-                    throw new ArgumentException("Project is invalid");
+                    throw new ValidationException("Project is invalid")
+                    {
+                        PropertyKey = nameof(Project),
+                    };
                 }
 
                 _project = value;
@@ -48,7 +52,10 @@ namespace ReqTrack.Domain.Core.Entities.Requirements
             {
                 if (!RequirementValidationHelper.IsAuthorValid(value))
                 {
-                    throw new ArgumentException("Author is invalid");
+                    throw new ValidationException("Author is invalid.")
+                    {
+                        PropertyKey = nameof(Author),
+                    };
                 }
 
                 _author = value;
@@ -62,7 +69,10 @@ namespace ReqTrack.Domain.Core.Entities.Requirements
             {
                 if (!RequirementValidationHelper.IsNoteValid(value))
                 {
-                    throw new ArgumentException("Note is invalid");
+                    throw new ValidationException("Note is invalid.")
+                    {
+                        PropertyKey = nameof(Note),
+                    };
                 }
 
                 _note = value;

@@ -5,6 +5,7 @@ using ReqTrack.Domain.Core.Entities.Requirements;
 using ReqTrack.Domain.Core.Entities.UseCases;
 using ReqTrack.Domain.Core.Entities.Users;
 using ReqTrack.Domain.Core.Entities.ValidationHelpers;
+using ReqTrack.Domain.Core.Exceptions;
 
 namespace ReqTrack.Domain.Core.Entities.Projects
 {
@@ -84,7 +85,10 @@ namespace ReqTrack.Domain.Core.Entities.Projects
             {
                 if (!ProjectValidationHelper.IsAuthorValid(value))
                 {
-                    throw new ArgumentException("Author is null");
+                    throw new ValidationException("Author is invalid.")
+                    {
+                        PropertyKey = nameof(Author),
+                    };
                 }
 
                 _author = value;
@@ -98,7 +102,10 @@ namespace ReqTrack.Domain.Core.Entities.Projects
             {
                 if (!ProjectValidationHelper.IsDescriptionValid(value))
                 {
-                    throw new ArgumentException("Description is invalid");
+                    throw new ValidationException("Description is invalid")
+                    {
+                        PropertyKey = nameof(Description),
+                    };
                 }
 
                 _description = value;

@@ -60,6 +60,7 @@ namespace ReqTrack.Domain.Core.UseCases.Projects.ViewProject
                     Requirements = project.Requirements?.Select(r => new Requirement
                     {
                         Id = r.Id,
+                        Type = r.Type.ToString(),
                         Title = r.Title,
                     }) ?? new List<Requirement>(),
                     UseCases = project.UseCases?.Select(r => new UseCase
@@ -67,6 +68,8 @@ namespace ReqTrack.Domain.Core.UseCases.Projects.ViewProject
                         Id = r.Id,
                         Title = r.Title,
                     }) ?? new List<UseCase>(),
+                    ShowRequirements = request.ShowRequirements,
+                    ShowUseCases = request.ShowUseCases,
                 });
             }
             catch (EntityNotFoundException e)

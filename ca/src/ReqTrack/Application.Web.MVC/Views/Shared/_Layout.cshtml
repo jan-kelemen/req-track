@@ -41,7 +41,7 @@
                 <ul class="nav navbar-nav">
                     @if (Model.ApplicationUserId != null)
                     {
-                        <li><a asp-area="" asp-controller="Users" asp-action="Index" asp-route-id=@Model.ApplicationUserId>ReqTrack</a></li>
+                        <li><a asp-area="" asp-controller="Users" asp-action="Index" asp-route-id=@Model.ApplicationUserId>@Model.ApplicationUserName</a></li>
                         <li><a asp-area="" asp-controller="Users" asp-action="SignOut">Sign out</a></li>
                     }
                     else

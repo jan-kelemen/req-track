@@ -11,13 +11,13 @@ namespace ReqTrack.Application.Web.MVC.Presenters
 
         private ITempDataDictionary _tempData;
 
-        public Presenter(ISession session, ITempDataDictionary tempData, ModelStateDictionary modelState)
+        public Presenter(ISession s, ITempDataDictionary t, ModelStateDictionary m)
         {
-            _modelState = modelState;
-            _tempData = tempData;
+            _modelState = m;
+            _tempData = t;
 
-            UserId = session.GetString("UserId");
-            UserName = session.GetString("UserName");
+            UserId = s.GetString("UserId");
+            UserName = s.GetString("UserName");
         }
 
         public string UserId { get; }
@@ -55,10 +55,7 @@ namespace ReqTrack.Application.Web.MVC.Presenters
 
     public class Presenter<T, VM> : Presenter<T>, IPresenter<T, VM> where T : ResponseModel
     {
-        public Presenter(ISession session, ITempDataDictionary tempData, ModelStateDictionary modelState) 
-            : base(session, tempData, modelState)
-        {
-        }
+        public Presenter(ISession s, ITempDataDictionary t, ModelStateDictionary m) : base(s, t, m) { }
 
         public VM ViewModel { get; protected set; }
     }

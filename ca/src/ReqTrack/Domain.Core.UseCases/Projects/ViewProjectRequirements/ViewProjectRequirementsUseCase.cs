@@ -46,6 +46,7 @@ namespace ReqTrack.Domain.Core.UseCases.Projects.ViewProjectRequirements
                     Requirements = project.Requirements.Select(r => new Requirement
                     {
                         Id = r.Id,
+                        Type = request.Type,
                         Title = r.Title,
                     }),
                 });

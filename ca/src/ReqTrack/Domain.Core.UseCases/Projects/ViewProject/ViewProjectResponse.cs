@@ -18,5 +18,9 @@ namespace ReqTrack.Domain.Core.UseCases.Projects.ViewProject
         public IEnumerable<Requirement> Requirements { get; set; }
 
         public IEnumerable<UseCase> UseCases { get; set; }
+
+        public bool ShowRequirements { get; set; }
+
+        public bool ShowUseCases { get; set; }
     }
 }

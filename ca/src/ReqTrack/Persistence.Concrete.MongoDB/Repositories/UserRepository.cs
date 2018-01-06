@@ -23,8 +23,10 @@ namespace ReqTrack.Persistence.Concrete.MongoDB.Repositories
             var userWithSameNameFilter = Builders<MongoUser>.Filter.Eq(x => x.Username, user.UserName);
             if (_userRepository.Count(userWithSameNameFilter) != 0)
             {
-                //TODO: change this to something normal.
-                throw new AbandonedMutexException();
+                throw new ValidationException("User with same name already exists")
+                {
+                    PropertyKey = "UserName"
+                };
             }
 
             return _userRepository.Create(user.ToMongoEntity()).ToDomainIdentity();
