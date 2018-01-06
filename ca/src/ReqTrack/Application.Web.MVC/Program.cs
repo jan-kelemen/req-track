@@ -7,6 +7,8 @@ namespace ReqTrack.Application.Web.MVC
     {
         public static void Main(string[] args)
         {
+            var initializer = new Runtime.Core.Initialization.Initializer();
+
             BuildWebHost(args).Run();
         }
 

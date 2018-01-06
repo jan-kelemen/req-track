@@ -1,5 +1,9 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -21,6 +25,12 @@ namespace ReqTrack.Application.Web.MVC
 
             services.AddDistributedMemoryCache();
             services.AddSession();
+
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(options => {
+                    options.LoginPath = "/Users/LogIn/";
+                    options.AccessDeniedPath = "/Users/LogIn";
+                });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -39,6 +49,8 @@ namespace ReqTrack.Application.Web.MVC
             app.UseStaticFiles();
 
             app.UseSession();
+
+            app.UseAuthentication();
 
             app.UseMvc(routes =>
             {

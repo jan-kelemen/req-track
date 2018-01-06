@@ -17,6 +17,8 @@ namespace ReqTrack.Runtime.Core.Initialization
             Registry.RegisterFactory(useCaseInitializer.RequirementUseCaseFactory);
             Registry.RegisterFactory(useCaseInitializer.UseCaseUseCaseFactory);
             Registry.RegisterFactory(useCaseInitializer.UserUseCaseFactory);
+
+            RegistryProxy.Get = Registry;
         }
 
         public IRegistry Registry { get; } = new RegistryData();
