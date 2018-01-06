@@ -6,10 +6,10 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ReqTrack.Application.Web.MVC.Factories;
 using ReqTrack.Application.Web.MVC.Factories.Default;
-using ReqTrack.Application.Web.MVC.Presenters.Users;
 using ReqTrack.Application.Web.MVC.ViewModels.Users;
 using ReqTrack.Domain.Core.UseCases.Factories;
 using ReqTrack.Domain.Core.UseCases.Users.AuthorizeUser;
+using ReqTrack.Domain.Core.UseCases.Users.ChangeInformation;
 using ReqTrack.Domain.Core.UseCases.Users.RegisterUser;
 using ReqTrack.Domain.Core.UseCases.Users.ViewProfile;
 using ReqTrack.Runtime.Core.Registry;
@@ -117,6 +117,38 @@ namespace ReqTrack.Application.Web.MVC.Controllers
             if(!uc.Execute(presenter, request)) { return NotFound(); }
 
             return View(presenter.ViewModel);
+        }
+
+        [HttpGet]
+        public IActionResult ChangeInformation()
+        {
+            var uc = _userUseCaseFactory.ChangeInformation;
+            var request = new ChangeInformationInitialRequest(HttpContext.Session.GetString("UserId"))
+            {
+                UserId = HttpContext.Session.GetString("UserId"),
+            };
+
+            var presenter = _userPresenterFactory.ChangeInformation(HttpContext.Session, ViewData, ModelState);
+            if(!uc.Execute(presenter, request)) { return NotFound(); }
+
+            return View(presenter.ViewModel);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult ChangeInformation(ChangeInformationViewModel vm)
+        {
+            var uc = _userUseCaseFactory.ChangeInformation;
+            var request = new ChangeInformationRequest(HttpContext.Session.GetString("UserId"))
+            {
+                UserId = vm.ApplicationUserId,
+                DisplayName = vm.DisplayName,
+            };
+
+            var presenter = _userPresenterFactory.ChangeInformation(HttpContext.Session, ViewData, ModelState);
+            if(!uc.Execute(presenter, request)) { return View(vm); }
+
+            return RedirectToAction(nameof(Index), new { id = presenter.Response.UserId });
         }
     }
 }

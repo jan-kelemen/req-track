@@ -15,7 +15,7 @@ namespace ReqTrack.Domain.Core.UseCases.Users.ChangeInformation
         protected override void ValidateCore(Dictionary<string, string> errors)
         {
             base.ValidateCore(errors);
-            if (UserValidationHelper.IsDisplayNameValid(DisplayName))
+            if (!UserValidationHelper.IsDisplayNameValid(DisplayName))
             {
                 errors.Add(nameof(DisplayName), "Display name is invalid");
             }

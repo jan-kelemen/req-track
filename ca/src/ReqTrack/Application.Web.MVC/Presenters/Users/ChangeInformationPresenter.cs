@@ -20,6 +20,7 @@ namespace ReqTrack.Application.Web.MVC.Presenters.Users
             ViewModel = new ChangeInformationViewModel(UserId, UserName)
             {
                 DisplayName = success.DisplayName,
+                UserName = success.UserName,
             };
             return true;
         }

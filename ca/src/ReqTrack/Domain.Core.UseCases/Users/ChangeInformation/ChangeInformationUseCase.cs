@@ -30,11 +30,12 @@ namespace ReqTrack.Domain.Core.UseCases.Users.ChangeInformation
                     return output.Accept(new ValidationErrorResponse(errors, "Invalid request."));
                 }
 
-                var user = _userRepository.ReadUserInfo(request.UserId);
+                var user = _userRepository.ReadUser(request.UserId, false);
 
                 return output.Accept(new ChangeInformationResponse
                 {
                     UserId = user.Id,
+                    UserName = user.UserName,
                     DisplayName = user.DisplayName,
                 });
             }

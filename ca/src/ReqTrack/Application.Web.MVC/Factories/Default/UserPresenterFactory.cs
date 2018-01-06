@@ -5,6 +5,7 @@ using ReqTrack.Application.Web.MVC.Presenters;
 using ReqTrack.Application.Web.MVC.Presenters.Users;
 using ReqTrack.Application.Web.MVC.ViewModels.Users;
 using ReqTrack.Domain.Core.UseCases.Users.AuthorizeUser;
+using ReqTrack.Domain.Core.UseCases.Users.ChangeInformation;
 using ReqTrack.Domain.Core.UseCases.Users.RegisterUser;
 using ReqTrack.Domain.Core.UseCases.Users.ViewProfile;
 
@@ -26,6 +27,11 @@ namespace ReqTrack.Application.Web.MVC.Factories.Default
         public IPresenter<ViewProfileResponse, ViewProfileViewModel> ViewProfile(ISession s, ViewDataDictionary v, ModelStateDictionary m)
         {
             return new ViewProfilePresenter(s, v, m);
+        }
+
+        public IPresenter<ChangeInformationResponse, ChangeInformationViewModel> ChangeInformation(ISession s, ViewDataDictionary v, ModelStateDictionary m)
+        {
+            return new ChangeInformationPresenter(s, v, m);
         }
     }
 }
