@@ -31,9 +31,12 @@ namespace ReqTrack.Application.Web.MVC.ViewModels.UseCases
         public string Title { get; set; }
 
         [DisplayName("Steps")]
-        public List<string> Steps { get; set; }
+        public string[] Steps { get; set; }
 
         [DisplayName("Note")]
         public string Note { get; set; }
+
+        [HiddenInput]
+        public bool CanChange { get; set; }
     }
 }

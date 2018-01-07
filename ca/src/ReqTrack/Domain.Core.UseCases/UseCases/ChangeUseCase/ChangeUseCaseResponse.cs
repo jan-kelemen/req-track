@@ -7,6 +7,8 @@ namespace ReqTrack.Domain.Core.UseCases.UseCases.ChangeUseCase
     {
         public string ProjectId { get; set; }
 
+        public string ProjectName { get; set; }
+
         public string UseCaseId { get; set; }
 
         public string Title { get; set; }

@@ -43,6 +43,7 @@ namespace ReqTrack.Domain.Core.UseCases.UseCases.ChangeUseCase
                 return output.Accept(new ChangeUseCaseResponse
                 {
                     ProjectId = useCase.Project.Id,
+                    ProjectName = useCase.Project.Name,
                     UseCaseId = useCase.Id,
                     Title = useCase.Title,
                     Note = useCase.Note,
@@ -78,11 +79,13 @@ namespace ReqTrack.Domain.Core.UseCases.UseCases.ChangeUseCase
 
 
                 var i = 0;
-                var steps = new List<UseCase.UseCaseStep>();
-                foreach (var requestStep in request.Steps)
-                {
-                    steps.Add(new UseCase.UseCaseStep { Content = requestStep, OrderMarker = i++ });
-                }
+                var steps = request.Steps.
+                    Select(requestStep => new UseCase.UseCaseStep
+                    {
+                        Content = requestStep,
+                        OrderMarker = i++
+                    })
+                    .ToList();
 
                 useCase.Title = request.Title;
                 useCase.Note = request.Note;

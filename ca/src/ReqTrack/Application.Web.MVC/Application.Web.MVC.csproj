@@ -16,11 +16,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Presenters\UseCases\" />
-    <Folder Include="Views\UseCases\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\Domain.Core.UseCases\Domain.Core.UseCases.csproj" />
     <ProjectReference Include="..\Runtime.Core\Runtime.Core.csproj" />
   </ItemGroup>

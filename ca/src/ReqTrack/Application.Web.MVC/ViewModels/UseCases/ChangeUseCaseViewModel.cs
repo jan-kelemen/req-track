@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
 using ReqTrack.Domain.Core.Entities.ValidationHelpers;
@@ -21,9 +20,6 @@ namespace ReqTrack.Application.Web.MVC.ViewModels.UseCases
         public string UseCaseId { get; set; }
 
         [HiddenInput]
-        public string UserId { get; set; }
-
-        [HiddenInput]
         [DisplayName("Project name")]
         public string ProjectName { get; set; }
 
@@ -33,7 +29,7 @@ namespace ReqTrack.Application.Web.MVC.ViewModels.UseCases
         public string Title { get; set; }
 
         [DisplayName("Steps")]
-        public List<string> Steps { get; set; }
+        public string[] Steps { get; set; } = {};
 
         [DisplayName("Note")]
         [StringLength(UseCaseValidationHelper.MaximumNoteLength, ErrorMessage = "Note is too long.")]

@@ -18,7 +18,7 @@ namespace ReqTrack.Domain.Core.UseCases.Factories.Default
             ViewUseCase = new ViewUseCaseUseCase(securityGateway, repositoryFactory.UseCaseRepository);
         }
 
-        public IUseCase<AddUseCaseRequest, AddUseCaseResponse> AddUseCase { get; }
+        public IUseCase<AddUseCaseInitialRequest, AddUseCaseRequest, AddUseCaseResponse> AddUseCase { get; }
         public IUseCase<ChangeUseCaseInitialRequest, ChangeUseCaseRequest, ChangeUseCaseResponse> ChangeUseCase { get; }
         public IUseCase<DeleteUseCaseRequest, DeleteUseCaseResponse> DeleteUseCase { get; }
         public IUseCase<ViewUseCaseRequest, ViewUseCaseResponse> ViewUseCase { get; set; }

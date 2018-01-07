@@ -45,6 +45,7 @@ namespace ReqTrack.Domain.Core.UseCases.UseCases.ViewUseCase
                     Title = useCase.Title,
                     Note = useCase.Note,
                     Steps = useCase.Steps.Select(x => x.Content),
+                    CanChange = rights.CanChangeUseCases,
                 });
             }
             catch (EntityNotFoundException e)

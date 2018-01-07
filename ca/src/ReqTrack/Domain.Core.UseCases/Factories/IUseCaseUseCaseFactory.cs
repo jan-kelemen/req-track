@@ -8,7 +8,7 @@ namespace ReqTrack.Domain.Core.UseCases.Factories
 {
     public interface IUseCaseUseCaseFactory
     {
-        IUseCase<AddUseCaseRequest, AddUseCaseResponse> AddUseCase { get; }
+        IUseCase<AddUseCaseInitialRequest, AddUseCaseRequest, AddUseCaseResponse> AddUseCase { get; }
 
         IUseCase<ChangeUseCaseInitialRequest, ChangeUseCaseRequest, ChangeUseCaseResponse> ChangeUseCase { get; }
 

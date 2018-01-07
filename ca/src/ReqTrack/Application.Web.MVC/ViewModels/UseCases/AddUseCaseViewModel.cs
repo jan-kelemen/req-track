@@ -27,7 +27,7 @@ namespace ReqTrack.Application.Web.MVC.ViewModels.UseCases
         public string Title { get; set; }
 
         [DisplayName("Steps")]
-        public List<string> Steps { get; set; }
+        public string[] Steps { get; set; } = {};
 
         [DisplayName("Note")]
         [StringLength(UseCaseValidationHelper.MaximumNoteLength, ErrorMessage = "Note is too long.")]

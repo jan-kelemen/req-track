@@ -16,5 +16,7 @@ namespace ReqTrack.Domain.Core.UseCases.UseCases.ViewUseCase
         public Project Project { get; set; }
 
         public User Author { get; set; }
+
+        public bool CanChange { get; set; }
     }
 }

@@ -10,7 +10,7 @@ using ReqTrack.Domain.Core.UseCases.Boundary.Responses;
 
 namespace ReqTrack.Domain.Core.UseCases.UseCases.AddUseCase
 {
-    public class AddUseCaseUseCase : IUseCase<AddUseCaseRequest, AddUseCaseResponse>
+    public class AddUseCaseUseCase : IUseCase<AddUseCaseInitialRequest, AddUseCaseRequest, AddUseCaseResponse>
     {
         private readonly ISecurityGateway _securityGateway;
 
@@ -32,6 +32,40 @@ namespace ReqTrack.Domain.Core.UseCases.UseCases.AddUseCase
             _useCaseRepository = useCaseRepository;
         }
 
+        public bool Execute(IUseCaseOutput<AddUseCaseResponse> output, AddUseCaseInitialRequest request)
+        {
+            try
+            {
+                if (!request.Validate(out var errors))
+                {
+                    return output.Accept(new ValidationErrorResponse(errors, "Invalid request."));
+                }
+
+                var rights = _securityGateway.GetProjectRights(request.ProjectId, request.RequestedBy);
+                if (rights == null || !rights.CanChangeUseCases)
+                {
+                    return output.Accept(new FailureResponse("User can't change use cases of this. project"));
+                }
+
+                var user = _userRepository.ReadUserInfo(request.RequestedBy);
+                var project = _projectRepository.ReadProject(request.ProjectId, false, false);
+
+                return output.Accept(new AddUseCaseResponse
+                {
+                    ProjectId = project.Id,
+                    ProjectName = project.Name,
+                });
+            }
+            catch (EntityNotFoundException e)
+            {
+                return output.Accept(new FailureResponse($"Entity not found. {e.Message}"));
+            }
+            catch (Exception e)
+            {
+                return output.Accept(new FailureResponse($"Tehnical error happend. {e.Message}"));
+            }
+        }
+
         public bool Execute(IUseCaseOutput<AddUseCaseResponse> output, AddUseCaseRequest request)
         {
             try
@@ -44,7 +78,7 @@ namespace ReqTrack.Domain.Core.UseCases.UseCases.AddUseCase
                 var rights = _securityGateway.GetProjectRights(request.ProjectId, request.RequestedBy);
                 if (rights == null || !rights.CanChangeUseCases)
                 {
-                    return output.Accept(new FailureResponse("User cahn't change use cases of this. project"));
+                    return output.Accept(new FailureResponse("User can't change use cases of this. project"));
                 }
 
                 var user = _userRepository.ReadUserInfo(request.RequestedBy);
@@ -74,7 +108,8 @@ namespace ReqTrack.Domain.Core.UseCases.UseCases.AddUseCase
                 return output.Accept(new AddUseCaseResponse
                 {
                     GivenId = id,
-                    Message = $"Use case successfuly created",
+                    ProjectId = project.Id,
+                    Message = "Use case successfuly created",
                 });
             }
             catch (ValidationException e)
