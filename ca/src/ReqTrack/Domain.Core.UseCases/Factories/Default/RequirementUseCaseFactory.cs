@@ -1,26 +1,26 @@
 ﻿using ReqTrack.Domain.Core.Factories;
 using ReqTrack.Domain.Core.Security;
 using ReqTrack.Domain.Core.UseCases.Boundary.Interfaces;
-using ReqTrack.Domain.Core.UseCases.UseCases.AddUseCase;
-using ReqTrack.Domain.Core.UseCases.UseCases.ChangeUseCase;
-using ReqTrack.Domain.Core.UseCases.UseCases.DeleteUseCase;
-using ReqTrack.Domain.Core.UseCases.UseCases.ViewUseCase;
+using ReqTrack.Domain.Core.UseCases.Requirements.AddRequirement;
+using ReqTrack.Domain.Core.UseCases.Requirements.ChangeRequirement;
+using ReqTrack.Domain.Core.UseCases.Requirements.DeleteRequirement;
+using ReqTrack.Domain.Core.UseCases.Requirements.ViewRequirement;
 
 namespace ReqTrack.Domain.Core.UseCases.Factories.Default
 {
-    internal class UseCaseUseCaseFactory : IUseCaseUseCaseFactory
+    internal class RequirementUseCaseFactory : IRequirementUseCaseFactory
     {
-        public UseCaseUseCaseFactory(ISecurityGateway securityGateway, IRepositoryFactory repositoryFactory)
+        public RequirementUseCaseFactory(ISecurityGateway securityGateway, IRepositoryFactory repositoryFactory)
         {
-            AddUseCase = new AddUseCaseUseCase(securityGateway, repositoryFactory.ProjectRepository, repositoryFactory.UseCaseRepository, repositoryFactory.UserRepository);
-            ChangeUseCase = new ChangeUseCaseUseCase(securityGateway, repositoryFactory.UseCaseRepository);
-            DeleteUseCase = new DeleteUseCaseUseCase(securityGateway, repositoryFactory.UseCaseRepository);
-            ViewUseCase = new ViewUseCaseUseCase(securityGateway, repositoryFactory.UseCaseRepository);
+            AddRequirement = new AddRequirementUseCase(securityGateway, repositoryFactory.ProjectRepository, repositoryFactory.RequirementRepository, repositoryFactory.UserRepository);
+            ChangeRequirement = new ChangeRequirementUseCase(securityGateway, repositoryFactory.RequirementRepository);
+            DeleteRequirement = new DeleteRequirementUseCase(securityGateway, repositoryFactory.RequirementRepository);
+            ViewRequirement = new ViewRequirementUseCase(securityGateway, repositoryFactory.RequirementRepository);
         }
 
-        public IUseCase<AddUseCaseRequest, AddUseCaseResponse> AddUseCase { get; }
-        public IUseCase<ChangeUseCaseInitialRequest, ChangeUseCaseRequest, ChangeUseCaseResponse> ChangeUseCase { get; }
-        public IUseCase<DeleteUseCaseRequest, DeleteUseCaseResponse> DeleteUseCase { get; }
-        public IUseCase<ViewUseCaseRequest, ViewUseCaseResponse> ViewUseCase { get; set; }
+        public IUseCase<AddRequirementInitialRequest, AddRequirementRequest, AddRequirementResponse> AddRequirement { get; }
+        public IUseCase<ChangeRequirementInitialRequest, ChangeRequirementRequest, ChangeRequirementResponse> ChangeRequirement { get; }
+        public IUseCase<DeleteRequirementRequest, DeleteRequirementResponse> DeleteRequirement { get; }
+        public IUseCase<ViewRequirementRequest, ViewRequirementResponse> ViewRequirement { get; set; }
     }
 }

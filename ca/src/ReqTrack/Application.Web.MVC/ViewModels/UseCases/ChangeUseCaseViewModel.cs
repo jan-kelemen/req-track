@@ -8,6 +8,8 @@ namespace ReqTrack.Application.Web.MVC.ViewModels.UseCases
 {
     public class ChangeUseCaseViewModel : ViewModel
     {
+        public ChangeUseCaseViewModel() : this(null, null) { }
+
         public ChangeUseCaseViewModel(string userId, string userName) : base(userId, userName)
         {
         }
@@ -21,13 +23,9 @@ namespace ReqTrack.Application.Web.MVC.ViewModels.UseCases
         [HiddenInput]
         public string UserId { get; set; }
 
-        [ReadOnly(true)]
+        [HiddenInput]
         [DisplayName("Project name")]
         public string ProjectName { get; set; }
-
-        [ReadOnly(true)]
-        [DisplayName("Last changed by")]
-        public string UserDisplayName { get; set; }
 
         [DisplayName("Title")]
         [StringLength(UseCaseValidationHelper.MaximumTitleLength, ErrorMessage = "Title is too long.")]

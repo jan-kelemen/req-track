@@ -39,7 +39,7 @@ namespace ReqTrack.Domain.Core.UseCases.Users.AuthorizeUser
                     DisplayName = user.DisplayName,
                 });
             }
-            catch (EntityNotFoundException e)
+            catch (EntityNotFoundException)
             {
                 return output.Accept(new FailureResponse($"Username or password is invalid."));
             }

@@ -7,6 +7,8 @@
 <div class="row" style="margin-top: 10px">
     <div class="col-xs-2">
         <h4>Actions</h4> <hr />
+        <a asp-area="" asp-controller="Users" asp-action="Index" asp-route-id=@Model.ApplicationUserId class="btn btn-default">View profile</a> <br /> <br />
+
         <a asp-area="" asp-controller="Projects" asp-action="Index" asp-route-id=@Model.ProjectId class="btn btn-default">View project</a> <br /> <br />
     </div>
 

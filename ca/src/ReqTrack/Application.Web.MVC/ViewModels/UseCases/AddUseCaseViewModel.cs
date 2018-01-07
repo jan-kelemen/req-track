@@ -8,14 +8,16 @@ namespace ReqTrack.Application.Web.MVC.ViewModels.UseCases
 {
     public class AddUseCaseViewModel : ViewModel
     {
+        public AddUseCaseViewModel() : this(null, null) { }
+
         public AddUseCaseViewModel(string userId, string userName) : base(userId, userName)
         {
         }
 
         [HiddenInput]
         public string ProjectId { get; set; }
-
-        [ReadOnly(true)]
+        
+        [HiddenInput]
         [DisplayName("Project name")]
         public string ProjectName { get; set; }
 

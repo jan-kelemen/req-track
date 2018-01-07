@@ -88,13 +88,15 @@ namespace ReqTrack.Domain.Core.UseCases.UseCases.ChangeUseCase
                 useCase.Note = request.Note;
                 useCase.Steps = steps;
 
-                if (_useCaseRepository.UpdateUseCase(useCase))
+                if (!_useCaseRepository.UpdateUseCase(useCase))
                 {
                     return output.Accept(new FailureResponse("Use case couldn't be updated"));
                 }
 
                 return output.Accept(new ChangeUseCaseResponse
                 {
+                    ProjectId = useCase.Project.Id,
+                    UseCaseId = useCase.Id,
                     Message = "Use case updated successfully",
                 });
             }

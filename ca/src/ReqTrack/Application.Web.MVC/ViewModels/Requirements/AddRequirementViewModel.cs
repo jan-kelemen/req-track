@@ -9,6 +9,8 @@ namespace ReqTrack.Application.Web.MVC.ViewModels.Requirements
 {
     public class AddRequirementViewModel : ViewModel
     {
+        public AddRequirementViewModel() : this(null, null) { }
+
         public AddRequirementViewModel(string userId, string userName) : base(userId, userName)
         {
         }
@@ -16,7 +18,7 @@ namespace ReqTrack.Application.Web.MVC.ViewModels.Requirements
         [HiddenInput]
         public string ProjectId { get; set; }
 
-        [ReadOnly(true)]
+        [HiddenInput]
         [DisplayName("Project name")]
         public string ProjectName { get; set; }
 
@@ -32,12 +34,7 @@ namespace ReqTrack.Application.Web.MVC.ViewModels.Requirements
         [StringLength(RequirementValidationHelper.MaximumNoteLength, ErrorMessage = "Note is too long.")]
         public string Note { get; set; }
 
-        public List<SelectListItem> Types { get; } = new List<SelectListItem>
-        {
-            new SelectListItem {Value = "Bussiness", Text = "Bussiness" },
-            new SelectListItem {Value = "User", Text = "User" },
-            new SelectListItem {Value = "Functional", Text = "Functional" },
-            new SelectListItem {Value = "Nonfunctional", Text = "Nonfunctional" },
-        };
+        [HiddenInput]
+        public List<SelectListItem> Types { get; set; }
     }
 }

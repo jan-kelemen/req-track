@@ -43,7 +43,8 @@ namespace ReqTrack.Domain.Core.UseCases.Requirements.ViewRequirement
                     RequirementId = requirement.Id,
                     Title = requirement.Title,
                     Type = requirement.Type.ToString(),
-                    Note = requirement.Note
+                    Note = requirement.Note,
+                    CanChange = rights.CanChangeRequirements,
                 });
             }
             catch (EntityNotFoundException e)

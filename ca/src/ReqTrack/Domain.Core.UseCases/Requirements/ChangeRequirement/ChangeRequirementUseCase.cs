@@ -42,10 +42,12 @@ namespace ReqTrack.Domain.Core.UseCases.Requirements.ChangeRequirement
                 return output.Accept(new ChangeRequirementResponse
                 {
                     ProjectId = requirement.Project.Id,
+                    ProjectName = requirement.Project.Name,
                     RequirementId = requirement.Id,
                     Type = requirement.Type.ToString(),
                     Title = requirement.Title,
                     Note = requirement.Note,
+                    Types = new[] { "Bussiness", "User", "Functional", "Nonfunctional" },
                 });
             }
             catch (EntityNotFoundException e)
@@ -78,14 +80,17 @@ namespace ReqTrack.Domain.Core.UseCases.Requirements.ChangeRequirement
                 requirement.Type = Enum.Parse<RequirementType>(request.Type);
                 requirement.Note = request.Note;
 
-                if (_requirementRepository.UpdateRequirement(requirement))
+                if (!_requirementRepository.UpdateRequirement(requirement))
                 {
                     return output.Accept(new FailureResponse("Requirement couldn't be updated."));
                 }
 
                 return output.Accept(new ChangeRequirementResponse
                 {
+                    ProjectId = requirement.Project.Id,
+                    RequirementId = requirement.Id,
                     Message = "Requirement updated successfully",
+                    Types = new[] { "Bussiness", "User", "Functional", "Nonfunctional" },
                 });
             }
             catch (ValidationException e)

@@ -32,5 +32,8 @@ namespace ReqTrack.Application.Web.MVC.ViewModels.Requirements
 
         [DisplayName("Note")]
         public string Note { get; set; }
+
+        [HiddenInput]
+        public bool CanChange { get; set; }
     }
 }

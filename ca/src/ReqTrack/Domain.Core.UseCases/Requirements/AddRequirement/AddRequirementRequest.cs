@@ -4,13 +4,11 @@ using ReqTrack.Domain.Core.UseCases.Boundary.Requests;
 
 namespace ReqTrack.Domain.Core.UseCases.Requirements.AddRequirement
 {
-    public class AddRequirementRequest : RequestModel
+    public class AddRequirementRequest : AddRequirementInitialRequest
     {
         public AddRequirementRequest(string requestedBy) : base(requestedBy)
         {
         }
-
-        public string ProjectId { get; set; }
 
         public string Title { get; set; }
 
@@ -21,11 +19,6 @@ namespace ReqTrack.Domain.Core.UseCases.Requirements.AddRequirement
         protected override void ValidateCore(Dictionary<string, string> errors)
         {
             base.ValidateCore(errors);
-            if (string.IsNullOrWhiteSpace(ProjectId))
-            {
-                errors.Add(nameof(ProjectId), "Project identifier is invalid");
-            }
-
             if (!RequirementValidationHelper.IsTitleValid(Title))
             {
                 errors.Add(nameof(Title), "Title is invalid");

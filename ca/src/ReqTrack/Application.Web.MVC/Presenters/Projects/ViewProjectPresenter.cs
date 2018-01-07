@@ -42,7 +42,7 @@ namespace ReqTrack.Application.Web.MVC.Presenters.Projects
                 Name = success.Name,
                 Description = success.Description,
                 ShowRequirements = success.ShowRequirements,
-                ShowUseCases = success.ShowRequirements,
+                ShowUseCases = success.ShowUseCases,
                 Requirements = requirements,
                 UseCases = success.UseCases?.Select(x => new Tuple<string, string>(x.Id, x.Title)),
                 CanChangeRequirements = success.Rights.CanChangeRequirements,

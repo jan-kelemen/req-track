@@ -6,6 +6,8 @@ namespace ReqTrack.Domain.Core.UseCases.Requirements.ChangeRequirement
     {
         public string ProjectId { get; set; }
 
+        public string ProjectName { get; set; }
+
         public string RequirementId { get; set; }
 
         public string Title { get; set; }
@@ -13,5 +15,7 @@ namespace ReqTrack.Domain.Core.UseCases.Requirements.ChangeRequirement
         public string Type { get; set; }
 
         public string Note { get; set; }
+
+        public string[] Types { get; set; }
     }
 }

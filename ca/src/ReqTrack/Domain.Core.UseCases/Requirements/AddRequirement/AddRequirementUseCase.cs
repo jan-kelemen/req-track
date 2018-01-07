@@ -10,7 +10,7 @@ using ReqTrack.Domain.Core.UseCases.Boundary.Responses;
 
 namespace ReqTrack.Domain.Core.UseCases.Requirements.AddRequirement
 {
-    public class AddRequirementUseCase : IUseCase<AddRequirementRequest, AddRequirementResponse>
+    public class AddRequirementUseCase : IUseCase<AddRequirementInitialRequest, AddRequirementRequest, AddRequirementResponse>
     {
         private readonly ISecurityGateway _securityGateway;
 
@@ -30,6 +30,29 @@ namespace ReqTrack.Domain.Core.UseCases.Requirements.AddRequirement
             _projectRepository = projectRepository;
             _userRepository = userRepository;
             _requirementRepository = requirementRepository;
+        }
+
+        public bool Execute(IUseCaseOutput<AddRequirementResponse> output, AddRequirementInitialRequest request)
+        {
+            if (!request.Validate(out var errors))
+            {
+                return output.Accept(new ValidationErrorResponse(errors, "Invalid request."));
+            }
+
+            var rights = _securityGateway.GetProjectRights(request.ProjectId, request.RequestedBy);
+            if (rights == null || !rights.CanChangeRequirements)
+            {
+                return output.Accept(new FailureResponse("User can't change requirements of this project."));
+            }
+
+            var project = _projectRepository.ReadProject(request.ProjectId, false, false);
+
+            return output.Accept(new AddRequirementResponse
+            {
+                ProjectId = request.ProjectId,
+                ProjectName = project.Name,
+                Types = new[] {"Bussiness", "User", "Functional", "Nonfunctional"},
+            });
         }
 
         public bool Execute(IUseCaseOutput<AddRequirementResponse> output, AddRequirementRequest request)
@@ -67,7 +90,8 @@ namespace ReqTrack.Domain.Core.UseCases.Requirements.AddRequirement
                 return output.Accept(new AddRequirementResponse
                 {
                     GivenId = id,
-                    Message = $"Requirement successfuly created",
+                    ProjectId = project.Id,
+                    Message = $"Requirement successfuly created.",
                 });
             }
             catch (ValidationException e)
