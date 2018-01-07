@@ -90,7 +90,6 @@ namespace ReqTrack.Domain.Core.UseCases.Requirements.ChangeRequirement
                     ProjectId = requirement.Project.Id,
                     RequirementId = requirement.Id,
                     Message = "Requirement updated successfully",
-                    Types = new[] { "Bussiness", "User", "Functional", "Nonfunctional" },
                 });
             }
             catch (ValidationException e)

@@ -5,22 +5,22 @@
 }
 
 <div class="row" style="margin-top: 10px">
-    <div class="col-xs-2">
+    <div class="col-xs-3">
         <h4>Actions</h4> <hr />
-        <a asp-area="" asp-controller="Users" asp-action="Index" asp-route-id=@Model.ApplicationUserId class="btn btn-default">View profile</a> <br /> <br />
-        <a asp-area="" asp-controller="Projects" asp-action="CreateProject" class="btn btn-default">Create project</a> <br /> <br />
-        <a asp-area="" asp-controller="Projects" asp-action="Index" asp-route-id=@Model.ProjectId class="btn btn-default">View project</a> <br /> <br />
+        <a asp-area="" asp-controller="Users" asp-action="Index" asp-route-id=@Model.ApplicationUserId class="btn btn-default actionButton">View profile</a>
+        <a asp-area="" asp-controller="Projects" asp-action="CreateProject" class="btn btn-default actionButton">Create project</a>
+        <a asp-area="" asp-controller="Projects" asp-action="Index" asp-route-id=@Model.ProjectId class="btn btn-default actionButton">View project</a>
 
         @if (Model.CanChange)
         {
-            <h4>Requirement actions</h4>
+            <h4>Requirement actions</h4> <hr/>
             var dict = new Dictionary<string, string> { { "projectId", Model.ProjectId }, { "id", Model.RequirementId } };
-            <a asp-area="" asp-controller="Requirements" asp-action="Change" asp-all-route-data="dict" class="btn btn-default">Change</a> <br /> <br />
-            <a asp-area="" asp-controller="Requirements" asp-action="Delete" asp-all-route-data="dict" class="btn btn-default">Delete</a> <br /> <br />
+            <a asp-area="" asp-controller="Requirements" asp-action="Change" asp-all-route-data="dict" class="btn btn-default actionButton">Change</a>
+            <a asp-area="" asp-controller="Requirements" asp-action="Delete" asp-all-route-data="dict" class="btn btn-default actionButton">Delete</a> 
         }
     </div>
 
-    <div class="col-xs-10">
+    <div class="col-xs-9">
         <h4>Requirement: @Model.Title</h4> <hr />
 
         <div>

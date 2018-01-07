@@ -35,6 +35,6 @@ namespace ReqTrack.Application.Web.MVC.ViewModels.Requirements
         public string Note { get; set; }
 
         [HiddenInput]
-        public List<SelectListItem> Types { get; set; }
+        public SelectListItem[] Types { get; set; } 
     }
 }

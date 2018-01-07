@@ -21,7 +21,7 @@ namespace ReqTrack.Application.Web.MVC.Presenters.Requirements
             {
                 ProjectId = success.ProjectId,
                 ProjectName = success.ProjectName,
-                Types = success.Types?.Select(x => new SelectListItem { Value = x, Text = x, }).ToList(),
+                Types = success.Types?.Select(x => new SelectListItem { Value = x, Text = x, })?.ToArray(),
             };
             return true;
         }

@@ -38,7 +38,7 @@
                 }
             </div>
             <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
+                <ul class="nav navbar-nav navbar-right">
                     @if (Model.ApplicationUserId != null)
                     {
                         <li><a asp-area="" asp-controller="Users" asp-action="Index" asp-route-id=@Model.ApplicationUserId>@Model.ApplicationUserName</a></li>
