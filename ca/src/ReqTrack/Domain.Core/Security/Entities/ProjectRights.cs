@@ -1,10 +1,9 @@
 ﻿using ReqTrack.Domain.Core.Entities;
 
-namespace ReqTrack.Domain.Core.Security
+namespace ReqTrack.Domain.Core.Security.Entities
 {
     public class ProjectRights
     {
-        private bool _canViewProject;
         private bool _canChangeRequirements;
         private bool _canChangeUseCases;
         private bool _canChangeProjectRights;
@@ -12,6 +11,7 @@ namespace ReqTrack.Domain.Core.Security
 
         public ProjectRights(
             Identity userId,
+            string userName,
             Identity projectId,
             bool canViewProject,
             bool canChangeRequirements,
@@ -20,6 +20,7 @@ namespace ReqTrack.Domain.Core.Security
             bool isAdministrator)
         {
             UserId = userId;
+            UserName = userName;
             ProjectId = projectId;
 
             CanViewProject = canViewProject;
@@ -31,13 +32,11 @@ namespace ReqTrack.Domain.Core.Security
 
         public Identity UserId { get; }
 
+        public string UserName { get; }
+
         public Identity ProjectId { get; }
 
-        public bool CanViewProject
-        {
-            get => _canViewProject;
-            private set => _canViewProject = value;
-        }
+        public bool CanViewProject { get; private set; }
 
         public bool CanChangeRequirements
         {

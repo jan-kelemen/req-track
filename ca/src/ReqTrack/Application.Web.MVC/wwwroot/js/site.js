@@ -28,6 +28,22 @@
         var row = $($element).parents("tr:first");
         row.insertAfter(row.next());
     });
+
+    $("#rightsTable").delegate("button[name='add']", "click", function(e) {
+        e.preventDefault();
+        var row =
+            '<tr>' +
+                '<td><input name="UserNames[]" class="form-control"></td>'+
+                '<td><input name="CanView[]" type="checkbox" checked="checked"></td>'+
+                '<td><input name="CanChangeRequirements[]" type="checkbox"></td>'+
+                '<td><input name="CanChangeUseCases[]" type="checkbox"></td>'+
+                '<td><input name="CanChangeProjectRights[]" type="checkbox"></td>'+
+                '<td><input name="IsAdministrator[]" type="checkbox"></td>'+
+                '<td><button class="btn btn-default tableButton" name="del" onclick="remove_row(this)">Delete</button></td>'+
+            '</tr>';
+
+        $('#rightsTable tr:last').after(row);
+    })
 });
 
 function remove_row(btn) {

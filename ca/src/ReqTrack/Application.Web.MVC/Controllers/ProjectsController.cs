@@ -1,11 +1,15 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using System.Collections.Generic;
+using System.Linq;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ReqTrack.Application.Web.MVC.Factories;
 using ReqTrack.Application.Web.MVC.Factories.Default;
 using ReqTrack.Application.Web.MVC.ViewModels.Projects;
 using ReqTrack.Domain.Core.UseCases.Factories;
+using ReqTrack.Domain.Core.UseCases.Projects;
 using ReqTrack.Domain.Core.UseCases.Projects.ChangeInformation;
+using ReqTrack.Domain.Core.UseCases.Projects.ChangeRights;
 using ReqTrack.Domain.Core.UseCases.Projects.CreateProject;
 using ReqTrack.Domain.Core.UseCases.Projects.DeleteProject;
 using ReqTrack.Domain.Core.UseCases.Projects.ViewProject;
@@ -38,7 +42,10 @@ namespace ReqTrack.Application.Web.MVC.Controllers
             };
 
             var presenter = _projectPresenterFactory.ViewProject(HttpContext.Session, TempData, ModelState);
-            if(!uc.Execute(presenter, request)) { return NotFound(); }
+            if (!uc.Execute(presenter, request))
+            {
+                return NotFound();
+            }
 
             return View(presenter.ViewModel);
         }
@@ -53,7 +60,10 @@ namespace ReqTrack.Application.Web.MVC.Controllers
             };
 
             var presenter = _projectPresenterFactory.ChangeInformation(HttpContext.Session, TempData, ModelState);
-            if (!uc.Execute(presenter, request)) { return NotFound(); }
+            if (!uc.Execute(presenter, request))
+            {
+                return NotFound();
+            }
 
             return View(presenter.ViewModel);
         }
@@ -71,7 +81,10 @@ namespace ReqTrack.Application.Web.MVC.Controllers
             };
 
             var presenter = _projectPresenterFactory.ChangeInformation(HttpContext.Session, TempData, ModelState);
-            if(!uc.Execute(presenter, request)) { return View(vm); }
+            if (!uc.Execute(presenter, request))
+            {
+                return View(vm);
+            }
 
             return RedirectToAction(nameof(Index), new {id = vm.ProjectId});
         }
@@ -80,8 +93,8 @@ namespace ReqTrack.Application.Web.MVC.Controllers
         public IActionResult CreateProject()
         {
             return View(new CreateProjectViewModel(
-                HttpContext.Session.GetString("UserId"),
-                HttpContext.Session.GetString("UserName")
+                    HttpContext.Session.GetString("UserId"),
+                    HttpContext.Session.GetString("UserName")
                 )
             );
         }
@@ -97,8 +110,12 @@ namespace ReqTrack.Application.Web.MVC.Controllers
                 Description = vm.Description,
             };
 
-            var presenter = _projectPresenterFactory.Default<CreateProjectResponse>(HttpContext.Session, TempData, ModelState);
-            if(!uc.Execute(presenter, request)) { return View(vm); }
+            var presenter =
+                _projectPresenterFactory.Default<CreateProjectResponse>(HttpContext.Session, TempData, ModelState);
+            if (!uc.Execute(presenter, request))
+            {
+                return View(vm);
+            }
 
             return RedirectToAction(nameof(Index), new {id = presenter.Response.GivenId});
         }
@@ -112,10 +129,58 @@ namespace ReqTrack.Application.Web.MVC.Controllers
                 ProjectId = id,
             };
 
-            var presenter = _projectPresenterFactory.Default<DeleteProjectResponse>(HttpContext.Session, TempData, ModelState);
-            if(!uc.Execute(presenter, request)) { return NotFound(); }
+            var presenter =
+                _projectPresenterFactory.Default<DeleteProjectResponse>(HttpContext.Session, TempData, ModelState);
+            if (!uc.Execute(presenter, request))
+            {
+                return NotFound();
+            }
 
             return RedirectToAction(nameof(Index), "Users", new {id = HttpContext.Session.GetString("UserId")});
+        }
+
+        [HttpGet]
+        public IActionResult ChangeRights(string id)
+        {
+            var uc = _projectUseCaseFactory.ChangeRights;
+            var request = new ChangeRightsInitialRequest(HttpContext.Session.GetString("UserId"))
+            {
+                ProjectId = id,
+            };
+
+            var presenter = _projectPresenterFactory.ChangeRights(HttpContext.Session, TempData, ModelState);
+            if (!uc.Execute(presenter, request)) { return NotFound(); }
+
+            return View(presenter.ViewModel);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult ChangeRights(ChangeRightsViewModel vm)
+        {
+            var uc = _projectUseCaseFactory.ChangeRights;
+
+            var rightsList = vm.UserNames.Select((t, i) => new ProjectRights
+                {
+                    UserName = t,
+                    CanViewProject = vm.CanView[i],
+                    CanChangeProjectRights = vm.CanChangeProjectRights[i],
+                    CanChangeRequirements = vm.CanChangeRequirements[i],
+                    CanChangeUseCases = vm.CanChangeUseCases[i],
+                    IsAdministrator = vm.IsAdministrator[i],
+                })
+                .ToList();
+
+            var request = new ChangeRightsRequest(HttpContext.Session.GetString("UserId"))
+            {
+                ProjectId = vm.ProjectId,
+                Rights = rightsList,
+            };
+
+            var presenter = _projectPresenterFactory.ChangeRights(HttpContext.Session, TempData, ModelState);
+            if(!uc.Execute(presenter, request)) { return View(vm); }
+
+            return RedirectToAction(nameof(Index), new {id = vm.ProjectId});
         }
     }
 }

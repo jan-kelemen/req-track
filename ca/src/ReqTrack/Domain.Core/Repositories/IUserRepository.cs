@@ -13,6 +13,8 @@ namespace ReqTrack.Domain.Core.Repositories
 
         BasicUser FindUserInfo(string username, string passwordHash);
 
+        BasicUser FindUserByName(string username);
+
         bool UpdateUser(User user);
 
         bool UpdateUserInfo(BasicUser user);

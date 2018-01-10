@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using ReqTrack.Domain.Core.Entities;
+using ReqTrack.Domain.Core.Security.Entities;
 
 namespace ReqTrack.Domain.Core.Security
 {

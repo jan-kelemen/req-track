@@ -50,7 +50,7 @@ namespace ReqTrack.Domain.Core.UseCases.Projects.ViewProject
                     },
                     Rights = new ProjectRights
                     {
-                        UserId = request.RequestedBy,
+                        UserName = request.RequestedBy,
                         CanViewProject = rights.CanViewProject,
                         CanChangeRequirements = rights.CanChangeRequirements,
                         CanChangeUseCases = rights.CanChangeUseCases,

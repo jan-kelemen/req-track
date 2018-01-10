@@ -62,6 +62,15 @@ namespace ReqTrack.Persistence.Concrete.MongoDB.Repositories
             return new BasicUser(user.Id.ToDomainIdentity(), user.DisplayName);
         }
 
+        public BasicUser FindUserByName(string username)
+        {
+            var filter = Builders<MongoUser>.Filter.Where(x => x.Username == username);
+            var user = _userRepository.Find(filter).FirstOrDefault();
+            if (user == null) { throw new EntityNotFoundException(); }
+
+            return new BasicUser(user.Id.ToDomainIdentity(), user.DisplayName);
+        }
+
         public bool UpdateUser(User user)
         {
             var filter = _userRepository.IdFilter(user.Id.ToMongoIdentity());

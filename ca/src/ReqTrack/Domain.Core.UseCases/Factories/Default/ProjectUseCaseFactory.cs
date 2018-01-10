@@ -18,7 +18,7 @@ namespace ReqTrack.Domain.Core.UseCases.Factories.Default
             CreateProject = new CreateProjectUseCase(securityGateway, repositoryFactory.ProjectRepository, repositoryFactory.UserRepository);
             ViewProject = new ViewProjectUseCase(securityGateway, repositoryFactory.ProjectRepository);
             ChangeInformation = new ChangeInformationUseCase(securityGateway, repositoryFactory.ProjectRepository);
-            ChangeRights = new ChangeRightsUseCase(securityGateway, repositoryFactory.ProjectRepository);
+            ChangeRights = new ChangeRightsUseCase(securityGateway, repositoryFactory.ProjectRepository, repositoryFactory.UserRepository);
             DeleteProject = new DeleteProjectUseCase(securityGateway, repositoryFactory.ProjectRepository);
             ChangeRequirementOrder = new ChangeRequirementOrderUseCase(securityGateway, repositoryFactory.ProjectRepository);
             ChangeUseCaseOrder = new ChangeUseCaseOrderUseCase(securityGateway, repositoryFactory.ProjectRepository);

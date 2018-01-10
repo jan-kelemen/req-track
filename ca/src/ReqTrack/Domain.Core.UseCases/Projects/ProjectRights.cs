@@ -2,7 +2,7 @@
 {
     public class ProjectRights
     {
-        public string UserId { get; set; }
+        public string UserName { get; set; }
 
         public bool CanViewProject { get; set; }
 

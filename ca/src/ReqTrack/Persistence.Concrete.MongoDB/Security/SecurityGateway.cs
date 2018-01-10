@@ -4,6 +4,7 @@ using MongoDB.Driver;
 using ReqTrack.Domain.Core.Entities;
 using ReqTrack.Domain.Core.Exceptions;
 using ReqTrack.Domain.Core.Security;
+using ReqTrack.Domain.Core.Security.Entities;
 using ReqTrack.Persistence.Concrete.MongoDB.Database;
 using ReqTrack.Persistence.Concrete.MongoDB.Entities;
 using ReqTrack.Persistence.Concrete.MongoDB.Extensions.Mapping;
@@ -36,6 +37,7 @@ namespace ReqTrack.Persistence.Concrete.MongoDB.Security
 
             return rights.Select(x => new ProjectRights(
                 x.UserId.ToDomainIdentity(),
+                _userRepository.Read(x.UserId).Username,
                 projectId,
                 x.CanViewProject,
                 x.CanChangeRequirements,
@@ -60,6 +62,7 @@ namespace ReqTrack.Persistence.Concrete.MongoDB.Security
 
             return new ProjectRights(
                 userId,
+                user.Username,
                 projectId,
                 rights.CanViewProject,
                 rights.CanChangeRequirements,

@@ -16,10 +16,13 @@ namespace ReqTrack.Domain.Core.UseCases.Projects.ChangeRights
 
         private readonly IProjectRepository _projectRepository;
 
-        public ChangeRightsUseCase(ISecurityGateway securityGateway, IProjectRepository projectRepository)
+        private readonly IUserRepository _userRepository;
+
+        public ChangeRightsUseCase(ISecurityGateway securityGateway, IProjectRepository projectRepository, IUserRepository userRepository)
         {
             _securityGateway = securityGateway;
             _projectRepository = projectRepository;
+            _userRepository = userRepository;
         }
 
         public bool Execute(IUseCaseOutput<ChangeRightsResponse> output, ChangeRightsInitialRequest request)
@@ -47,7 +50,7 @@ namespace ReqTrack.Domain.Core.UseCases.Projects.ChangeRights
                     Name =  project.Name,
                     Rights = rights.Select(r => new ProjectRights
                     {
-                        UserId = r.UserId,
+                        UserName = r.UserName,
                         CanViewProject = r.CanViewProject,
                         CanChangeRequirements = r.CanChangeRequirements,
                         CanChangeUseCases = r.CanChangeUseCases,
@@ -88,7 +91,7 @@ namespace ReqTrack.Domain.Core.UseCases.Projects.ChangeRights
                     {
                         new ProjectRights
                         {
-                            UserId = project.Author.Id,
+                            UserName = project.Author.Id,
                             CanViewProject = true,
                             CanChangeRequirements = true,
                             CanChangeUseCases = true,
@@ -98,8 +101,9 @@ namespace ReqTrack.Domain.Core.UseCases.Projects.ChangeRights
                     };
                 }
 
-                var rights = request.Rights.Select(r => new Security.ProjectRights(
-                    r.UserId,
+                var rights = request.Rights.Select(r => new Security.Entities.ProjectRights(
+                    _userRepository.FindUserByName(r.UserName).Id,
+                    r.UserName,
                     request.ProjectId,
                     r.CanViewProject,
                     r.CanChangeRequirements,
