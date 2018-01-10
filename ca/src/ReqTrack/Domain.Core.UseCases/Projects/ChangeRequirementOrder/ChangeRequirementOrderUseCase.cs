@@ -97,6 +97,11 @@ namespace ReqTrack.Domain.Core.UseCases.Projects.ChangeRequirementOrder
 
                 project.ChangeRequirements(new Project.Requirement[] {}, updateList, new Project.Requirement[] { });
 
+                if (!_projectRepository.UpdateProjectRequirements(project, type))
+                {
+                    output.Accept(new FailureResponse("Requirements couldn't be updated"));
+                };
+
                 return output.Accept(new ChangeRequirementOrderResponse
                 {
                     Message = $"Requirements of {project.Name} successfully updated.",

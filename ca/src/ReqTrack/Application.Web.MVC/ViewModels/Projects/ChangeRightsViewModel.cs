@@ -16,16 +16,16 @@ namespace ReqTrack.Application.Web.MVC.ViewModels.Projects
         [HiddenInput]
         public string ProjectName { get; set; }
 
-        public string[] UserNames { get; set; }
+        public string[] UserNames { get; set; } = { };
 
-        public bool[] CanView { get; set; }
+        public bool[] CanView { get; set; } = { };
 
-        public bool[] CanChangeRequirements { get; set; }
+        public bool[] CanChangeRequirements { get; set; } = { };
 
-        public bool[] CanChangeUseCases { get; set; }
+        public bool[] CanChangeUseCases { get; set; } = { };
 
-        public bool[] CanChangeProjectRights { get; set; }
+        public bool[] CanChangeProjectRights { get; set; } = { };
 
-        public bool[] IsAdministrator { get; set; }
+        public bool[] IsAdministrator { get; set; } = { };
     }
 }

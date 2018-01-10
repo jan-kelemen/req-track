@@ -43,7 +43,7 @@
             '</tr>';
 
         $('#rightsTable tr:last').after(row);
-    })
+    });
 });
 
 function remove_row(btn) {

@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -9,6 +8,7 @@ using ReqTrack.Application.Web.MVC.ViewModels.Projects;
 using ReqTrack.Domain.Core.UseCases.Factories;
 using ReqTrack.Domain.Core.UseCases.Projects;
 using ReqTrack.Domain.Core.UseCases.Projects.ChangeInformation;
+using ReqTrack.Domain.Core.UseCases.Projects.ChangeRequirementOrder;
 using ReqTrack.Domain.Core.UseCases.Projects.ChangeRights;
 using ReqTrack.Domain.Core.UseCases.Projects.CreateProject;
 using ReqTrack.Domain.Core.UseCases.Projects.DeleteProject;
@@ -161,15 +161,14 @@ namespace ReqTrack.Application.Web.MVC.Controllers
             var uc = _projectUseCaseFactory.ChangeRights;
 
             var rightsList = vm.UserNames.Select((t, i) => new ProjectRights
-                {
-                    UserName = t,
-                    CanViewProject = vm.CanView[i],
-                    CanChangeProjectRights = vm.CanChangeProjectRights[i],
-                    CanChangeRequirements = vm.CanChangeRequirements[i],
-                    CanChangeUseCases = vm.CanChangeUseCases[i],
-                    IsAdministrator = vm.IsAdministrator[i],
-                })
-                .ToList();
+            {
+                UserName = t,
+                CanViewProject = vm.CanView[i],
+                CanChangeProjectRights = vm.CanChangeProjectRights[i],
+                CanChangeRequirements = vm.CanChangeRequirements[i],
+                CanChangeUseCases = vm.CanChangeUseCases[i],
+                IsAdministrator = vm.IsAdministrator[i],
+            });
 
             var request = new ChangeRightsRequest(HttpContext.Session.GetString("UserId"))
             {
@@ -181,6 +180,42 @@ namespace ReqTrack.Application.Web.MVC.Controllers
             if(!uc.Execute(presenter, request)) { return View(vm); }
 
             return RedirectToAction(nameof(Index), new {id = vm.ProjectId});
+        }
+
+        [HttpGet]
+        public IActionResult ChangeRequirementOrder(string id, string type)
+        {
+            var uc = _projectUseCaseFactory.ChangeRequirementOrder;
+
+            var request = new ChangeRequirementOrderInitialRequest(HttpContext.Session.GetString("UserId"))
+            {
+                ProjectId = id,
+                Type = type,
+            };
+
+            var presenter = _projectPresenterFactory.ChangeRequirementOrder(HttpContext.Session, TempData, ModelState);
+            if (!uc.Execute(presenter, request)) { return NotFound(); }
+
+            return View(presenter.ViewModel);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult ChangeRequirementOrder(ChangeRequirementOrderViewModel vm)
+        {
+            var uc = _projectUseCaseFactory.ChangeRequirementOrder;
+
+            var request = new ChangeRequirementOrderRequest(HttpContext.Session.GetString("UserId"))
+            {
+                ProjectId = vm.ProjectId,
+                Type = vm.Type,
+                Requirements = vm.RequirementIds.Select((t, i) => new Requirement { Id = t, Title = vm.RequirementTitles[i] }),
+            };
+
+            var presenter = _projectPresenterFactory.ChangeRequirementOrder(HttpContext.Session, TempData, ModelState);
+            if (!uc.Execute(presenter, request)) { return View(vm); }
+
+            return RedirectToAction(nameof(Index), new { id = vm.ProjectId });
         }
     }
 }

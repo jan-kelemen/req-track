@@ -40,7 +40,7 @@ namespace ReqTrack.Persistence.Concrete.MongoDB.Repositories.Internal
         {
             var count = _collection.UpdateMany(filter, updateDefinition);
 
-            return count.ModifiedCount != 0;
+            return count.MatchedCount != 0;
         }
 
         public bool Delete(FilterDefinition<T> filter) => _collection.DeleteMany(filter).DeletedCount != 0;
