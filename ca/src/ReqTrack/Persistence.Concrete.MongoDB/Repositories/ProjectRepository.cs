@@ -123,7 +123,7 @@ namespace ReqTrack.Persistence.Concrete.MongoDB.Repositories
             {
                 //domain collection ensures this iteration is ordered by order markers.
                 var counter = 0;
-                foreach (var r in project.Requirements)
+                foreach (var r in project.UseCases)
                 {
                     var updatefilter = _useCaseRepository.IdFilter(r.Id.ToMongoIdentity());
                     var refreshMarker = Builders<MongoUseCase>.Update.Set(x => x.OrderMarker, counter++);

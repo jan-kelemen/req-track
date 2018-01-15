@@ -10,6 +10,7 @@ using ReqTrack.Domain.Core.UseCases.Projects;
 using ReqTrack.Domain.Core.UseCases.Projects.ChangeInformation;
 using ReqTrack.Domain.Core.UseCases.Projects.ChangeRequirementOrder;
 using ReqTrack.Domain.Core.UseCases.Projects.ChangeRights;
+using ReqTrack.Domain.Core.UseCases.Projects.ChangeUseCaseOrder;
 using ReqTrack.Domain.Core.UseCases.Projects.CreateProject;
 using ReqTrack.Domain.Core.UseCases.Projects.DeleteProject;
 using ReqTrack.Domain.Core.UseCases.Projects.ViewProject;
@@ -213,6 +214,40 @@ namespace ReqTrack.Application.Web.MVC.Controllers
             };
 
             var presenter = _projectPresenterFactory.ChangeRequirementOrder(HttpContext.Session, TempData, ModelState);
+            if (!uc.Execute(presenter, request)) { return View(vm); }
+
+            return RedirectToAction(nameof(Index), new { id = vm.ProjectId });
+        }
+
+        [HttpGet]
+        public IActionResult ChangeUseCaseOrder(string id)
+        {
+            var uc = _projectUseCaseFactory.ChangeUseCaseOrder;
+
+            var request = new ChangeUseCaseOrderInitialRequest(HttpContext.Session.GetString("UserId"))
+            {
+                ProjectId = id,
+            };
+
+            var presenter = _projectPresenterFactory.ChangeUseCaseOrder(HttpContext.Session, TempData, ModelState);
+            if(!uc.Execute(presenter, request)) { return NotFound(); }
+
+            return View(presenter.ViewModel);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult ChangeUseCaseOrder(ChangeUseCaseOrderViewModel vm)
+        {
+            var uc = _projectUseCaseFactory.ChangeUseCaseOrder;
+
+            var request = new ChangeUseCaseOrderRequest(HttpContext.Session.GetString("UserId"))
+            {
+                ProjectId = vm.ProjectId,
+                UseCases = vm.UseCaseIds.Select((t, i) => new UseCase {Id = t, Title = vm.UseCaseTitles[i]}),
+            };
+
+            var presenter = _projectPresenterFactory.ChangeUseCaseOrder(HttpContext.Session, TempData, ModelState);
             if (!uc.Execute(presenter, request)) { return View(vm); }
 
             return RedirectToAction(nameof(Index), new { id = vm.ProjectId });

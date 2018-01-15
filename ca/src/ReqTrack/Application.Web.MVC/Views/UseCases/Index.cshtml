@@ -13,7 +13,7 @@
 
         @if (Model.CanChange)
         {
-            <h4>Requirement actions</h4> <hr />
+            <h4>Use case actions</h4> <hr />
             var dict = new Dictionary<string, string> { { "projectId", Model.ProjectId }, { "id", Model.UseCaseId } };
             <a asp-area="" asp-controller="UseCases" asp-action="Change" asp-all-route-data="dict" class="btn btn-default actionButton">Change</a>
             <a asp-area="" asp-controller="UseCases" asp-action="Delete" asp-all-route-data="dict" class="btn btn-default actionButton">Delete</a>

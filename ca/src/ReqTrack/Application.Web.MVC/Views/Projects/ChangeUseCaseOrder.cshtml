@@ -1,0 +1,54 @@
+﻿@model ReqTrack.Application.Web.MVC.ViewModels.Projects.ChangeUseCaseOrderViewModel
+
+@{
+    ViewData["Title"] = "Change use case order";
+}
+
+<div class="row" style="margin-top: 10px">
+    <div class="col-xs-3">
+        <h4>Actions</h4> <hr />
+        <a asp-area="" asp-controller="Users" asp-action="Index" asp-route-id=@Model.ApplicationUserId class="btn btn-default actionButton">View profile</a>
+        <a asp-area="" asp-controller="Projects" asp-action="Index" asp-route-id=@Model.ProjectId class="btn btn-default actionButton">View project</a>
+    </div>
+
+    <div class="col-xs-9">
+        <h4>Change use cases of project: @Model.ProjectName</h4>
+        <div>
+            <form asp-action="ChangeUseCaseOrder">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <table class="table" id="stepTable">
+                        <tr id="stepTableHeader">
+                            <th class="actionButton">Use case</th>
+                            <th colspan="2"></th>
+                        </tr>
+                        @for (var i = 0; i < Model.UseCaseIds.Length; ++i)
+                        {
+                        <tr>
+                            <td>
+                                <input name="UseCaseIds[]" value="@Model.UseCaseIds[i]" type="hidden" />
+                                <input name="UseCaseTitles[]" class="form-control" value="@Model.UseCaseTitles[i]" />
+                            </td>
+                            <td><button class="btn btn-default tableButton" name="up">Up</button></td>
+                            <td><button class="btn btn-default tableButton" name="down">Down</button></td>
+                        </tr>
+                        }
+                    </table>
+                </div>
+                <div class="form-group">
+                    <input asp-for="ProjectId" class="form-control" />
+                    <input asp-for="ProjectName" class="form-control" />
+                    <input asp-for="ApplicationUserId" class="form-control" />
+                    <input asp-for="ApplicationUserName" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Save" class="btn btn-default" />
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

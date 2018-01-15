@@ -92,6 +92,11 @@ namespace ReqTrack.Domain.Core.UseCases.Projects.ChangeUseCaseOrder
 
                 project.ChangeUseCases(new Project.UseCase[] {}, updateList, new Project.UseCase[] { });
 
+                if (!_projectRepository.UpdateProject(project, true))
+                {
+                    output.Accept(new FailureResponse("Use cases couldn't be updated"));
+                };
+
                 return output.Accept(new ChangeUseCaseOrderResponse
                 {
                     Message = $"Use cases of {project.Name} successfully updated.",

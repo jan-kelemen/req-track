@@ -16,7 +16,7 @@ namespace ReqTrack.Application.Web.MVC.Presenters.Projects
         public override bool Accept(ChangeRequirementOrderResponse success)
         {
             base.Accept(success);
-            ViewModel = new ChangeRequirementOrderViewModel
+            ViewModel = new ChangeRequirementOrderViewModel(UserId, UserName)
             {
                 ProjectId = success.ProjectId,
                 ProjectName = success.Name,

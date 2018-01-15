@@ -6,6 +6,7 @@ using ReqTrack.Application.Web.MVC.ViewModels.Projects;
 using ReqTrack.Domain.Core.UseCases.Projects.ChangeInformation;
 using ReqTrack.Domain.Core.UseCases.Projects.ChangeRequirementOrder;
 using ReqTrack.Domain.Core.UseCases.Projects.ChangeRights;
+using ReqTrack.Domain.Core.UseCases.Projects.ChangeUseCaseOrder;
 using ReqTrack.Domain.Core.UseCases.Projects.ViewProject;
 
 namespace ReqTrack.Application.Web.MVC.Factories
@@ -19,5 +20,7 @@ namespace ReqTrack.Application.Web.MVC.Factories
         IPresenter<ChangeRightsResponse, ChangeRightsViewModel> ChangeRights(ISession s, ITempDataDictionary t, ModelStateDictionary m);
 
         IPresenter<ChangeRequirementOrderResponse, ChangeRequirementOrderViewModel> ChangeRequirementOrder(ISession s, ITempDataDictionary t, ModelStateDictionary m);
+
+        IPresenter<ChangeUseCaseOrderResponse, ChangeUseCaseOrderViewModel> ChangeUseCaseOrder(ISession s, ITempDataDictionary t, ModelStateDictionary m);
     }
 }
