@@ -1,0 +1,61 @@
+﻿using System;
+using System.Collections.Generic;
+using ReqTrack.Domain.Core.Entities;
+using ReqTrack.Domain.Core.Entities.Users;
+using ReqTrack.Domain.Core.Entities.ValidationHelpers;
+using ReqTrack.Domain.Core.Exceptions;
+using ReqTrack.Domain.Core.Repositories;
+using ReqTrack.Domain.Core.Security;
+using ReqTrack.Domain.Core.UseCases.Boundary.Interfaces;
+using ReqTrack.Domain.Core.UseCases.Boundary.Responses;
+
+namespace ReqTrack.Domain.Core.UseCases.Users.RegisterUser
+{
+    public class RegisterUserUseCase : IUseCase<RegisterUserRequest, RegisterUserResponse>
+    {
+        private readonly ISecurityGateway _securityGateway;
+
+        private readonly IUserRepository _userRepository;
+
+        public RegisterUserUseCase(ISecurityGateway securityGateway, IUserRepository userRepository)
+        {
+            _securityGateway = securityGateway;
+            _userRepository = userRepository;
+        }
+
+        public bool Execute(IUseCaseOutput<RegisterUserResponse> output, RegisterUserRequest request)
+        {
+            try
+            {
+                if (!request.Validate(out var errors))
+                {
+                    return output.Accept(new ValidationErrorResponse(errors, "Invalid request."));
+                }
+
+                var passwordHash = UserValidationHelper.HashPassword(request.Password);
+                var user = new User(Identity.BlankIdentity, request.UserName, request.DisplayName, passwordHash);
+
+                var id = _userRepository.CreateUser(user);
+                if (id == null)
+                {
+                    return output.Accept(new FailureResponse("User couldn't be registered."));
+                }
+
+                return output.Accept(new RegisterUserResponse
+                {
+                    GivenId = user.Id,
+                    Message = $"User {user.UserName} successfuly created",
+                });
+            }
+            catch (ValidationException e)
+            {
+                var errors = new Dictionary<string, string> { { e.PropertyKey, e.Message } };
+                return output.Accept(new ValidationErrorResponse(errors, $"Invalid data for {e.PropertyKey}."));
+            }
+            catch (Exception e)
+            {
+                return output.Accept(new FailureResponse($"Tehnical error happend. {e.Message}"));
+            }
+        }
+    }
+}

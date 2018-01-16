@@ -1,0 +1,55 @@
+﻿@model ReqTrack.Application.Web.MVC.ViewModels.Requirements.ViewRequirementViewModel
+
+@{
+    ViewData["Title"] = @Model.Title;
+}
+
+<div class="row" style="margin-top: 10px">
+    <div class="col-xs-3">
+        <h4>Actions</h4> <hr />
+        <a asp-area="" asp-controller="Users" asp-action="Index" asp-route-id=@Model.ApplicationUserId class="btn btn-default actionButton">View profile</a>
+        <a asp-area="" asp-controller="Projects" asp-action="CreateProject" class="btn btn-default actionButton">Create project</a>
+        <a asp-area="" asp-controller="Projects" asp-action="Index" asp-route-id=@Model.ProjectId class="btn btn-default actionButton">View project</a>
+
+        @if (Model.CanChange)
+        {
+            <h4>Requirement actions</h4> <hr/>
+            var dict = new Dictionary<string, string> { { "projectId", Model.ProjectId }, { "id", Model.RequirementId } };
+            <a asp-area="" asp-controller="Requirements" asp-action="Change" asp-all-route-data="dict" class="btn btn-default actionButton">Change</a>
+            <a asp-area="" asp-controller="Requirements" asp-action="Delete" asp-all-route-data="dict" class="btn btn-default actionButton">Delete</a> 
+        }
+    </div>
+
+    <div class="col-xs-9">
+        <h4>Requirement: @Model.Title</h4> <hr />
+
+        <div>
+            <dl class="dl-horizontal">
+                <dt>
+                    @Html.DisplayNameFor(model => model.ProjectName)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.ProjectName)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.UserDisplayName)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.UserDisplayName)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.Type)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Type)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.Note)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Note)
+                </dd>
+            </dl>
+        </div>
+    </div>
+</div>

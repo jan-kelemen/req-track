@@ -1,0 +1,64 @@
+﻿@model ReqTrack.Application.Web.MVC.ViewModels.Users.ViewProfileViewModel
+
+@{
+    ViewData["Title"] = Model.DisplayName;
+    var projectList = Model.Projects.ToList();
+}
+
+<div class="row" style="margin-top: 10px">
+    <div class="col-xs-3">
+        <h4>Actions</h4> <hr />
+        <a asp-area="" asp-controller="Projects" asp-action="CreateProject" class="btn btn-default actionButton">Create project</a>
+
+        @if (Model.ApplicationUserId == Model.UserId)
+        {
+            <h4>Account actions</h4> <hr />
+            <a asp-area="" asp-controller="Users" asp-action="ChangeInformation" asp-route-id=@Model.UserId class="btn btn-default actionButton">Change information</a>
+            <a asp-area="" asp-controller="Users" asp-action="ChangePassword" asp-route-id=@Model.UserId class="btn btn-default actionButton">Change password</a> 
+            <a asp-area="" asp-controller="Users" asp-action="DeleteUser" asp-route-id=@Model.UserId class="btn btn-default actionButton">Delete account</a> 
+        }
+    </div>
+
+    <div class="col-xs-9">
+        <h4>User: @Model.DisplayName</h4> <hr />
+
+        <div>
+            <dl class="dl-horizontal">
+                <dt>
+                    @Html.DisplayNameFor(model => model.UserName)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.UserName)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.DisplayName)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.DisplayName)
+                </dd>
+            </dl>
+            <hr />
+            <h4>Associated projects</h4>
+            <table class="table">
+                @if (projectList.Any())
+                {
+                    <tr><th class="actionButton">Project</th><th></th></tr>
+                    foreach (var tuple in projectList)
+                    {
+                        <tr>
+                            <td>@tuple.Item2</td>
+                            <td><a asp-area="" asp-controller="Projects" asp-action="Index" asp-route-id=@tuple.Item1 class="btn btn-default tableButton">View</a></td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>No projects for this user</tr>
+                }
+            </table>
+            <ul class="list-group">
+
+            </ul>
+        </div>
+    </div>
+</div>

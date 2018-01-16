@@ -1,0 +1,9 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <AssemblyName>ReqTrack.Domain.Core</AssemblyName>
+    <RootNamespace>ReqTrack.Domain.Core</RootNamespace>
+  </PropertyGroup>
+
+</Project>

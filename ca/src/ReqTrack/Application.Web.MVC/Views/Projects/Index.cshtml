@@ -1,0 +1,130 @@
+﻿@model ReqTrack.Application.Web.MVC.ViewModels.Projects.ViewProjectViewModel
+
+@{
+    ViewData["Title"] = Model.Name;
+}
+
+<div class="row" style="margin-top: 10px">
+    <div class="col-xs-3">
+        <h4>Actions</h4> <hr />
+        <a asp-area="" asp-controller="Users" asp-action="Index" asp-route-id=@Model.ApplicationUserId class="btn btn-default actionButton">View profile</a>
+
+        <a asp-area="" asp-controller="Projects" asp-action="CreateProject" class="btn btn-default actionButton">Create project</a>
+
+        @if (Model.IsAdministrator || Model.CanChangeRequirements || Model.CanChangeUseCases || Model.CanChangeProjectRights)
+        {
+            <h4>Project actions</h4> <hr />
+            if (Model.CanChangeRequirements)
+            {
+                <a asp-area="" asp-controller="Requirements" asp-action="Create" asp-route-id=@Model.ProjectId class="btn btn-default actionButton">Add requirement</a><br />
+            }
+            if (Model.CanChangeUseCases)
+            {
+                <a asp-area="" asp-controller="UseCases" asp-action="Create" asp-route-id=@Model.ProjectId class="btn btn-default actionButton">Add use case</a>
+            }
+            if (Model.IsAdministrator)
+            {
+                <a asp-area="" asp-controller="Projects" asp-action="ChangeInformation" asp-route-id=@Model.ProjectId class="btn btn-default actionButton">Change information</a>
+            }
+            if (Model.CanChangeProjectRights)
+            {
+                <a asp-area="" asp-controller="Projects" asp-action="ChangeRights" asp-route-id=@Model.ProjectId class="btn btn-default actionButton">Change rights</a>
+            }
+            if (Model.IsAdministrator)
+            {
+                <a asp-area="" asp-controller="Projects" asp-action="DeleteProject" asp-route-id=@Model.ProjectId class="btn btn-default actionButton">Delete project</a>
+            }
+        }
+    </div>
+
+    <div class="col-xs-9">
+        <h4>Project: @Model.Name</h4> <hr />
+
+        <div>
+            <dl class="dl-horizontal">
+                <dt>
+                    @Html.DisplayNameFor(model => model.UserDisplayName)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.UserDisplayName)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.Description)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Description)
+                </dd>
+            </dl>
+            @if (Model.ShowRequirements)
+            {
+                <hr />
+                <h4>Requirements</h4>
+                if (Model.Requirements.Any())
+                {
+                    foreach (var type in Model.Requirements)
+                    {
+                        var dict = new Dictionary<string, string> { { "id", Model.ProjectId }, { "type", type.Key } };
+                        <table class="table">
+                            <tr>
+                                <th class="actionButton">@type.Key requirements</th>
+                                <th>
+                                    @if (Model.CanChangeRequirements)
+                                    {
+                                        <a asp-area="" asp-controller="Projects" asp-action="ChangeRequirementOrder" asp-all-route-data="dict" class="btn btn-default tableButton">Change order</a>
+                                    }
+                                </th>
+                            </tr>
+                            @foreach (var r in type.Value)
+                            {
+                                var requirementValues = new Dictionary<string, string> { {"projectId", Model.ProjectId}, {"id", r.Item1}};
+                                <tr>
+                                    <td>@r.Item2</td>
+                                    <td><a asp-area="" asp-controller="Requirements" asp-action="Index" asp-all-route-data="requirementValues" class="btn btn-default tableButton">View</a></td>
+                                </tr>
+                            }
+                        </table>
+                    }
+                }
+                else
+                {
+                    <table class="table">
+                        <tr>No requirements for this project</tr>
+                    </table>
+                }
+            }
+            @if (Model.ShowUseCases)
+            {
+                <hr />
+                <h4>Use cases</h4>
+                if (Model.UseCases.Any())
+                {
+                    <table class="table">
+                        <tr>
+                            <th class="actionButton">Use case</th>
+                            <th>
+                                @if (Model.CanChangeUseCases)
+                                {
+                                    <a asp-area="" asp-controller="Projects" asp-action="ChangeUseCaseOrder" asp-route-id=@Model.ProjectId class="btn btn-default tableButton">Change order</a>
+                                }
+                            </th>
+                        </tr>
+                        @foreach (var r in Model.UseCases)
+                        {
+                            var useCaseValues = new Dictionary<string, string> { { "projectId", Model.ProjectId }, { "id", r.Item1 } };
+                            <tr>
+                                <td>@r.Item2</td>
+                                <td><a asp-area="" asp-controller="UseCases" asp-action="Index" asp-all-route-data="useCaseValues" class="btn btn-default tableButton">View</a></td>
+                            </tr>
+                        }
+                    </table>
+                }
+                else
+                {
+                    <table class="table">
+                        <tr>No use cases for this project</tr>
+                    </table>
+                }
+            }
+        </div>
+    </div>
+</div>
