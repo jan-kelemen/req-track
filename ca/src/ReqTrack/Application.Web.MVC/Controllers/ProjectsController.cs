@@ -164,11 +164,11 @@ namespace ReqTrack.Application.Web.MVC.Controllers
             var rightsList = vm.UserNames.Select((t, i) => new ProjectRights
             {
                 UserName = t,
-                CanViewProject = vm.CanView[i],
-                CanChangeProjectRights = vm.CanChangeProjectRights[i],
-                CanChangeRequirements = vm.CanChangeRequirements[i],
-                CanChangeUseCases = vm.CanChangeUseCases[i],
-                IsAdministrator = vm.IsAdministrator[i],
+                CanViewProject = vm.CanView[i] == "y",
+                CanChangeProjectRights = vm.CanChangeProjectRights[i] == "y",
+                CanChangeRequirements = vm.CanChangeRequirements[i] == "y",
+                CanChangeUseCases = vm.CanChangeUseCases[i] == "y",
+                IsAdministrator = vm.IsAdministrator[i] == "y",
             });
 
             var request = new ChangeRightsRequest(HttpContext.Session.GetString("UserId"))
