@@ -33,13 +33,13 @@
         e.preventDefault();
         var row =
             '<tr>' +
-                '<td><input name="UserNames[]" class="form-control"></td>'+
-                '<td><input name="CanView[]" type="checkbox" checked="checked"></td>'+
-                '<td><input name="CanChangeRequirements[]" type="checkbox"></td>'+
-                '<td><input name="CanChangeUseCases[]" type="checkbox"></td>'+
-                '<td><input name="CanChangeProjectRights[]" type="checkbox"></td>'+
-                '<td><input name="IsAdministrator[]" type="checkbox"></td>'+
-                '<td><button class="btn btn-default tableButton" name="del" onclick="remove_row(this)">Delete</button></td>'+
+                '<td><input name="UserNames[]" class="form-control" style="max-width: 100%" value=""></td>' +
+                '<td><input name="CanView[]" type="text" maxlength="1" class="form-control" style="max-width: 100%; width: 90px" value="y"></td>' +
+                '<td><input name="CanChangeRequirements[]" type="text" maxlength="1" class="form-control" style="max-width: 100%; width: 90px" value="n"></td>' +
+                '<td><input name="CanChangeUseCases[]" type="text" maxlength="1" class="form-control" style="max-width: 100%; width: 90px" value="n"></td>' +
+                '<td><input name="CanChangeProjectRights[]" type="text" maxlength="1" class="form-control" style="max-width: 100%; width: 90px" value="n"></td>' +
+                '<td><input name="IsAdministrator[]" type="text" maxlength="1" class="form-control" style="max-width: 100%; width: 90px" value="n"></td>' +
+                '<td><button class="btn btn-default tableButton" name="del" onclick="remove_row(this)">Delete</button></td>' +
             '</tr>';
 
         $('#rightsTable tr:last').after(row);

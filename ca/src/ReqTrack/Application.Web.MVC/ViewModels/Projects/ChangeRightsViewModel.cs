@@ -18,14 +18,14 @@ namespace ReqTrack.Application.Web.MVC.ViewModels.Projects
 
         public string[] UserNames { get; set; } = { };
 
-        public bool[] CanView { get; set; } = { };
+        public string[] CanView { get; set; } = { };
 
-        public bool[] CanChangeRequirements { get; set; } = { };
+        public string[] CanChangeRequirements { get; set; } = { };
 
-        public bool[] CanChangeUseCases { get; set; } = { };
+        public string[] CanChangeUseCases { get; set; } = { };
 
-        public bool[] CanChangeProjectRights { get; set; } = { };
+        public string[] CanChangeProjectRights { get; set; } = { };
 
-        public bool[] IsAdministrator { get; set; } = { };
+        public string[] IsAdministrator { get; set; } = { };
     }
 }

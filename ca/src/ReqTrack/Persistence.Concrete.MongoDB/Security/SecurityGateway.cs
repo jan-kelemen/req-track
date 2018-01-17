@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using MongoDB.Driver;
 using ReqTrack.Domain.Core.Entities;
@@ -76,23 +77,37 @@ namespace ReqTrack.Persistence.Concrete.MongoDB.Security
             var project = _projectRepository.Read(projectId.ToMongoIdentity());
             if (project == null) { throw new EntityNotFoundException { Id = projectId }; }
 
-            var deleteFilter = Builders<MongoSecurityRights>.Filter.Eq(x => x.ProjectId, projectId.ToMongoIdentity());
-            _securityRightsRepository.Delete(deleteFilter);
+            var filter = Builders<MongoSecurityRights>.Filter.Eq(x => x.ProjectId, projectId.ToMongoIdentity());
+            var oldRights = _securityRightsRepository.Find(filter).ToArray();
 
-            var mongoRights = newProjectRights.Select(x => new MongoSecurityRights
-            {
-                ProjectId = projectId.ToMongoIdentity(),
-                UserId = x.UserId.ToMongoIdentity(),
-                CanChangeProjectRights = x.CanChangeProjectRights,
-                CanChangeRequirements = x.CanChangeRequirements,
-                CanChangeUseCases = x.CanChangeUseCases,
-                CanViewProject = x.CanViewProject,
-                IsAdministrator = x.IsAdministrator,
-            });
+            _securityRightsRepository.Delete(filter);
 
-            foreach (var mongoRight in mongoRights)
+            try
             {
-                _securityRightsRepository.Create(mongoRight);
+                var mongoRights = newProjectRights.Select(x => new MongoSecurityRights
+                {
+                    ProjectId = projectId.ToMongoIdentity(),
+                    UserId = x.UserId.ToMongoIdentity(),
+                    CanChangeProjectRights = x.CanChangeProjectRights,
+                    CanChangeRequirements = x.CanChangeRequirements,
+                    CanChangeUseCases = x.CanChangeUseCases,
+                    CanViewProject = x.CanViewProject,
+                    IsAdministrator = x.IsAdministrator,
+                });
+
+                foreach (var mongoRight in mongoRights)
+                {
+                    _securityRightsRepository.Create(mongoRight);
+                }
+            }
+            catch (EntityNotFoundException)
+            {
+                foreach (var right in oldRights)
+                {
+                    _securityRightsRepository.Create(right);
+                }
+
+                throw;
             }
 
             return true;

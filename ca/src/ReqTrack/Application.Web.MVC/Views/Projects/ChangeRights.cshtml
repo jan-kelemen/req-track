@@ -30,12 +30,12 @@
                         @for (var i = 0; i < Model.UserNames.Length; ++i)
                         {
                             <tr>
-                                <td><input name="UserNames[]" class="form-control" value="@Model.UserNames[i]"/></td>
-                                <td><input name="CanView[]" type="checkbox" checked="@Model.CanView[i]"/></td>
-                                <td><input name="CanChangeRequirements[]" type="checkbox" checked="@Model.CanChangeRequirements[i]"/></td>
-                                <td><input name="CanChangeUseCases[]" type="checkbox" checked="@Model.CanChangeUseCases[i]"/></td>
-                                <td><input name="CanChangeProjectRights[]" type="checkbox" checked="@Model.CanChangeProjectRights[i]"/></td>
-                                <td><input name="IsAdministrator[]" type="checkbox" checked="@Model.IsAdministrator[i]"/></td>
+                                <td><input name="UserNames[]" class="form-control" style="max-width: 100%"value="@Model.UserNames[i]"/></td>
+                                <td><input name="CanView[]" type="text" maxlength="1" class="form-control" style="max-width: 100%; width: 90px" value="@Model.CanView[i]"/></td>
+                                <td><input name="CanChangeRequirements[]" type="text" maxlength="1" class="form-control" style="max-width: 100%; width: 90px" value="@Model.CanChangeRequirements[i]"/></td>
+                                <td><input name="CanChangeUseCases[]" type="text" maxlength="1" class="form-control" style="max-width: 100%; width: 90px" value="@Model.CanChangeUseCases[i]"/></td>
+                                <td><input name="CanChangeProjectRights[]" type="text" maxlength="1" class="form-control" style="max-width: 100%; width: 90px" value="@Model.CanChangeProjectRights[i]"/></td>
+                                <td><input name="IsAdministrator[]" type="text" maxlength="1" class="form-control" style="max-width: 100%; width: 90px" value="@Model.IsAdministrator[i]"/></td>
                                 <td><button class="btn btn-default tableButton" name="del" onclick="remove_row(this)">Delete</button></td>
                             </tr>
                         }
